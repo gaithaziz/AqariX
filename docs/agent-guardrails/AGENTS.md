@@ -10,6 +10,7 @@ Before implementing or changing AqariX, read:
 - [../architecture.md](../architecture.md)
 - [../tech-stack.md](../tech-stack.md)
 - [../implementation-plan.md](../implementation-plan.md)
+- [../implementation-requirements.md](../implementation-requirements.md)
 - [../database-schema.md](../database-schema.md)
 - [../testing-qa.md](../testing-qa.md)
 - [vibe-coding-mistakes-summary.md](./vibe-coding-mistakes-summary.md)
