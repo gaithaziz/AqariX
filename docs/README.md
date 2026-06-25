@@ -7,7 +7,7 @@ This folder turns the AqariX business and technical proposal into build-ready Ma
 ## Document Map
 
 - [PRD](./prd.md): product requirements, roles, MVP scope, success metrics, and non-goals.
-- [Agents](./agents.md): AI/coding-agent operating instructions for building AqariX safely.
+- [Agents](./AGENTS.md): AI/coding-agent operating instructions for building AqariX safely.
 - [Architecture](./architecture.md): system layers, product interfaces, data flow, and module boundaries.
 - [Database Schema](./database-schema.md): proposed PostgreSQL/PostGIS schema and entity relationships.
 - [API Spec](./api-spec.md): initial REST API surface for the mobile app, portals, CRM, lead rooms, admin, and agency.

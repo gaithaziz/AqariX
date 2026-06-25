@@ -27,7 +27,8 @@ For release or deployment work, also read:
 - Keep AI outputs explainable and caveated.
 - Keep authorization server-side.
 - Test beyond the happy path.
-- Update docs when product behavior changes.
+- Document every meaningful change in the relevant Markdown docs.
+- Keep docs consistent when product, API, schema, AI, security, deployment, or testing behavior changes.
 
 ## Do Not
 
