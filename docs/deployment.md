@@ -1,0 +1,93 @@
+# Deployment
+
+## Environments
+
+Required environments:
+
+- Local development
+- Staging
+- Production
+
+Each environment must have separate:
+
+- Database
+- Object storage
+- API keys
+- Auth project
+- Analytics project
+- Error monitoring project
+- AI/model configuration
+
+## Release Flow
+
+1. Develop on a branch.
+2. Run formatting, linting, type checks, and tests.
+3. Review schema and migration changes.
+4. Deploy to staging.
+5. Run staging smoke tests.
+6. Confirm backup status.
+7. Promote to production.
+8. Run production smoke tests.
+9. Monitor errors, latency, and key events.
+
+## Infrastructure Components
+
+- FastAPI backend service.
+- PostgreSQL/PostGIS database.
+- Object storage for listing media and agency assets.
+- Vector search service.
+- Background worker for jobs.
+- Scheduler for ingestion, alerts, retraining, and maintenance tasks.
+- Mobile app build pipeline.
+- Web dashboard deployment for seller/dealer, admin, and agency surfaces.
+
+## Monitoring
+
+Track:
+
+- API error rate.
+- API latency.
+- Database query performance.
+- Lead-room creation and message failures.
+- AI analysis failures.
+- Upload failures.
+- Payment/subscription failures when added.
+- Background job failures.
+- Model output volume and cost.
+
+Recommended tools from proposal:
+
+- Sentry for error monitoring.
+- Mixpanel for funnel and behavioral analytics.
+
+## Backups and Recovery
+
+- Automate database backups.
+- Store backups away from the production account.
+- Test restore into a separate environment.
+- Back up object storage metadata and critical assets.
+- Keep migration rollback notes.
+- Add disaster recovery runbook before public launch.
+
+## Production Release Gates
+
+Do not release if:
+
+- Staging and production share the same database.
+- Backup restore has never been tested.
+- Auth or role checks are incomplete.
+- AI outputs lack caveats and confidence.
+- Critical flows lack smoke tests.
+- Error monitoring is not configured.
+- Environment variables are undocumented.
+
+## Cost Controls
+
+- Set alerts for hosting, database, storage, email/SMS, maps, vector search, and AI API spend.
+- Cache repeated expensive AI outputs.
+- Rate-limit AI analysis and assistant usage.
+- Track usage by user role, organization, and endpoint.
+
+## Deployment Guardrail
+
+One-click deploys are acceptable for demos, not for production. Production must have staging, rollback, backups, monitoring, and release checks.

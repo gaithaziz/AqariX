@@ -1,0 +1,166 @@
+# Testing and QA
+
+## Testing Philosophy
+
+Testing AqariX means testing the product, not only the code. The platform must be tested for user clarity, role permissions, data integrity, AI safety, lead-room operations, deployment readiness, and recovery.
+
+## Test Layers
+
+### Product Validation
+
+- Confirm the target user has the problem.
+- Test whether buyer/investor analysis changes decisions.
+- Test whether sellers understand pricing guidance.
+- Test whether dealers see CRM value.
+- Test whether agency packages feel worth paying for.
+
+### Usability Testing
+
+Test with real or representative users:
+
+- Buyer searches and starts a lead room.
+- Investor compares opportunities.
+- Seller creates listing and uses pricing assistant.
+- Dealer manages CRM follow-up.
+- Admin reviews a flagged lead room.
+- Agency operator completes an order.
+
+Observe:
+
+- Confusing labels.
+- Missed CTAs.
+- Trust concerns.
+- Mobile layout issues.
+- Overload in AI explanation.
+
+### Functional Testing
+
+Critical flows:
+
+- Signup/login and role selection.
+- Buyer/investor intake.
+- Listing search and filtering.
+- Offering detail and analysis.
+- Save and compare.
+- Seller listing creation.
+- Pricing assistant.
+- Marketing assistant.
+- Lead-room creation.
+- Lead-room stage transitions.
+- Appointment scheduling.
+- Offer creation.
+- Dealer CRM updates.
+- Agency order lifecycle.
+- Admin flag review.
+
+For each flow, test:
+
+- Success.
+- Empty state.
+- Bad input.
+- Slow network.
+- Duplicate clicks.
+- Permission denial.
+- Error recovery.
+
+### API and Authorization Testing
+
+- Call endpoints directly without the UI.
+- Confirm users cannot access other users' saved offerings.
+- Confirm dealers cannot access other dealers' leads.
+- Confirm lead-room participants cannot access unrelated rooms.
+- Confirm sellers cannot edit listings they do not own.
+- Confirm admin-only endpoints reject non-admins.
+- Confirm contact reveal follows business rules.
+
+### Database Testing
+
+- Test migrations on staging data.
+- Test geospatial queries.
+- Test large listing lists.
+- Test duplicate properties.
+- Test missing optional fields.
+- Test long Arabic text and RTL data.
+- Test old archived records.
+- Test concurrent lead-room and offer updates.
+
+### AI Testing
+
+- Compare AVM output against known comparable examples.
+- Track MAPE by zone and property type.
+- Verify confidence drops for weak data.
+- Verify forecasts include caveats.
+- Verify no output guarantees appreciation.
+- Test prompt injection in user-generated listing text.
+- Test assistant outputs for sensitive data leakage.
+- Test model version tracking.
+
+### Security Testing
+
+- Secret scan.
+- Dependency scan.
+- Auth/session checks.
+- Object-level authorization checks.
+- CORS checks.
+- Rate-limit checks.
+- Upload validation.
+- Log hygiene.
+- Admin audit log checks.
+
+### Performance Testing
+
+- Search response time.
+- Map query response time.
+- Offering analysis latency.
+- Lead-room message latency.
+- Dealer CRM dashboard latency.
+- Listing image loading.
+- Mobile performance.
+- Database index coverage.
+- AI and vector-search cost.
+
+### Deployment Testing
+
+Before production:
+
+- Deploy to staging.
+- Run smoke tests.
+- Test migrations.
+- Confirm environment variables.
+- Confirm backups.
+- Confirm monitoring.
+
+After production:
+
+- Run production smoke tests.
+- Watch error rate and latency.
+- Confirm analytics events.
+- Confirm lead-room creation.
+- Confirm AI analysis works.
+
+### Recovery Testing
+
+- Restore database backup into separate environment.
+- Verify app can run from restored data.
+- Verify media links and agency assets.
+- Verify lead-room history.
+- Verify rollback process.
+
+## Minimum Pre-Launch Test Matrix
+
+| Area | Required Test |
+| --- | --- |
+| Auth | Role selection and protected route checks |
+| Marketplace | Search, filters, map, listing detail |
+| AI | Valuation, confidence, caveats, comparable evidence |
+| Seller | Listing setup, pricing assistant, marketing assistant |
+| Dealer | CRM pipeline, tasks, appointments |
+| Lead room | Create, message, qualify, schedule, offer, close |
+| Admin | Flags, review, supervision |
+| Agency | Order, asset, approval, reporting |
+| Security | Ownership, secrets, dependencies, uploads |
+| Deployment | Staging smoke, production smoke, backup restore |
+
+## QA Guardrail
+
+Do not accept "I clicked it once and it worked" as testing. Every critical flow must be tested across success, failure, permissions, data, mobile, and deployment states.
