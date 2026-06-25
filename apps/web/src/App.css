@@ -1,0 +1,961 @@
+.app-shell {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 68px;
+  padding: 12px clamp(16px, 4vw, 32px);
+  border-bottom: 1px solid var(--color-outline-soft);
+  background: color-mix(in srgb, var(--color-background) 94%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.brand,
+.topnav,
+.top-actions,
+.search-row,
+.filter-row,
+.section-heading,
+.spec-grid,
+.analysis-header,
+.stage-track,
+.dealer-id,
+.listing-meta,
+.listing-title-row,
+.lead-card div,
+.lead-card footer,
+.bar-row > div:first-child {
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  gap: 10px;
+  color: var(--color-primary);
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.brand-mark,
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--color-outline);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-primary);
+}
+
+.topnav {
+  gap: clamp(10px, 3vw, 32px);
+}
+
+.topnav a {
+  color: var(--color-muted);
+  font-size: 0.94rem;
+  text-decoration: none;
+  padding: 8px 0;
+  border-bottom: 2px solid transparent;
+}
+
+.topnav a:hover,
+.topnav a:focus-visible {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.top-actions {
+  gap: 10px;
+}
+
+.icon-button,
+.save-button {
+  border: 1px solid var(--color-outline-soft);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.icon-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+}
+
+.text-control {
+  width: auto;
+  min-width: 108px;
+  padding: 0 10px;
+  gap: 7px;
+  font-size: 0.86rem;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  background: var(--color-surface-strong);
+  color: var(--color-primary);
+}
+
+main {
+  display: grid;
+  gap: 40px;
+}
+
+.hero-band {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+  gap: 24px;
+  padding: clamp(28px, 5vw, 56px) clamp(16px, 4vw, 32px) 0;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.hero-copy h1,
+.section-heading h2,
+.detail-panel h2,
+.lead-room h2,
+.seller-card h2,
+.pipeline-main h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  color: var(--color-primary);
+  letter-spacing: 0;
+}
+
+.hero-copy h1 {
+  max-width: 720px;
+  font-size: clamp(2.4rem, 7vw, 4.6rem);
+  line-height: 1.04;
+}
+
+.hero-copy p {
+  max-width: 660px;
+  margin: 18px 0 0;
+  color: var(--color-muted);
+  font-size: 1.05rem;
+}
+
+.eyebrow,
+.metric-label,
+.listing-meta,
+.live-badge {
+  color: var(--color-secondary-dark);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.hero-panel {
+  display: grid;
+  align-self: end;
+  gap: 0;
+  border: 1px solid var(--color-outline);
+  background: var(--color-surface);
+}
+
+.hero-panel > div {
+  padding: 18px;
+}
+
+.hero-panel > div + div {
+  border-top: 1px solid var(--color-outline-soft);
+}
+
+.hero-panel strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--color-primary);
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(320px, 440px) minmax(280px, 1fr);
+  align-items: start;
+  gap: 28px;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 32px);
+}
+
+.mobile-frame,
+.rail-card,
+.detail-panel,
+.lead-room,
+.seller-card,
+.pipeline-main,
+.listing-card,
+.search-card,
+.message-panel,
+.task-panel {
+  border: 1px solid var(--color-outline);
+  background: var(--color-surface);
+}
+
+.mobile-frame {
+  padding: 16px;
+}
+
+.section-heading {
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.section-heading h2 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+}
+
+.text-button,
+.primary-button,
+.secondary-button,
+.analysis-button,
+.filter-row button,
+.side-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  border-radius: 4px;
+  border: 1px solid var(--color-outline);
+  cursor: pointer;
+  font: inherit;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.text-button,
+.filter-row button,
+.secondary-button {
+  background: var(--color-surface-soft);
+  color: var(--color-primary);
+}
+
+.primary-button,
+.analysis-button,
+.side-link.active {
+  background: var(--color-primary-container);
+  color: white;
+  border-color: var(--color-primary-container);
+}
+
+.text-button:hover,
+.filter-row button:hover,
+.secondary-button:hover,
+.side-link:hover {
+  border-color: var(--color-primary);
+}
+
+.search-card {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.search-card label,
+.feedback-form label span {
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.search-row {
+  gap: 10px;
+  padding: 0 12px;
+  min-height: 48px;
+  border: 1px solid var(--color-outline-soft);
+  background: var(--color-surface);
+}
+
+input,
+select {
+  width: 100%;
+  border: 1px solid var(--color-outline-soft);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.search-row input {
+  border: 0;
+  outline: 0;
+}
+
+.filter-row {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-row button {
+  flex: 1 1 120px;
+  padding: 0 12px;
+}
+
+.listing-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.listing-card {
+  overflow: hidden;
+}
+
+.listing-image {
+  position: relative;
+  min-height: 240px;
+  background-position: center;
+  background-size: cover;
+}
+
+.score-badge {
+  position: absolute;
+  top: 14px;
+  inset-inline-start: 14px;
+  display: inline-flex;
+  padding: 8px 10px;
+  border-radius: 4px;
+  background: var(--color-primary-container);
+  color: var(--color-secondary);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.save-button {
+  position: absolute;
+  top: 14px;
+  inset-inline-end: 14px;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  color: white;
+  background: rgba(0, 52, 43, 0.65);
+}
+
+.listing-body {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.listing-meta {
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.listing-title-row {
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.listing-title-row h3 {
+  margin: 0;
+  max-width: 220px;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--color-text);
+}
+
+.listing-title-row strong,
+.price-row strong {
+  display: block;
+  color: var(--color-secondary-dark);
+  font-size: 1.2rem;
+  text-align: right;
+}
+
+.listing-title-row span,
+.price-row span {
+  display: block;
+  color: var(--color-muted);
+  font-size: 0.82rem;
+  text-align: right;
+}
+
+:root[dir='rtl'] .listing-title-row strong,
+:root[dir='rtl'] .listing-title-row span,
+:root[dir='rtl'] .price-row strong,
+:root[dir='rtl'] .price-row span {
+  text-align: left;
+}
+
+.spec-grid {
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-outline-soft);
+}
+
+.spec-grid span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.recommendation-note {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  background: var(--color-surface-soft);
+  color: var(--color-primary);
+  font-size: 0.88rem;
+}
+
+.analysis-button {
+  width: 100%;
+  padding: 0 14px;
+}
+
+.insight-rail {
+  display: grid;
+  gap: 16px;
+}
+
+.rail-card {
+  padding: 22px;
+}
+
+.rail-card h3,
+.feedback-box h3,
+.feedback-form h3,
+.seller-card h3,
+.message-panel h3,
+.task-panel h3,
+.kanban-column h3 {
+  margin: 8px 0 10px;
+  font-family: var(--font-serif);
+  color: var(--color-primary);
+  letter-spacing: 0;
+}
+
+.rail-card p {
+  color: var(--color-muted);
+}
+
+.signal-list {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.signal-list li {
+  display: flex;
+  gap: 8px;
+  color: var(--color-muted);
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.92fr) minmax(340px, 1.08fr);
+  gap: 24px;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 32px);
+}
+
+.detail-media {
+  position: relative;
+  min-height: 660px;
+  border: 1px solid var(--color-outline);
+  background-position: center;
+  background-size: cover;
+}
+
+.detail-panel {
+  display: grid;
+  gap: 18px;
+  padding: clamp(18px, 4vw, 28px);
+}
+
+.detail-panel h2 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.05;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-outline-soft);
+}
+
+.analysis-shell,
+.feedback-box,
+.feedback-form {
+  border: 1px solid var(--color-outline-soft);
+  background: var(--color-surface-soft);
+}
+
+.analysis-shell,
+.feedback-box {
+  padding: 16px;
+}
+
+.analysis-header {
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--color-primary);
+}
+
+.analysis-header h3,
+.analysis-header p {
+  margin: 0;
+}
+
+.analysis-header p,
+.feedback-box p {
+  color: var(--color-muted);
+  font-size: 0.92rem;
+}
+
+.analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.metric {
+  padding: 12px;
+  border: 1px solid var(--color-outline-soft);
+  background: var(--color-surface);
+}
+
+.metric span,
+.bar-row span {
+  display: block;
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.metric strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--color-primary);
+}
+
+.feedback-form {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.feedback-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.feedback-form label {
+  display: grid;
+  gap: 6px;
+}
+
+.feedback-form select,
+.feedback-form input {
+  min-height: 40px;
+  padding: 0 10px;
+}
+
+.full-field {
+  grid-column: 1 / -1;
+}
+
+.secondary-button {
+  padding: 0 14px;
+  justify-self: start;
+}
+
+.lead-room,
+.seller-grid,
+.dealer-dashboard {
+  max-width: 1280px;
+  width: calc(100% - clamp(32px, 8vw, 64px));
+  margin: 0 auto;
+}
+
+.lead-room {
+  display: grid;
+  gap: 18px;
+  padding: clamp(18px, 4vw, 28px);
+}
+
+.primary-button {
+  padding: 0 16px;
+}
+
+.stage-track {
+  gap: 0;
+  align-items: stretch;
+  overflow-x: auto;
+}
+
+.stage {
+  min-width: 160px;
+  flex: 1 0 160px;
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid var(--color-outline-soft);
+  color: var(--color-muted);
+}
+
+.stage span {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: var(--color-surface-soft);
+  font-weight: 700;
+}
+
+.stage p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.stage.active {
+  color: var(--color-primary);
+  border-color: var(--color-primary-fixed);
+}
+
+.stage.active span {
+  background: var(--color-primary-container);
+  color: white;
+}
+
+.room-grid,
+.seller-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 18px;
+}
+
+.message-panel,
+.task-panel,
+.seller-card {
+  padding: 18px;
+}
+
+.message,
+.task {
+  padding: 12px 0;
+  border-top: 1px solid var(--color-outline-soft);
+}
+
+.message p {
+  margin: 5px 0 0;
+  color: var(--color-muted);
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-muted);
+}
+
+.task.done {
+  color: var(--color-primary);
+}
+
+.checklist {
+  display: grid;
+  gap: 0;
+  margin-top: 16px;
+}
+
+.rating-bars {
+  display: grid;
+  gap: 14px;
+}
+
+.bar-row {
+  display: grid;
+  gap: 7px;
+}
+
+.bar-row > div:first-child {
+  justify-content: space-between;
+}
+
+.bar-row strong {
+  color: var(--color-primary);
+}
+
+.bar-track,
+.pipeline-health div {
+  height: 8px;
+  background: var(--color-surface-container);
+}
+
+.bar-track i,
+.pipeline-health i {
+  display: block;
+  height: 100%;
+  background: var(--color-primary-container);
+}
+
+.dealer-dashboard {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  align-items: stretch;
+  border: 1px solid var(--color-outline);
+  background: var(--color-surface);
+  margin-bottom: 40px;
+}
+
+.dealer-sidebar {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 22px;
+  border-right: 1px solid var(--color-outline-soft);
+  background: var(--color-surface-soft);
+}
+
+.dealer-id {
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.dealer-id strong,
+.dealer-id span {
+  display: block;
+}
+
+.dealer-id span {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.side-link {
+  justify-content: flex-start;
+  min-height: 48px;
+  padding: 0 14px;
+  background: transparent;
+  color: var(--color-text);
+}
+
+.pipeline-health {
+  display: grid;
+  gap: 8px;
+  margin-top: 30px;
+  padding-top: 18px;
+  border-top: 1px solid var(--color-outline);
+}
+
+.pipeline-health strong {
+  color: var(--color-primary);
+}
+
+.pipeline-main {
+  padding: clamp(18px, 4vw, 28px);
+}
+
+.live-badge {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 8px;
+  padding: 6px 8px;
+  background: var(--color-secondary);
+  color: var(--color-primary);
+}
+
+.mini-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 150px;
+  margin: 24px 0;
+  padding: 16px;
+  border: 1px solid var(--color-outline);
+}
+
+.mini-chart span {
+  flex: 1;
+  min-width: 20px;
+  background: var(--color-surface-container);
+}
+
+.mini-chart span:nth-child(even) {
+  background: var(--color-primary-container);
+}
+
+.mini-chart span:nth-child(7) {
+  background: var(--color-secondary-dark);
+}
+
+.kanban {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(230px, 1fr));
+  gap: 18px;
+}
+
+.kanban-column h3 {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-outline);
+  padding-bottom: 10px;
+}
+
+.kanban-column h3 span {
+  color: var(--color-muted);
+}
+
+.lead-card {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 16px;
+  border: 1px solid var(--color-outline);
+  background: var(--color-surface);
+}
+
+.lead-card div {
+  justify-content: space-between;
+  color: var(--color-secondary-dark);
+  font-weight: 700;
+}
+
+.lead-card h4 {
+  margin: 0;
+  font-family: var(--font-serif);
+  color: var(--color-text);
+}
+
+.lead-card p {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.lead-card footer {
+  justify-content: flex-end;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-outline-soft);
+}
+
+.lead-card footer span {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  padding: 6px 8px;
+  background: var(--color-surface-soft);
+  color: var(--color-primary);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+@media (max-width: 980px) {
+  .topnav {
+    display: none;
+  }
+
+  .hero-band,
+  .workspace,
+  .detail-grid,
+  .room-grid,
+  .seller-grid,
+  .dealer-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-panel {
+    align-self: stretch;
+  }
+
+  .detail-media {
+    min-height: 360px;
+  }
+
+  .dealer-sidebar {
+    border-right: 0;
+    border-bottom: 1px solid var(--color-outline-soft);
+  }
+
+  .kanban {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .brand {
+    font-size: 1.35rem;
+  }
+
+  .hero-copy h1 {
+    font-size: 2.35rem;
+  }
+
+  .listing-title-row,
+  .price-row {
+    flex-direction: column;
+  }
+
+  .listing-title-row strong,
+  .listing-title-row span,
+  .price-row strong,
+  .price-row span {
+    text-align: left;
+  }
+
+  :root[dir='rtl'] .listing-title-row strong,
+  :root[dir='rtl'] .listing-title-row span,
+  :root[dir='rtl'] .price-row strong,
+  :root[dir='rtl'] .price-row span {
+    text-align: right;
+  }
+
+  .analysis-grid,
+  .feedback-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lead-room,
+  .seller-grid,
+  .dealer-dashboard {
+    width: calc(100% - 32px);
+  }
+}

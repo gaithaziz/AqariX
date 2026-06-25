@@ -1,0 +1,49 @@
+services:
+  api:
+    build:
+      context: ./services/api
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    env_file:
+      - ./services/api/.env.example
+    environment:
+      DATABASE_URL: postgresql+psycopg://aqarix:aqarix@db:5432/aqarix
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./services/api:/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  jobs:
+    build:
+      context: ./services/jobs
+    env_file:
+      - ./services/api/.env.example
+    environment:
+      DATABASE_URL: postgresql+psycopg://aqarix:aqarix@db:5432/aqarix
+    volumes:
+      - ./services/jobs:/jobs
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    build:
+      context: ./infra/docker/postgres
+    environment:
+      POSTGRES_DB: aqarix
+      POSTGRES_USER: aqarix
+      POSTGRES_PASSWORD: aqarix
+    ports:
+      - "5432:5432"
+    volumes:
+      - aqarix-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aqarix -d aqarix"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  aqarix-db-data:

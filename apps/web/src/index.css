@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Serif:wght@600;700&display=swap');
+
+:root {
+  --font-sans: Inter, 'Noto Naskh Arabic', system-ui, sans-serif;
+  --font-serif: 'Noto Serif', 'Noto Naskh Arabic', Georgia, serif;
+  --color-background: #fbf9f4;
+  --color-surface: #ffffff;
+  --color-surface-soft: #f5f3ee;
+  --color-surface-container: #e4e2dd;
+  --color-surface-strong: #dbdad5;
+  --color-text: #1b1c19;
+  --color-muted: #3f4945;
+  --color-primary: #00342b;
+  --color-primary-container: #004d40;
+  --color-primary-fixed: #94d3c1;
+  --color-secondary: #ffbf00;
+  --color-secondary-dark: #795900;
+  --color-outline: #bfc9c4;
+  --color-outline-soft: #d8dedb;
+  --color-danger: #ba1a1a;
+  color: var(--color-text);
+  background: var(--color-background);
+  font-family: var(--font-sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root[data-theme='dark'] {
+  --color-background: #111613;
+  --color-surface: #1a211e;
+  --color-surface-soft: #202a26;
+  --color-surface-container: #2c3833;
+  --color-surface-strong: #36443f;
+  --color-text: #f2f1ec;
+  --color-muted: #c4ccc8;
+  --color-primary: #afefdd;
+  --color-primary-container: #065043;
+  --color-primary-fixed: #94d3c1;
+  --color-secondary: #ffbf00;
+  --color-secondary-dark: #ffdfa0;
+  --color-outline: #54615c;
+  --color-outline-soft: #35423d;
+  --color-danger: #ffb4ab;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--color-background);
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: var(--color-background);
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+}

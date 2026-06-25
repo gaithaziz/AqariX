@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AqariX Pro | AI Offering Analysis</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#29695b",
+                        "on-primary-fixed": "#00201a",
+                        "on-surface-variant": "#3f4945",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f5f3ee",
+                        "secondary-container": "#ffbf00",
+                        "secondary-fixed": "#ffdfa0",
+                        "tertiary-container": "#364457",
+                        "surface-bright": "#fbf9f4",
+                        "tertiary": "#202e40",
+                        "on-surface": "#1b1c19",
+                        "surface-variant": "#e4e2dd",
+                        "error-container": "#ffdad6",
+                        "outline": "#707975",
+                        "on-tertiary-container": "#a3b1c8",
+                        "on-tertiary-fixed": "#0d1c2e",
+                        "primary-fixed": "#afefdd",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#b9c7df",
+                        "on-secondary-fixed": "#261a00",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#004d40",
+                        "tertiary-fixed": "#d5e3fc",
+                        "on-primary-container": "#7ebdac",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#065043",
+                        "on-tertiary-fixed-variant": "#3a485b",
+                        "error": "#ba1a1a",
+                        "background": "#fbf9f4",
+                        "outline-variant": "#bfc9c4",
+                        "surface-dim": "#dbdad5",
+                        "primary-fixed-dim": "#94d3c1",
+                        "surface-container-high": "#eae8e3",
+                        "on-secondary-fixed-variant": "#5c4300",
+                        "on-background": "#1b1c19",
+                        "inverse-on-surface": "#f2f1ec",
+                        "secondary-fixed-dim": "#fbbc00",
+                        "primary": "#00342b",
+                        "surface": "#fbf9f4",
+                        "on-secondary-container": "#6d5000",
+                        "inverse-surface": "#30312e",
+                        "surface-container-highest": "#e4e2dd",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#94d3c1",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#f0eee9",
+                        "secondary": "#795900"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "base": "4px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "container-max": "1280px",
+                        "gutter": "20px",
+                        "xl": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Noto Serif"],
+                        "data-mono": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Noto Serif"],
+                        "body-sm": ["Inter"],
+                        "display-lg": ["Noto Serif"],
+                        "label-caps": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Noto Serif"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "data-mono": ["14px", {"lineHeight": "1", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #fbf9f4;
+            color: #1b1c19;
+            -webkit-font-smoothing: antialiased;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+        .bento-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 24px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        .bento-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+        .bargain-track {
+            height: 8px;
+            background: #e4e2dd;
+            border-radius: 999px;
+            position: relative;
+        }
+        .bargain-range {
+            position: absolute;
+            height: 100%;
+            background: #004d40;
+            opacity: 0.3;
+        }
+        .bargain-marker {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            background: #004d40;
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+        .zebra-row:nth-child(even) {
+            background-color: rgba(0, 77, 64, 0.02);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-md py-sm w-full max-w-container-max mx-auto bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary" data-icon="analytics">analytics</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">AqariX</h1>
+</div>
+<div class="hidden md:flex items-center gap-lg">
+<nav class="flex items-center gap-md">
+<a class="font-label-caps text-label-caps text-primary border-b-2 border-primary py-xs" href="#">Insights</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-high transition-colors px-sm py-xs" href="#">Portfolio</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-high transition-colors px-sm py-xs" href="#">Markets</a>
+</nav>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="h-full w-full object-cover" data-alt="A professional headshot of a Middle Eastern male real estate investor in his late 40s, wearing a charcoal grey suit and white shirt. The background is a blurred high-end office with warm lighting and wooden accents, maintaining a sophisticated and institutional aesthetic consistent with the AqariX brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArcUxRXG83ZKjME8nBeIciPGxnZJaRPXw3JO9TWBtS-SWdkSbejdNg38_Q0FZ5F0f8_CZeS1PB3lAB-eTmvF0h-LU467Qk8I_PAUgrQx4RnxhhgJVqToJp1PtnlzI89Vsdcd2tAMPN1SMxGQO8OPdjcD6XK7opl1CWo6FYa8B9Rl99BC5T-bBJRLp5H2R1_21gGHlGCWTYnwKDj8_FvfMGYseUfIWHBUv8Z7IZGJpLQdunAQhHzFGDBRbD1_HkEwlp3DMJ1BeEhsE"/>
+</div>
+</div>
+</header>
+<div class="flex max-w-container-max mx-auto min-h-[calc(100vh-64px)]">
+<!-- NavigationDrawer (Desktop Only) -->
+<aside class="hidden md:flex flex-col h-screen fixed left-0 top-0 p-md bg-surface-container-low border-r border-outline-variant w-64 z-40 mt-16">
+<div class="mb-lg px-sm">
+<p class="font-label-caps text-label-caps text-secondary">DEALER DASHBOARD</p>
+<p class="font-headline-sm text-headline-sm text-primary">AqariX Pro</p>
+</div>
+<nav class="space-y-sm">
+<div class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Market Overview</span>
+</div>
+<div class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="home_work">home_work</span>
+<span class="font-body-md text-body-md">Properties</span>
+</div>
+<div class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="font-body-md text-body-md">Lead Room</span>
+</div>
+<div class="flex items-center gap-md p-sm bg-primary-container text-on-primary-container font-semibold rounded-lg cursor-pointer">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-body-md text-body-md">Analytics</span>
+</div>
+<div class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="view_kanban">view_kanban</span>
+<span class="font-body-md text-body-md">CRM Pipeline</span>
+</div>
+<div class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</div>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 p-md md:p-xl bg-background pb-32 md:pb-xl">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md mb-xl">
+<div>
+<nav class="flex items-center gap-xs mb-sm">
+<span class="font-label-caps text-[10px] text-outline uppercase">Analytics</span>
+<span class="material-symbols-outlined text-xs text-outline" data-icon="chevron_right">chevron_right</span>
+<span class="font-label-caps text-[10px] text-primary uppercase">Asset ID: JOR-AMN-9921</span>
+</nav>
+<h2 class="font-headline-md text-headline-md text-primary mb-xs">Abdoun Luxury Villa, Amman</h2>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-xs px-sm py-1 bg-primary-container text-on-primary-container rounded-lg">
+<span class="material-symbols-outlined text-sm" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label-caps text-label-caps">High Confidence</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Last Updated: 14 mins ago</span>
+</div>
+</div>
+<div class="bg-surface-container-highest p-md border border-outline-variant rounded flex items-center gap-lg">
+<div class="text-right">
+<p class="font-label-caps text-label-caps text-on-surface-variant">OFFERING RECOMMENDATION</p>
+<p class="font-headline-md text-headline-md text-primary">Strong Buy</p>
+</div>
+<div class="w-12 h-12 bg-primary flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="trending_up">trending_up</span>
+</div>
+</div>
+</div>
+<!-- Analysis Bento Grid -->
+<div class="bento-grid">
+<!-- Fair Value Card -->
+<div class="bento-card col-span-12 md:col-span-4 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-md">
+<span class="font-label-caps text-label-caps text-outline">FAIR VALUE ESTIMATE</span>
+<span class="material-symbols-outlined text-primary" data-icon="info">info</span>
+</div>
+<p class="font-headline-md text-[36px] text-primary leading-tight">642,500 <span class="font-label-caps text-lg">JOD</span></p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">+/- 2.4% Margin of Error</p>
+</div>
+<div class="mt-lg pt-md border-t border-outline-variant">
+<div class="flex justify-between items-center mb-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">AqariX Score</span>
+<span class="font-data-mono text-data-mono bg-secondary-container px-2 py-0.5 text-on-secondary-container rounded">88/100</span>
+</div>
+<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 88%"></div>
+</div>
+</div>
+</div>
+<!-- Bargain Range & Market Position -->
+<div class="bento-card col-span-12 md:col-span-8">
+<div class="flex items-center justify-between mb-lg">
+<span class="font-label-caps text-label-caps text-outline">BARGAIN RANGE &amp; MARKET POSITION</span>
+<div class="flex gap-md">
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-primary opacity-30"></div>
+<span class="text-[10px] font-label-caps">Target Zone</span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="text-[10px] font-label-caps">Subject Property</span>
+</div>
+</div>
+</div>
+<div class="py-xl">
+<div class="bargain-track mb-md">
+<div class="bargain-range left-[15%] w-[35%]"></div>
+<div class="bargain-marker left-[22%]"></div>
+<!-- Comps dots -->
+<div class="absolute top-1/2 -translate-y-1/2 left-[45%] w-1.5 h-1.5 bg-outline-variant rounded-full"></div>
+<div class="absolute top-1/2 -translate-y-1/2 left-[62%] w-1.5 h-1.5 bg-outline-variant rounded-full"></div>
+<div class="absolute top-1/2 -translate-y-1/2 left-[78%] w-1.5 h-1.5 bg-outline-variant rounded-full"></div>
+</div>
+<div class="flex justify-between font-data-mono text-xs text-outline">
+<span>580K JOD</span>
+<span>620K JOD</span>
+<span>660K JOD</span>
+<span>700K JOD</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-xl mt-md">
+<div>
+<p class="font-label-caps text-[11px] text-on-surface-variant mb-xs">DISCOUNT TO MARKET</p>
+<p class="font-headline-sm text-headline-sm text-primary">12.4%</p>
+</div>
+<div>
+<p class="font-label-caps text-[11px] text-on-surface-variant mb-xs">OFFER STRATEGY</p>
+<p class="font-body-md text-body-md">Aggressive Entry - Highly Liquid</p>
+</div>
+</div>
+</div>
+<!-- 3-5 Year Forecast -->
+<div class="bento-card col-span-12 md:col-span-5 relative overflow-hidden">
+
+<div class="relative z-10">
+<span class="font-label-caps text-label-caps text-outline mb-lg block">MOMENTUM FORECAST (5YR)</span>
+<div class="flex items-center gap-lg py-md">
+<div class="p-lg bg-surface-container-high rounded-full">
+<span class="material-symbols-outlined text-5xl text-primary" data-icon="keyboard_double_arrow_up" style="font-variation-settings: 'wght' 700;">keyboard_double_arrow_up</span>
+</div>
+<div>
+<p class="font-headline-md text-headline-md text-primary">+18.5% <span class="text-on-surface-variant font-body-md font-normal">Est. Growth</span></p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">High correlation with planned diplomatic quarter expansion.</p>
+</div>
+</div>
+<div class="mt-md space-y-sm">
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface-variant">Supply Pressure</span>
+<span class="font-semibold text-secondary">Low</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface-variant">Demand Velocity</span>
+<span class="font-semibold text-primary">High</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Comparable Evidence -->
+<div class="bento-card col-span-12 md:col-span-7">
+<span class="font-label-caps text-label-caps text-outline mb-md block">COMPARABLE EVIDENCE LIST</span>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-outline-variant font-label-caps text-[10px] text-outline uppercase">
+<th class="py-sm px-base">Location</th>
+<th class="py-sm px-base">Sold Price</th>
+<th class="py-sm px-base text-right">Similarity</th>
+</tr>
+</thead>
+<tbody class="font-body-sm">
+<tr class="zebra-row">
+<td class="py-md px-base font-semibold">Abdoun Circle, Villa B</td>
+<td class="py-md px-base">615,000 JOD</td>
+<td class="py-md px-base text-right font-data-mono">94%</td>
+</tr>
+<tr class="zebra-row">
+<td class="py-md px-base font-semibold">Zahran, Al-Kindi St</td>
+<td class="py-md px-base">680,000 JOD</td>
+<td class="py-md px-base text-right font-data-mono">82%</td>
+</tr>
+<tr class="zebra-row">
+<td class="py-md px-base font-semibold">Sweifieh, Garden Ct</td>
+<td class="py-md px-base">595,000 JOD</td>
+<td class="py-md px-base text-right font-data-mono">78%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<button class="w-full mt-md py-sm border border-outline-variant font-label-caps text-label-caps hover:bg-surface-container transition-colors uppercase tracking-widest">View Detailed Evidence (12)</button>
+</div>
+<!-- Disclaimer -->
+<div class="col-span-12 mt-md">
+<div class="p-md bg-surface-container-low border-l-4 border-secondary flex gap-md items-start">
+<span class="material-symbols-outlined text-secondary" data-icon="warning">warning</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant italic">
+                            Disclaimer: AqariX AI valuations are mathematical estimates based on historical market data and current listings. This does not constitute a formal appraisal. Real estate investments carry risk; past performance is not indicative of future results. Consult with a licensed Jordanian real estate appraiser before finalizing any transaction.
+                        </p>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-sm pb-8 pt-2 bg-surface shadow-lg border-t border-outline-variant">
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="font-label-caps text-[10px]">Explore</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span class="font-label-caps text-[10px]">Saved</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="maps_ugc">maps_ugc</span>
+<span class="font-label-caps text-[10px]">Leads</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+<span class="font-label-caps text-[10px]">Insights</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-caps text-[10px]">Profile</span>
+</div>
+</nav>
+<!-- Contextual FAB (Only on desktop home/dashboard context as per instructions) -->
+<div class="fixed bottom-lg right-lg z-50 hidden md:block">
+<button class="bg-primary-container text-on-primary-container flex items-center gap-md px-lg py-md rounded-lg shadow-xl hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="font-label-caps text-label-caps tracking-widest uppercase">Generate Offer Letter</span>
+</button>
+</div>
+<script>
+        // Simple intersection observer for subtle reveal effects
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-4');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.classList.add('opacity-0', 'translate-y-4', 'transition-all', 'duration-500');
+            observer.observe(card);
+        });
+    </script>
+</body></html>

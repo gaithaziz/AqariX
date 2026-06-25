@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AqariX Pro | Seller Listing Setup</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .step-active { border-color: #004D40; color: #004D40; }
+        .step-inactive { border-color: #bfc9c4; color: #707975; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f5f3ee; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #004D40; border-radius: 10px; }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#29695b",
+                    "on-primary-fixed": "#00201a",
+                    "on-surface-variant": "#3f4945",
+                    "on-error-container": "#93000a",
+                    "surface-container-low": "#f5f3ee",
+                    "secondary-container": "#ffbf00",
+                    "secondary-fixed": "#ffdfa0",
+                    "tertiary-container": "#364457",
+                    "surface-bright": "#fbf9f4",
+                    "tertiary": "#202e40",
+                    "on-surface": "#1b1c19",
+                    "surface-variant": "#e4e2dd",
+                    "error-container": "#ffdad6",
+                    "outline": "#707975",
+                    "on-tertiary-container": "#a3b1c8",
+                    "on-tertiary-fixed": "#0d1c2e",
+                    "primary-fixed": "#afefdd",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#b9c7df",
+                    "on-secondary-fixed": "#261a00",
+                    "on-tertiary": "#ffffff",
+                    "primary-container": "#004d40",
+                    "tertiary-fixed": "#d5e3fc",
+                    "on-primary-container": "#7ebdac",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed-variant": "#065043",
+                    "on-tertiary-fixed-variant": "#3a485b",
+                    "error": "#ba1a1a",
+                    "background": "#fbf9f4",
+                    "outline-variant": "#bfc9c4",
+                    "surface-dim": "#dbdad5",
+                    "primary-fixed-dim": "#94d3c1",
+                    "surface-container-high": "#eae8e3",
+                    "on-secondary-fixed-variant": "#5c4300",
+                    "on-background": "#1b1c19",
+                    "inverse-on-surface": "#f2f1ec",
+                    "secondary-fixed-dim": "#fbbc00",
+                    "primary": "#00342b",
+                    "surface": "#fbf9f4",
+                    "on-secondary-container": "#6d5000",
+                    "inverse-surface": "#30312e",
+                    "surface-container-highest": "#e4e2dd",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#94d3c1",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#f0eee9",
+                    "secondary": "#795900"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "base": "4px",
+                    "md": "16px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "container-max": "1280px",
+                    "gutter": "20px",
+                    "xl": "40px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Noto Serif"],
+                    "data-mono": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg-mobile": ["Noto Serif"],
+                    "body-sm": ["Inter"],
+                    "display-lg": ["Noto Serif"],
+                    "label-caps": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-sm": ["Noto Serif"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "data-mono": ["14px", {"lineHeight": "1", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-md py-sm w-full max-w-container-max mx-auto bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary text-headline-sm">analytics</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">AqariX</span>
+</div>
+<div class="hidden md:flex items-center gap-lg">
+<nav class="flex gap-md">
+<span class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary cursor-pointer transition-colors">DASHBOARD</span>
+<span class="font-label-caps text-label-caps text-primary border-b-2 border-primary cursor-pointer">LIST NEW PROPERTY</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary cursor-pointer transition-colors">MARKET DATA</span>
+</nav>
+<div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a real estate agent in a clean, modern office setting. The lighting is soft and natural, emphasizing a high-end institutional feel. The agent is dressed in a sharp dark teal suit, reflecting the AqariX brand identity. The background is slightly blurred with minimalist architectural details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAC8VzVyU7FuQkMseHTOb--Gnpbxa4Oe9YTQEnHzkyqkfWTc6RkyQ67EAmzaOc6mvCmHTyp3ejOQ0AUnhMk5N_rOkwpc2oo8WfSdIChNOpGY0Z57v1u_WG6XknKw7XLqGn7CRWrRTqxPw1y1V3F-Tl4pg-SP1vWhxhclTs47v8PL6jjAN_RFG4DMaLVFsxPduSLLvrv59Psj8SQOq0rXeum7MJDnKbYORnZVxD71_qgn9fg2xQvjWD3XIX7kT_ASb7ABuod2ZhpK4E"/>
+</div>
+</div>
+</header>
+<main class="flex-grow w-full max-w-container-max mx-auto px-md py-lg flex flex-col md:flex-row gap-lg">
+<!-- Left Sidebar: Progress Tracking -->
+<aside class="md:w-64 flex-shrink-0">
+<div class="sticky top-[88px] space-y-md">
+<h1 class="font-headline-sm text-headline-sm text-primary mb-md">New Listing</h1>
+<div class="space-y-sm">
+<div class="flex items-center gap-sm p-sm rounded-lg bg-primary-container text-on-primary-container font-semibold">
+<span class="material-symbols-outlined">check_circle</span>
+<span class="font-body-md text-body-md">Media Assets</span>
+</div>
+<div class="flex items-center gap-sm p-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">radio_button_unchecked</span>
+<span class="font-body-md text-body-md">Valuation &amp; Pricing</span>
+</div>
+<div class="flex items-center gap-sm p-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">radio_button_unchecked</span>
+<span class="font-body-md text-body-md">Property Features</span>
+</div>
+<div class="flex items-center gap-sm p-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">radio_button_unchecked</span>
+<span class="font-body-md text-body-md">Verification</span>
+</div>
+</div>
+<div class="mt-xl p-md bg-tertiary-fixed text-on-tertiary-fixed rounded-xl border border-outline-variant">
+<div class="flex items-center gap-xs mb-xs">
+<span class="material-symbols-outlined text-sm">info</span>
+<p class="font-label-caps text-label-caps uppercase">Institutional Trust</p>
+</div>
+<p class="text-body-sm font-body-sm italic">"Listings with verified HDR media and AI valuation models close 34% faster in the Amman market."</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="flex-grow space-y-lg">
+<!-- Bento Grid Section: Media & Checklist -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- Media Upload Large Card -->
+<div class="md:col-span-2 bg-white border border-outline-variant p-md rounded-lg shadow-sm">
+<div class="flex justify-between items-center mb-md">
+<h2 class="font-headline-sm text-headline-sm">Property Media</h2>
+<span class="font-label-caps text-label-caps px-sm py-1 bg-surface-container-low border border-outline-variant">REQUIRED: 5-20 PHOTOS</span>
+</div>
+<div class="border-2 border-dashed border-outline-variant rounded-lg p-xl flex flex-col items-center justify-center text-center hover:bg-surface-container-lowest transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-primary text-5xl mb-sm group-hover:scale-110 transition-transform">cloud_upload</span>
+<p class="font-body-lg text-body-lg font-bold">Drag and drop high-res images</p>
+<p class="text-on-surface-variant font-body-sm mb-md">Maximum file size: 25MB per image. Supports JPG, PNG, WEBP.</p>
+<button class="px-lg py-sm bg-primary text-white rounded-lg font-label-caps hover:opacity-90 transition-opacity">BROWSE FILES</button>
+</div>
+<div class="mt-md grid grid-cols-4 gap-sm">
+<div class="aspect-square bg-surface-container rounded border border-outline-variant relative group overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A high-resolution wide-angle photograph of a modern living room in Amman. Large windows offer a view of the city skyline. The interior is decorated with contemporary furniture in neutral tones, featuring a sophisticated Jordanian architectural touch. Soft morning light fills the space, highlighting clean lines and high-end textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT_rCOjNCAHcPKOBhIQ7xBb_5pD-8setXdcZI3AVpdHnc85dNQLxO33jy4fZ1oupb3-1Ncm3cRhtyfdAIsuGaeqhK8mBViesqlifQNWTn8hjF8OMhds6uU0chLez6yuLvCX2QAC24Ery65jg6jQBhMiQ6aUeLXM01oFSIlUqUJgqt9UDvTuhKdwlgwFmfhAPCRxRay_2ImpqVXkcSfdTrP0AWvfDDLvzXV3OeU-kLtqYnRsu6sfZ0XWfDnGI9lXB34bnHOKPxX_ho"/>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+<span class="material-symbols-outlined text-white cursor-pointer">delete</span>
+</div>
+</div>
+<div class="aspect-square bg-surface-container rounded border border-outline-variant flex items-center justify-center text-outline">
+<span class="material-symbols-outlined">add_a_photo</span>
+</div>
+<div class="aspect-square bg-surface-container rounded border border-outline-variant flex items-center justify-center text-outline">
+<span class="material-symbols-outlined">add_a_photo</span>
+</div>
+<div class="aspect-square bg-surface-container rounded border border-outline-variant flex items-center justify-center text-outline">
+<span class="material-symbols-outlined">add_a_photo</span>
+</div>
+</div>
+</div>
+<!-- Checklist & Quality Card -->
+<div class="bg-white border border-outline-variant p-md rounded-lg shadow-sm flex flex-col">
+<h3 class="font-label-caps text-label-caps text-primary mb-md">MEDIA CHECKLIST</h3>
+<div class="space-y-sm flex-grow">
+<div class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary" data-weight="fill">check_circle</span>
+<div>
+<p class="font-body-md font-semibold leading-tight">Exterior Wide Shot</p>
+<p class="text-body-sm text-on-surface-variant">Capture the full building facade.</p>
+</div>
+</div>
+<div class="flex items-start gap-sm opacity-50">
+<span class="material-symbols-outlined text-outline">radio_button_unchecked</span>
+<div>
+<p class="font-body-md font-semibold leading-tight">Living Room Pan</p>
+<p class="text-body-sm text-on-surface-variant">Showcase natural light sources.</p>
+</div>
+</div>
+<div class="flex items-start gap-sm opacity-50">
+<span class="material-symbols-outlined text-outline">radio_button_unchecked</span>
+<div>
+<p class="font-body-md font-semibold leading-tight">Master Bedroom</p>
+<p class="text-body-sm text-on-surface-variant">Highlight storage and space.</p>
+</div>
+</div>
+<div class="flex items-start gap-sm opacity-50">
+<span class="material-symbols-outlined text-outline">radio_button_unchecked</span>
+<div>
+<p class="font-body-md font-semibold leading-tight">Kitchen Details</p>
+<p class="text-body-sm text-on-surface-variant">Focus on high-end appliances.</p>
+</div>
+</div>
+</div>
+<div class="mt-md pt-md border-t border-outline-variant">
+<div class="flex justify-between items-end">
+<div>
+<p class="text-label-caps font-label-caps">LISTING SCORE</p>
+<p class="text-headline-md font-data-mono text-primary">28/100</p>
+</div>
+<div class="w-16 h-2 bg-outline-variant rounded-full overflow-hidden">
+<div class="w-[28%] h-full bg-secondary"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- AI Pricing Assistant Section -->
+<section class="bg-primary-container text-white p-lg rounded-xl overflow-hidden relative">
+<!-- Background Pattern -->
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+</div>
+<div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-lg items-center">
+<div>
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-secondary-fixed">auto_awesome</span>
+<span class="font-label-caps text-label-caps text-on-primary-container">AI PRICING ASSISTANT</span>
+</div>
+<h2 class="font-headline-md text-white mb-md">Optimized Market Valuation</h2>
+<p class="text-on-primary-container body-md mb-lg">Our neural network analyzes over 12,000 recent transactions in Abdoun to suggest your optimal listing price.</p>
+<div class="space-y-md">
+<div class="bg-primary/50 border border-on-primary-container p-md rounded-lg">
+<div class="flex justify-between items-center mb-xs">
+<span class="text-label-caps text-on-primary-container">SUGGESTED RANGE</span>
+<span class="px-2 py-1 bg-secondary text-on-secondary-fixed font-label-caps text-[10px] rounded">HIGH CONFIDENCE</span>
+</div>
+<div class="text-display-lg-mobile md:text-display-lg font-data-mono flex items-baseline gap-xs">
+<span class="text-headline-sm">JOD</span> 345,000 — 362,000
+                                </div>
+</div>
+</div>
+</div>
+<div class="bg-surface p-md rounded-lg border border-outline-variant text-on-surface">
+<h3 class="font-label-caps text-label-caps text-primary mb-md">SET YOUR PRICE</h3>
+<div class="space-y-md">
+<div class="relative">
+<label class="block text-label-caps font-label-caps text-on-surface-variant mb-base">ASKING PRICE (JOD)</label>
+<div class="flex items-center border border-outline rounded p-sm focus-within:ring-2 ring-primary transition-shadow">
+<span class="font-data-mono text-outline pr-sm border-r border-outline-variant mr-sm">JOD</span>
+<input class="w-full border-none focus:ring-0 font-data-mono text-headline-sm text-right bg-transparent p-0" placeholder="0.00" type="number"/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div class="p-sm bg-surface-container-low rounded border border-outline-variant">
+<p class="text-label-caps text-on-surface-variant">PRICE PER SQM</p>
+<p class="font-data-mono font-bold">1,120 JOD</p>
+</div>
+<div class="p-sm bg-surface-container-low rounded border border-outline-variant">
+<p class="text-label-caps text-on-surface-variant">EST. DAYS ON MARKET</p>
+<p class="font-data-mono font-bold">18-24</p>
+</div>
+</div>
+<div class="pt-sm">
+<p class="text-body-sm text-on-surface-variant mb-sm">Listing at <span class="font-bold">355,000 JOD</span> aligns with the 75th percentile of similar luxury units.</p>
+<button class="w-full py-sm bg-primary text-white rounded font-label-caps hover:bg-primary-container transition-colors">APPLY RECOMMENDED PRICE</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Property Features Bento -->
+<section class="bg-white border border-outline-variant p-md rounded-lg shadow-sm">
+<h2 class="font-headline-sm text-headline-sm mb-lg">Property Attributes</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+<div class="p-md bg-surface-container-low rounded border border-outline-variant hover:border-primary transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-sm">
+<span class="material-symbols-outlined text-primary">bed</span>
+<span class="material-symbols-outlined text-outline">edit</span>
+</div>
+<p class="text-label-caps font-label-caps text-on-surface-variant">BEDROOMS</p>
+<p class="text-headline-sm font-data-mono">4 Bedrooms</p>
+</div>
+<div class="p-md bg-surface-container-low rounded border border-outline-variant hover:border-primary transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-sm">
+<span class="material-symbols-outlined text-primary">shower</span>
+<span class="material-symbols-outlined text-outline">edit</span>
+</div>
+<p class="text-label-caps font-label-caps text-on-surface-variant">BATHROOMS</p>
+<p class="text-headline-sm font-data-mono">3 Full, 1 Half</p>
+</div>
+<div class="p-md bg-surface-container-low rounded border border-outline-variant hover:border-primary transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-sm">
+<span class="material-symbols-outlined text-primary">square_foot</span>
+<span class="material-symbols-outlined text-outline">edit</span>
+</div>
+<p class="text-label-caps font-label-caps text-on-surface-variant">TOTAL AREA</p>
+<p class="text-headline-sm font-data-mono">312 SQM</p>
+</div>
+</div>
+<div class="mt-lg">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-md">ADDITIONAL AMENITIES</h3>
+<div class="flex flex-wrap gap-sm">
+<button class="px-md py-sm bg-white border border-primary text-primary rounded-full font-label-caps flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm">pool</span> PRIVATE POOL
+                        </button>
+<button class="px-md py-sm bg-white border border-outline-variant text-on-surface-variant rounded-full font-label-caps flex items-center gap-xs hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-sm">garage</span> 2-CAR GARAGE
+                        </button>
+<button class="px-md py-sm bg-white border border-outline-variant text-on-surface-variant rounded-full font-label-caps flex items-center gap-xs hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-sm">ac_unit</span> CENTRAL AC
+                        </button>
+<button class="px-md py-sm bg-white border border-outline-variant text-on-surface-variant rounded-full font-label-caps flex items-center gap-xs hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-sm">solar_power</span> SOLAR SYSTEM
+                        </button>
+<button class="px-md py-sm border border-dashed border-outline-variant text-outline rounded-full font-label-caps flex items-center gap-xs hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-sm">add</span> ADD NEW
+                        </button>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Sticky Footer Actions -->
+<footer class="sticky bottom-0 bg-white border-t border-outline-variant px-md py-md z-50">
+<div class="max-w-container-max mx-auto flex justify-between items-center">
+<button class="px-lg py-sm text-on-surface-variant font-label-caps flex items-center gap-xs hover:bg-surface-container-high rounded transition-colors">
+<span class="material-symbols-outlined">arrow_back</span> SAVE &amp; EXIT
+            </button>
+<div class="flex gap-md">
+<button class="hidden md:block px-lg py-sm border border-primary text-primary rounded font-label-caps hover:bg-surface-container-low transition-colors">
+                    PREVIEW LISTING
+                </button>
+<button class="px-xl py-sm bg-primary text-white rounded font-label-caps flex items-center gap-sm hover:bg-primary-container transition-colors shadow-md">
+                    NEXT STEP: VALUATION <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</footer>
+<!-- Bottom Navigation Mobile -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-[60] flex justify-around items-center px-sm pb-safe pt-2 bg-surface border-t border-outline-variant">
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">search</span>
+<span class="font-label-caps text-[10px]">EXPLORE</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">favorite</span>
+<span class="font-label-caps text-[10px]">SAVED</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1">
+<span class="material-symbols-outlined">add_business</span>
+<span class="font-label-caps text-[10px]">SELL</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">trending_up</span>
+<span class="font-label-caps text-[10px]">INSIGHTS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-caps text-[10px]">PROFILE</span>
+</div>
+</nav>
+<script>
+        // Micro-interactions for interactive elements
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.style.transform = 'scale(0.98)';
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = 'scale(1)';
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'scale(1)';
+            });
+        });
+
+        // Price input formatting simulation
+        const priceInput = document.querySelector('input[type="number"]');
+        if(priceInput) {
+            priceInput.addEventListener('input', (e) => {
+                if(e.target.value > 1000000) {
+                    e.target.style.color = '#ba1a1a'; // Warning if too high for context
+                } else {
+                    e.target.style.color = 'inherit';
+                }
+            });
+        }
+    </script>
+</body></html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AqariX | Investor Onboarding</title>
+<!-- Google Fonts: Noto Serif for headlines, Inter for body/data -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#29695b",
+                    "on-primary-fixed": "#00201a",
+                    "on-surface-variant": "#3f4945",
+                    "on-error-container": "#93000a",
+                    "surface-container-low": "#f5f3ee",
+                    "secondary-container": "#ffbf00",
+                    "secondary-fixed": "#ffdfa0",
+                    "tertiary-container": "#364457",
+                    "surface-bright": "#fbf9f4",
+                    "tertiary": "#202e40",
+                    "on-surface": "#1b1c19",
+                    "surface-variant": "#e4e2dd",
+                    "error-container": "#ffdad6",
+                    "outline": "#707975",
+                    "on-tertiary-container": "#a3b1c8",
+                    "on-tertiary-fixed": "#0d1c2e",
+                    "primary-fixed": "#afefdd",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#b9c7df",
+                    "on-secondary-fixed": "#261a00",
+                    "on-tertiary": "#ffffff",
+                    "primary-container": "#004d40",
+                    "tertiary-fixed": "#d5e3fc",
+                    "on-primary-container": "#7ebdac",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed-variant": "#065043",
+                    "on-tertiary-fixed-variant": "#3a485b",
+                    "error": "#ba1a1a",
+                    "background": "#fbf9f4",
+                    "outline-variant": "#bfc9c4",
+                    "surface-dim": "#dbdad5",
+                    "primary-fixed-dim": "#94d3c1",
+                    "surface-container-high": "#eae8e3",
+                    "on-secondary-fixed-variant": "#5c4300",
+                    "on-background": "#1b1c19",
+                    "inverse-on-surface": "#f2f1ec",
+                    "secondary-fixed-dim": "#fbbc00",
+                    "primary": "#00342b",
+                    "surface": "#fbf9f4",
+                    "on-secondary-container": "#6d5000",
+                    "inverse-surface": "#30312e",
+                    "surface-container-highest": "#e4e2dd",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#94d3c1",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#f0eee9",
+                    "secondary": "#795900"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "base": "4px",
+                    "md": "16px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "container-max": "1280px",
+                    "gutter": "20px",
+                    "xl": "40px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Noto Serif"],
+                    "data-mono": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg-mobile": ["Noto Serif"],
+                    "body-sm": ["Inter"],
+                    "display-lg": ["Noto Serif"],
+                    "label-caps": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-sm": ["Noto Serif"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "data-mono": ["14px", {"lineHeight": "1", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .step-transition {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid #E2E8F0;
+        }
+        .active-selection {
+            border: 2px solid #004D40 !important;
+            background-color: #f0f7f6 !important;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #004D40;
+            cursor: pointer;
+            box-shadow: 0 0 2px rgba(0,0,0,0.5);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden min-h-screen">
+<!-- Top Navigation Anchor -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-md py-sm w-full max-w-container-max mx-auto bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="analytics">analytics</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">AqariX</h1>
+</div>
+<div class="flex items-center gap-md">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest hidden md:block">Institutional Grade Insights</span>
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-outline" data-icon="person">person</span>
+</div>
+</div>
+</header>
+<main class="flex flex-col items-center px-gutter py-xl md:py-32 relative">
+<!-- Atmospheric Background Element -->
+<div class="absolute top-0 left-0 w-full h-full -z-10 opacity-20 pointer-events-none">
+
+</div>
+<section class="w-full max-w-2xl">
+<!-- Progress Bar -->
+<div class="mb-xl">
+<div class="flex justify-between items-end mb-sm">
+<h2 class="font-headline-sm text-headline-sm text-primary" id="step-title">Define Your Profile</h2>
+<span class="font-label-caps text-label-caps text-on-surface-variant" id="step-count">Step 1 of 4</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary-container w-1/4 transition-all duration-500" id="progress-indicator"></div>
+</div>
+</div>
+<div class="relative" id="onboarding-container">
+<!-- STEP 1: ROLE -->
+<div class="step-transition opacity-100 transform translate-x-0" id="step-1">
+<h3 class="font-headline-sm text-headline-sm mb-md text-on-surface">Choose your primary objective</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<button class="role-card flex flex-col p-lg glass-card rounded-xl text-left hover:shadow-lg transition-all border-outline-variant group" onclick="selectRole('Buyer', this)">
+<span class="material-symbols-outlined text-4xl text-primary mb-sm group-hover:scale-110 transition-transform" data-icon="home">home</span>
+<span class="font-headline-sm text-headline-sm text-primary mb-xs">Home Buyer</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Looking for a primary residence or vacation home in Jordan's premier neighborhoods.</p>
+</button>
+<button class="role-card flex flex-col p-lg glass-card rounded-xl text-left hover:shadow-lg transition-all border-outline-variant group" onclick="selectRole('Investor', this)">
+<span class="material-symbols-outlined text-4xl text-primary mb-sm group-hover:scale-110 transition-transform" data-icon="account_balance">account_balance</span>
+<span class="font-headline-sm text-headline-sm text-primary mb-xs">Institutional Investor</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Seeking high-yield rentals or long-term capital appreciation assets.</p>
+</button>
+</div>
+</div>
+<!-- STEP 2: BUDGET (Hidden by default) -->
+<div class="step-transition hidden opacity-0 transform translate-x-12" id="step-2">
+<h3 class="font-headline-sm text-headline-sm mb-md text-on-surface">Capital Allocation</h3>
+<div class="glass-card p-lg rounded-xl">
+<div class="flex justify-between items-center mb-lg">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Investment Range (JOD)</span>
+<span class="font-data-mono text-xl text-primary font-bold" id="budget-value">150,000 JOD</span>
+</div>
+<input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer mb-md" id="budget-slider" max="2000000" min="50000" oninput="updateBudget(this.value)" step="10000" type="range" value="150000"/>
+<div class="flex justify-between text-xs font-label-caps text-outline">
+<span>50k JOD</span>
+<span>2M+ JOD</span>
+</div>
+<div class="mt-xl grid grid-cols-3 gap-sm">
+<div class="p-base bg-surface-container-low border border-outline-variant rounded flex flex-col items-center">
+<span class="text-xs text-outline mb-1">Entry</span>
+<span class="font-data-mono text-sm">75k+</span>
+</div>
+<div class="p-base bg-surface-container-low border border-outline-variant rounded flex flex-col items-center">
+<span class="text-xs text-outline mb-1">Mid-Market</span>
+<span class="font-data-mono text-sm">350k+</span>
+</div>
+<div class="p-base bg-primary-container text-on-primary-container rounded flex flex-col items-center">
+<span class="text-xs text-on-primary-container opacity-80 mb-1">Premium</span>
+<span class="font-data-mono text-sm">1M+</span>
+</div>
+</div>
+</div>
+</div>
+<!-- STEP 3: PREFERRED AREAS (Hidden by default) -->
+<div class="step-transition hidden opacity-0 transform translate-x-12" id="step-3">
+<h3 class="font-headline-sm text-headline-sm mb-md text-on-surface">Target Jurisdictions</h3>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-sm">
+<label class="cursor-pointer group">
+<input class="hidden peer" type="checkbox" value="Amman"/>
+<div class="p-md glass-card rounded-lg flex flex-col items-center peer-checked:active-selection transition-all">
+<span class="material-symbols-outlined text-outline group-hover:text-primary mb-2" data-icon="location_city">location_city</span>
+<span class="font-label-caps text-label-caps">Amman</span>
+</div>
+</label>
+<label class="cursor-pointer group">
+<input class="hidden peer" type="checkbox" value="Aqaba"/>
+<div class="p-md glass-card rounded-lg flex flex-col items-center peer-checked:active-selection transition-all">
+<span class="material-symbols-outlined text-outline group-hover:text-primary mb-2" data-icon="beach_access">beach_access</span>
+<span class="font-label-caps text-label-caps">Aqaba</span>
+</div>
+</label>
+<label class="cursor-pointer group">
+<input class="hidden peer" type="checkbox" value="Dead Sea"/>
+<div class="p-md glass-card rounded-lg flex flex-col items-center peer-checked:active-selection transition-all">
+<span class="material-symbols-outlined text-outline group-hover:text-primary mb-2" data-icon="water">water</span>
+<span class="font-label-caps text-label-caps">Dead Sea</span>
+</div>
+</label>
+<label class="cursor-pointer group">
+<input class="hidden peer" type="checkbox" value="Irbid"/>
+<div class="p-md glass-card rounded-lg flex flex-col items-center peer-checked:active-selection transition-all">
+<span class="material-symbols-outlined text-outline group-hover:text-primary mb-2" data-icon="account_tree">account_tree</span>
+<span class="font-label-caps text-label-caps">Irbid</span>
+</div>
+</label>
+<label class="cursor-pointer group">
+<input class="hidden peer" type="checkbox" value="Madaba"/>
+<div class="p-md glass-card rounded-lg flex flex-col items-center peer-checked:active-selection transition-all">
+<span class="material-symbols-outlined text-outline group-hover:text-primary mb-2" data-icon="temple_hindu">temple_hindu</span>
+<span class="font-label-caps text-label-caps">Madaba</span>
+</div>
+</label>
+<label class="cursor-pointer group">
+<input class="hidden peer" type="checkbox" value="Salt"/>
+<div class="p-md glass-card rounded-lg flex flex-col items-center peer-checked:active-selection transition-all">
+<span class="material-symbols-outlined text-outline group-hover:text-primary mb-2" data-icon="terrain">terrain</span>
+<span class="font-label-caps text-label-caps">Salt</span>
+</div>
+</label>
+</div>
+</div>
+<!-- STEP 4: GOALS -->
+<div class="step-transition hidden opacity-0 transform translate-x-12" id="step-4">
+<h3 class="font-headline-sm text-headline-sm mb-md text-on-surface">Financial Strategy</h3>
+<div class="flex flex-col gap-md">
+<div class="p-lg glass-card rounded-xl flex items-center justify-between border-l-4 border-l-secondary">
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-1">Yield Focused</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-sm">Prioritize consistent rental income with immediate occupancy potential.</p>
+</div>
+<button class="goal-btn px-md py-sm bg-primary text-on-primary font-label-caps text-label-caps uppercase rounded" onclick="selectGoal('Yield', this)">Select</button>
+</div>
+<div class="p-lg glass-card rounded-xl flex items-center justify-between border-l-4 border-l-primary-container">
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-1">Capital Appreciation</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-sm">Strategic long-term growth in developing areas or off-plan projects.</p>
+</div>
+<button class="goal-btn px-md py-sm bg-primary text-on-primary font-label-caps text-label-caps uppercase rounded" onclick="selectGoal('Appreciation', this)">Select</button>
+</div>
+</div>
+<!-- Final Submit CTA (hidden until strategy selected) -->
+<div class="mt-xl text-center hidden" id="completion-area">
+<button class="w-full bg-primary-container text-on-primary-container py-md px-lg rounded font-headline-sm text-headline-sm hover:opacity-90 transition-opacity">
+                            Generate Market Analysis
+                        </button>
+<p class="mt-md text-xs text-outline font-label-caps uppercase">Institutional Grade Data Engine is Ready</p>
+</div>
+</div>
+</div>
+<!-- Navigation Buttons -->
+<div class="mt-xl flex items-center justify-between">
+<button class="flex items-center gap-base text-primary font-label-caps text-label-caps uppercase tracking-wider opacity-0 pointer-events-none transition-all" id="prev-btn" onclick="prevStep()">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span> Back
+                </button>
+<button class="flex items-center gap-base px-lg py-sm bg-primary text-white font-label-caps text-label-caps uppercase tracking-wider rounded hover:bg-opacity-90 transition-all" id="next-btn" onclick="nextStep()">
+                    Continue <span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- Sidebar Decorative Bento Mini-Cards -->
+<aside class="hidden lg:grid grid-cols-2 gap-md absolute right-8 top-32 w-64">
+<div class="glass-card p-md rounded-lg flex flex-col justify-center items-center text-center">
+<span class="font-data-mono text-lg text-secondary mb-1">82%</span>
+<span class="text-[10px] uppercase font-label-caps text-outline">Confidence</span>
+</div>
+<div class="bg-primary-container p-md rounded-lg flex flex-col justify-center items-center text-center">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="trending_up">trending_up</span>
+<span class="text-[10px] uppercase font-label-caps text-on-primary-container">Market Heat</span>
+</div>
+<div class="col-span-2 glass-card p-md rounded-lg">
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-[10px] font-label-caps uppercase text-on-surface">Active Nodes</span>
+</div>
+<div class="h-12 w-full bg-surface-container-high rounded flex items-end justify-between px-2 pb-1 gap-1">
+<div class="w-2 bg-primary h-1/2"></div>
+<div class="w-2 bg-primary h-3/4"></div>
+<div class="w-2 bg-primary h-2/3"></div>
+<div class="w-2 bg-primary h-full"></div>
+<div class="w-2 bg-primary h-1/2"></div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Contextual FAB Suppression (Hiding based on task flow focus) -->
+<script>
+        let currentStep = 1;
+        const totalSteps = 4;
+        const onboardingData = {
+            role: null,
+            budget: 150000,
+            areas: [],
+            goal: null
+        };
+
+        function updateStepUI() {
+            const container = document.getElementById('onboarding-container');
+            const title = document.getElementById('step-title');
+            const count = document.getElementById('step-count');
+            const progress = document.getElementById('progress-indicator');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            // Hide all steps
+            for (let i = 1; i <= totalSteps; i++) {
+                const el = document.getElementById(`step-${i}`);
+                el.classList.add('hidden', 'opacity-0', 'translate-x-12');
+                el.classList.remove('opacity-100', 'translate-x-0');
+            }
+
+            // Show current step
+            const activeStep = document.getElementById(`step-${currentStep}`);
+            activeStep.classList.remove('hidden');
+            setTimeout(() => {
+                activeStep.classList.add('opacity-100', 'translate-x-0');
+                activeStep.classList.remove('translate-x-12');
+            }, 50);
+
+            // Update Meta
+            count.innerText = `Step ${currentStep} of ${totalSteps}`;
+            progress.style.width = `${(currentStep / totalSteps) * 100}%`;
+
+            if (currentStep === 1) title.innerText = "Define Your Profile";
+            if (currentStep === 2) title.innerText = "Financial Scope";
+            if (currentStep === 3) title.innerText = "Regional Focus";
+            if (currentStep === 4) title.innerText = "Investment Strategy";
+
+            // Update Nav Buttons
+            if (currentStep === 1) {
+                prevBtn.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                prevBtn.classList.remove('opacity-0', 'pointer-events-none');
+            }
+
+            if (currentStep === totalSteps) {
+                nextBtn.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                nextBtn.classList.remove('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateStepUI();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepUI();
+            }
+        }
+
+        function selectRole(role, btn) {
+            onboardingData.role = role;
+            document.querySelectorAll('.role-card').forEach(c => c.classList.remove('active-selection'));
+            btn.classList.add('active-selection');
+            setTimeout(nextStep, 300);
+        }
+
+        function updateBudget(val) {
+            onboardingData.budget = val;
+            document.getElementById('budget-value').innerText = new Intl.NumberFormat('en-US').format(val) + " JOD";
+        }
+
+        function selectGoal(goal, btn) {
+            onboardingData.goal = goal;
+            document.querySelectorAll('.goal-btn').forEach(b => {
+                b.innerText = 'Select';
+                b.classList.remove('bg-secondary-container', 'text-on-secondary-container');
+                b.classList.add('bg-primary', 'text-on-primary');
+            });
+            btn.innerText = 'Selected';
+            btn.classList.remove('bg-primary', 'text-on-primary');
+            btn.classList.add('bg-secondary-container', 'text-on-secondary-container');
+            
+            document.getElementById('completion-area').classList.remove('hidden');
+        }
+
+        // Initialize checkboxes for Step 3
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const val = e.target.value;
+                if (e.target.checked) {
+                    onboardingData.areas.push(val);
+                } else {
+                    onboardingData.areas = onboardingData.areas.filter(a => a !== val);
+                }
+            });
+        });
+    </script>
+</body></html>

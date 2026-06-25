@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AqariX Pro | Property Comparison</title>
+<!-- Google Fonts: Noto Serif for scholarly institutional feel & Inter for data -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Serif:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#29695b",
+                    "on-primary-fixed": "#00201a",
+                    "on-surface-variant": "#3f4945",
+                    "on-error-container": "#93000a",
+                    "surface-container-low": "#f5f3ee",
+                    "secondary-container": "#ffbf00",
+                    "secondary-fixed": "#ffdfa0",
+                    "tertiary-container": "#364457",
+                    "surface-bright": "#fbf9f4",
+                    "tertiary": "#202e40",
+                    "on-surface": "#1b1c19",
+                    "surface-variant": "#e4e2dd",
+                    "error-container": "#ffdad6",
+                    "outline": "#707975",
+                    "on-tertiary-container": "#a3b1c8",
+                    "on-tertiary-fixed": "#0d1c2e",
+                    "primary-fixed": "#afefdd",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#b9c7df",
+                    "on-secondary-fixed": "#261a00",
+                    "on-tertiary": "#ffffff",
+                    "primary-container": "#004d40",
+                    "tertiary-fixed": "#d5e3fc",
+                    "on-primary-container": "#7ebdac",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed-variant": "#065043",
+                    "on-tertiary-fixed-variant": "#3a485b",
+                    "error": "#ba1a1a",
+                    "background": "#fbf9f4",
+                    "outline-variant": "#bfc9c4",
+                    "surface-dim": "#dbdad5",
+                    "primary-fixed-dim": "#94d3c1",
+                    "surface-container-high": "#eae8e3",
+                    "on-secondary-fixed-variant": "#5c4300",
+                    "on-background": "#1b1c19",
+                    "inverse-on-surface": "#f2f1ec",
+                    "secondary-fixed-dim": "#fbbc00",
+                    "primary": "#00342b",
+                    "surface": "#fbf9f4",
+                    "on-secondary-container": "#6d5000",
+                    "inverse-surface": "#30312e",
+                    "surface-container-highest": "#e4e2dd",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#94d3c1",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#f0eee9",
+                    "secondary": "#795900"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "base": "4px",
+                    "md": "16px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "container-max": "1280px",
+                    "gutter": "20px",
+                    "xl": "40px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Noto Serif"],
+                    "data-mono": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg-mobile": ["Noto Serif"],
+                    "body-sm": ["Inter"],
+                    "display-lg": ["Noto Serif"],
+                    "label-caps": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-sm": ["Noto Serif"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "data-mono": ["14px", {"lineHeight": "1", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .aqarix-grid-line {
+            background-image: linear-gradient(to right, #E2E8F0 1px, transparent 1px);
+            background-size: 25% 100%;
+        }
+        .comparison-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+        .comparison-scroll::-webkit-scrollbar-thumb {
+            background: #bfc9c4;
+            border-radius: 10px;
+        }
+        .winner-highlight {
+            position: relative;
+        }
+        .winner-highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #ffbf00;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-md py-sm w-full max-w-container-max mx-auto bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="analytics">analytics</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">AqariX</h1>
+</div>
+<nav class="hidden md:flex gap-md">
+<a class="font-label-caps text-label-caps text-primary border-b-2 border-primary px-base py-xs transition-colors" href="#">Market Overview</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-high px-base py-xs transition-colors" href="#">Properties</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-high px-base py-xs transition-colors" href="#">Analytics</a>
+</nav>
+<div class="flex items-center gap-md">
+<div class="hidden sm:flex flex-col items-end">
+<span class="font-label-caps text-[10px] text-primary font-bold">AQARIX PRO</span>
+<span class="text-xs text-outline">Amman, Jordan</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant overflow-hidden flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a real estate analyst, studio lighting, neutral grey background, high resolution, wearing a tailored navy suit, looking confident and approachable for an institutional investment platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuOCucy82qPqmmy8bRk0-7XGS0HHdwB8eNlJmEIfuTBnt4VzTDJCm0_MIgm12lQ6h9TguwhCOZ2vbjiVXKkhyiwoyDXMjKMoKmQGOqcIbLHkQ7glyA_S5iXujNWZPvxAzlhpkWn80v-4UEgimCA5RdD3vA5s1Gbnbt-vck03FYU8XHJdIeWh1uIA_yf6T_U_Pt7Ehix-FUi32Opgb1XWkU_RmM01hpq54LZpvgOl5vm7yAxAFRfR8UhbXXzE05TA6h3hQTHCbJtms"/>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-md md:px-lg py-xl">
+<!-- Header Section -->
+<section class="mb-xl flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<nav class="flex items-center gap-xs text-outline mb-xs">
+<span class="text-xs font-label-caps">PROPERTIES</span>
+<span class="material-symbols-outlined text-xs" data-icon="chevron_right">chevron_right</span>
+<span class="text-xs font-label-caps text-primary">COMPARISON VIEW</span>
+</nav>
+<h2 class="font-display-lg text-display-lg text-primary">Portfolio Selection</h2>
+<p class="text-on-surface-variant max-w-2xl mt-sm">Side-by-side institutional analysis of four prime residential assets in Amman. Comparison metrics optimized for capital growth and yield predictability.</p>
+</div>
+<div class="flex gap-sm">
+<button class="bg-surface-container-high text-primary border border-outline-variant px-md py-sm font-label-caps text-label-caps rounded transition-all active:scale-95 flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm" data-icon="share">share</span> EXPORT PDF
+                </button>
+<button class="bg-primary-container text-on-primary-container px-md py-sm font-label-caps text-label-caps rounded transition-all active:scale-95 flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span> ADD PROPERTY
+                </button>
+</div>
+</section>
+<!-- Comparison Matrix -->
+<div class="comparison-scroll overflow-x-auto pb-md">
+<div class="min-w-[1000px] bg-white border border-slate-200 shadow-sm">
+<!-- Property Cards Header Row -->
+<div class="grid grid-cols-5 border-b border-outline-variant">
+<div class="p-md bg-surface-container-low flex items-center">
+<span class="font-headline-sm text-headline-sm text-primary">Key Metrics</span>
+</div>
+<!-- Property 1 -->
+<div class="p-md border-l border-outline-variant">
+<div class="relative group h-32 mb-md overflow-hidden rounded">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Modern minimalist villa in Abdoun, Amman, featuring clean limestone facades, large glass windows, and a manicured Mediterranean garden during golden hour, high-end architectural photography style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBWqAIIu4a2I2mA0MSQm1iun1VR1QY13g1XmZEOI80enWKgph_w1hWtQPBqJsJGyAdNV_xM4xtSBvlM22gAhhYuzTD0FCkzSL3tbYn_aY6QGXlsUnzf19pZwFLYFNdvtfGAlc4ZgQyD-P9RoTQsPbp04ByDOLBTnIxNLgwBuF3aKxoQZvs4-66YTKKNR377ctaW_QyZ8PPKWf26mYJSP3o8wI3RnXWDVcnh4qjm7XDPeiMXJO9KRCWWHmIIM6iOlbe02RfCFZ1iqiI')"></div>
+<div class="absolute top-2 right-2 bg-white/90 px-xs py-1 rounded text-[10px] font-bold text-primary">NEW LISTING</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm truncate">The Zenith Residencies</h3>
+<p class="text-xs text-outline font-label-caps">ABDOUN, AMMAN</p>
+</div>
+<!-- Property 2 -->
+<div class="p-md border-l border-outline-variant">
+<div class="relative group h-32 mb-md overflow-hidden rounded">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Sleek contemporary apartment complex in Dabouq, Jordan, showing high-quality stonework, glass balconies, and soft evening architectural lighting, luxurious and serene atmosphere." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuATP7doRMPuEaYfCc8bJsCqbhhochFy4htHcfHu7xBO-qIvAm7uYJeFc3VY6-5BEpxChTk9seqkHhwSDt9yXt2F-6jitIqPv817vQ1a2_XrM_eC0LjGIgLnQ_n8GNclugsBW6SHDHoR5VQ7U9lW89qeWFGd8biARgJD3K_VklyOt3OZcfW2SSKtt6bIgNCFQbDtb5WXHZOBb2KiM0XLYLieWi3DDQq4y_gslsQTfgqAGkqjuJ4ugIQBMQx0oxD6yPhOP1sCnnuxfGE')"></div>
+</div>
+<h3 class="font-headline-sm text-headline-sm truncate">Dabouq Heights</h3>
+<p class="text-xs text-outline font-label-caps">DABOUQ, AMMAN</p>
+</div>
+<!-- Property 3 -->
+<div class="p-md border-l border-outline-variant bg-surface-container-lowest ring-2 ring-secondary-container/20 ring-inset">
+<div class="relative group h-32 mb-md overflow-hidden rounded">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Elegant luxury apartment building in Um Uthaina, Amman, featuring traditional white stone cladding with a modern twist, architectural excellence, bright daylight photography." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA9XOhlfG6AqkoHnh_b2gWTaXgm2OgYoYxTg8YmPnGgHn5nc5cABya2MoqUolSORLdSgR-0UZXNP5AZ24mW8Sy59ccekj30RFiLU0FBCFLQOwAkgrIcicGE_ByQV2cPN2DWsD7cNHszUjIV6Q1Z1NlkNQtpCagwz075dcmgYQgCYtPN98ZORmDGyE5C69HOIVdnKxFHz5pF_szB1U1mfvrFtKyNoOnp1sgJ4ZZeVOQ7Wy647b9TwYFpdVA_y_Q8Bi9K2_cNMfHwQJc')"></div>
+<div class="absolute top-2 right-2 bg-secondary-container text-on-secondary-container px-xs py-1 rounded text-[10px] font-bold">BEST VALUE</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm truncate">Um Uthaina Flats</h3>
+<p class="text-xs text-outline font-label-caps">UM UTHAINA, AMMAN</p>
+</div>
+<!-- Property 4 -->
+<div class="p-md border-l border-outline-variant">
+<div class="relative group h-32 mb-md overflow-hidden rounded">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Gated community luxury villa in Khalda, Amman, showcasing a private pool and limestone archways, Mediterranean sunset lighting, warm and exclusive institutional real estate shot." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDFf6_FZeoP-eS_xePaZSrq45nWqD8wbMpoLMWmRLPlB9vdfM_fhF9nnQ9ik_0TZm8Sh7JKD24Qfcq1SdsA5nISpI-rizL7wowO9EIGt8-rncwKrqgCnR8cZ4I-IDT9GJJwIWSt5sFPYuzjlXwUbxUHF4E4svT-33psorgFPS6RJG9cMTqoDBatK91YBciR52f-Ae9KWiGrnfMyXzYQBSY6-MFj0a69F33S6nkyIA3AQuq-ZmWd1DRiWksg-AzhoolvgY_R0y74Q4U')"></div>
+</div>
+<h3 class="font-headline-sm text-headline-sm truncate">Khalda Estates</h3>
+<p class="text-xs text-outline font-label-caps">KHALDA, AMMAN</p>
+</div>
+</div>
+<!-- Price Row -->
+<div class="grid grid-cols-5 border-b border-outline-variant bg-white hover:bg-slate-50 transition-colors">
+<div class="p-md flex items-center font-label-caps text-label-caps text-on-surface-variant">LISTING PRICE</div>
+<div class="p-md border-l border-outline-variant font-data-mono text-xl text-primary">JOD 420,000</div>
+<div class="p-md border-l border-outline-variant font-data-mono text-xl text-primary">JOD 550,000</div>
+<div class="p-md border-l border-outline-variant font-data-mono text-xl text-secondary winner-highlight">JOD 310,000</div>
+<div class="p-md border-l border-outline-variant font-data-mono text-xl text-primary">JOD 385,000</div>
+</div>
+<!-- AqariX Score Row -->
+<div class="grid grid-cols-5 border-b border-outline-variant bg-surface-container-low/30 hover:bg-slate-50 transition-colors">
+<div class="p-md flex items-center font-label-caps text-label-caps text-on-surface-variant">AQARIX SCORE</div>
+<div class="p-md border-l border-outline-variant">
+<div class="flex items-center gap-sm">
+<span class="bg-primary-container text-secondary-container font-data-mono text-lg px-2 py-1 rounded">82</span>
+<span class="text-[10px] text-outline font-label-caps">HIGH CONFIDENCE</span>
+</div>
+</div>
+<div class="p-md border-l border-outline-variant">
+<div class="flex items-center gap-sm">
+<span class="bg-primary-container text-secondary-container font-data-mono text-lg px-2 py-1 rounded">89</span>
+<span class="text-[10px] text-outline font-label-caps">PRIME STABILITY</span>
+</div>
+</div>
+<div class="p-md border-l border-outline-variant winner-highlight">
+<div class="flex items-center gap-sm">
+<span class="bg-primary-container text-secondary-container font-data-mono text-lg px-2 py-1 rounded border-2 border-secondary">94</span>
+<span class="text-[10px] text-secondary font-bold font-label-caps">PEAK ALPHA</span>
+</div>
+</div>
+<div class="p-md border-l border-outline-variant">
+<div class="flex items-center gap-sm">
+<span class="bg-primary-container text-secondary-container font-data-mono text-lg px-2 py-1 rounded">76</span>
+<span class="text-[10px] text-outline font-label-caps">MODERATE RISK</span>
+</div>
+</div>
+</div>
+<!-- Yield Row -->
+<div class="grid grid-cols-5 border-b border-outline-variant bg-white hover:bg-slate-50 transition-colors">
+<div class="p-md flex items-center font-label-caps text-label-caps text-on-surface-variant">EXPECTED YIELD (ROI)</div>
+<div class="p-md border-l border-outline-variant font-data-mono text-lg">5.8%</div>
+<div class="p-md border-l border-outline-variant font-data-mono text-lg winner-highlight">7.2%</div>
+<div class="p-md border-l border-outline-variant font-data-mono text-lg">6.4%</div>
+<div class="p-md border-l border-outline-variant font-data-mono text-lg">5.1%</div>
+</div>
+<!-- Location Momentum Row -->
+<div class="grid grid-cols-5 border-b border-outline-variant bg-surface-container-low/30 hover:bg-slate-50 transition-colors">
+<div class="p-md flex items-center font-label-caps text-label-caps text-on-surface-variant">LOC. MOMENTUM (12M)</div>
+<div class="p-md border-l border-outline-variant">
+<div class="flex flex-col gap-1">
+<div class="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+<div class="h-full bg-primary-container" style="width: 45%"></div>
+</div>
+<span class="text-[10px] font-data-mono">+4.2%</span>
+</div>
+</div>
+<div class="p-md border-l border-outline-variant">
+<div class="flex flex-col gap-1">
+<div class="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+<div class="h-full bg-primary-container" style="width: 85%"></div>
+</div>
+<span class="text-[10px] font-data-mono">+8.9%</span>
+</div>
+</div>
+<div class="p-md border-l border-outline-variant">
+<div class="flex flex-col gap-1">
+<div class="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+<div class="h-full bg-primary-container" style="width: 30%"></div>
+</div>
+<span class="text-[10px] font-data-mono">+2.1%</span>
+</div>
+</div>
+<div class="p-md border-l border-outline-variant winner-highlight">
+<div class="flex flex-col gap-1">
+<div class="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container" style="width: 95%"></div>
+</div>
+<span class="text-[10px] font-data-mono text-secondary font-bold">+11.4%</span>
+</div>
+</div>
+</div>
+<!-- Action Row -->
+<div class="grid grid-cols-5 border-b border-outline-variant bg-white">
+<div class="p-md bg-surface-container-low"></div>
+<div class="p-md border-l border-outline-variant">
+<button class="w-full py-sm border border-primary text-primary font-label-caps text-label-caps hover:bg-primary-container hover:text-on-primary-container transition-all">VIEW DETAILS</button>
+</div>
+<div class="p-md border-l border-outline-variant">
+<button class="w-full py-sm border border-primary text-primary font-label-caps text-label-caps hover:bg-primary-container hover:text-on-primary-container transition-all">VIEW DETAILS</button>
+</div>
+<div class="p-md border-l border-outline-variant">
+<button class="w-full py-sm bg-primary text-white font-label-caps text-label-caps hover:bg-primary/90 transition-all">GENERATE REPORT</button>
+</div>
+<div class="p-md border-l border-outline-variant">
+<button class="w-full py-sm border border-primary text-primary font-label-caps text-label-caps hover:bg-primary-container hover:text-on-primary-container transition-all">VIEW DETAILS</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Detailed Insights (Bento Style) -->
+<section class="mt-xl grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="md:col-span-2 bg-white border border-slate-200 p-lg flex flex-col justify-between">
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-sm">AI Recommendation Engine</h4>
+<p class="text-on-surface-variant">Based on your portfolio requirements, <span class="font-bold text-primary">Um Uthaina Flats</span> shows the highest algorithmic advantage. Although the area momentum is lower than Khalda, the price-to-score ratio indicates a significant undervaluation relative to institutional benchmarks in Amman.</p>
+</div>
+<div class="mt-lg pt-md border-t border-outline-variant flex items-center justify-between">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-300 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Analyst avatar face, soft focus, high quality, professional profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVbuXWRp-bXUQAiZcd09ytHRjsY7nyeURh6K7YKjMFwjV5zsHc2-4S42J6wJKzBKpFVPsfkt2CtoDWzLNEcs00J7cgjWW_pWEIPl8geoxIIyGqJClp2RGK3HaoQR0WMoFs3Q5YbQLzF7_EKm0wEpVMtifKvyMBnNynXATK9xrBkylSbINiAmfa_LevtGuB-a2b-wF9UwakO3ttlKunqMZjkkqVnwtqi9fLcfzQQbek-FmvYWL0Pkb1WghEy57jge1Y1KeNTwdZFMM"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-400 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Senior analyst avatar face, professional profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG9D9xIsU-lAt25pgxVpwwH7xCkP5ZbFVHfbQF0TRYQ9_NNzKW8H86iIuiGZNLrBMHwDeBUskfxETU_0xgo2EDfX_7SaZIG3x5AmiwRgc8JQ_GBAqV7aKTNNAcwR3PDmWfDZ6pRbF1-Pw3MTROeT5OFqeJR7eqwhUJ7_31uJoPmcFDWmW_jh6cjAX0g9xM5mWB0ByjyqmDlZTkWp3shOdG7lzkxXi56bJZ8WHvno924ilTexFJe5wz3t3LtOQII_pc8Cw_nxm3AtQ"/>
+</div>
+<div class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-white bg-primary text-[10px] text-white">+3</div>
+</div>
+<span class="text-xs text-outline italic">Analysts currently reviewing this selection</span>
+</div>
+</div>
+<div class="bg-primary text-white p-lg flex flex-col justify-center relative overflow-hidden">
+<div class="absolute -right-10 -bottom-10 opacity-10 rotate-12">
+<span class="material-symbols-outlined text-[160px]" data-icon="trending_up">trending_up</span>
+</div>
+<h4 class="font-label-caps text-label-caps text-on-primary-container mb-xs">QUICK ANALYSIS</h4>
+<div class="text-3xl font-headline-sm mb-base">7.4%</div>
+<div class="text-xs text-on-primary-container mb-md">Portfolio Weighted Average Yield</div>
+<button class="w-full py-sm bg-secondary-container text-on-secondary-container font-label-caps text-label-caps font-bold">OPTIMIZE YIELD</button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-sm pb-safe pt-2 bg-surface border-t border-outline-variant shadow-lg">
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="font-label-caps text-[10px] mt-1">Explore</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span class="font-label-caps text-[10px] mt-1">Saved</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-caps text-[10px] mt-1">Compare</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+<span class="font-label-caps text-[10px] mt-1">Insights</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-caps text-[10px] mt-1">Profile</span>
+</div>
+</nav>
+<script>
+        // Simple micro-interaction for hovering columns
+        document.querySelectorAll('.grid-cols-5 > div').forEach(cell => {
+            cell.addEventListener('mouseenter', function() {
+                const index = Array.from(this.parentNode.children).indexOf(this);
+                if (index === 0) return; // Skip label column
+                
+                document.querySelectorAll('.grid-cols-5').forEach(row => {
+                    const colCell = row.children[index];
+                    if (colCell) {
+                        colCell.classList.add('bg-slate-50');
+                    }
+                });
+            });
+            
+            cell.addEventListener('mouseleave', function() {
+                const index = Array.from(this.parentNode.children).indexOf(this);
+                document.querySelectorAll('.grid-cols-5 > div').forEach(c => c.classList.remove('bg-slate-50'));
+            });
+        });
+    </script>
+</body></html>

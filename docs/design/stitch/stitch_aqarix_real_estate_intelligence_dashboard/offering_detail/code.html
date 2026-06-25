@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AqariX | Property Offering Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#29695b",
+                        "on-primary-fixed": "#00201a",
+                        "on-surface-variant": "#3f4945",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f5f3ee",
+                        "secondary-container": "#ffbf00",
+                        "secondary-fixed": "#ffdfa0",
+                        "tertiary-container": "#364457",
+                        "surface-bright": "#fbf9f4",
+                        "tertiary": "#202e40",
+                        "on-surface": "#1b1c19",
+                        "surface-variant": "#e4e2dd",
+                        "error-container": "#ffdad6",
+                        "outline": "#707975",
+                        "on-tertiary-container": "#a3b1c8",
+                        "on-tertiary-fixed": "#0d1c2e",
+                        "primary-fixed": "#afefdd",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#b9c7df",
+                        "on-secondary-fixed": "#261a00",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#004d40",
+                        "tertiary-fixed": "#d5e3fc",
+                        "on-primary-container": "#7ebdac",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#065043",
+                        "on-tertiary-fixed-variant": "#3a485b",
+                        "error": "#ba1a1a",
+                        "background": "#fbf9f4",
+                        "outline-variant": "#bfc9c4",
+                        "surface-dim": "#dbdad5",
+                        "primary-fixed-dim": "#94d3c1",
+                        "surface-container-high": "#eae8e3",
+                        "on-secondary-fixed-variant": "#5c4300",
+                        "on-background": "#1b1c19",
+                        "inverse-on-surface": "#f2f1ec",
+                        "secondary-fixed-dim": "#fbbc00",
+                        "primary": "#00342b",
+                        "surface": "#fbf9f4",
+                        "on-secondary-container": "#6d5000",
+                        "inverse-surface": "#30312e",
+                        "surface-container-highest": "#e4e2dd",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#94d3c1",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#f0eee9",
+                        "secondary": "#795900"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "base": "4px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "container-max": "1280px",
+                        "gutter": "20px",
+                        "xl": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Noto Serif"],
+                        "data-mono": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Noto Serif"],
+                        "body-sm": ["Inter"],
+                        "display-lg": ["Noto Serif"],
+                        "label-caps": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Noto Serif"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "data-mono": ["14px", {"lineHeight": "1", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #fbf9f4; color: #1b1c19; font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        .property-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: repeat(2, 250px); gap: 12px; }
+        @media (max-width: 768px) { .property-grid { grid-template-columns: 1fr; grid-template-rows: auto; } }
+        .glass-panel { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid #e2e8f0; }
+        .sticky-summary { position: sticky; top: 100px; }
+        .badge-amber { background-color: #004D40; color: #FFBF00; padding: 4px 12px; border-radius: 2px; font-weight: 600; font-family: 'Inter', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body-md text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-md py-sm w-full max-w-container-max mx-auto bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary text-headline-sm" data-icon="analytics">analytics</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">AqariX</span>
+</div>
+<nav class="hidden md:flex gap-lg items-center">
+<a class="text-primary border-b-2 border-primary font-body-md py-1" href="#">Market Overview</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-md py-1 px-2" href="#">Properties</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-md py-1 px-2" href="#">Lead Room</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-md py-1 px-2" href="#">Analytics</a>
+</nav>
+<div class="flex items-center gap-sm cursor-pointer active:opacity-80">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a Middle Eastern real estate executive in a dark tailored suit, set against a blurred high-end office background with warm lighting and institutional teal accents. The visual style is crisp, clean, and evokes institutional trust and confidence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeSs0AAOr-aJKymG30qxpaFdJX4fLnSnSYxw_bkJ4Q48EdDONi_S3bFu6OlxBKC_gyjdIHGCsEf1wwrc5cNS5yfZLAcBk2ur8JhiAwt53hC6bwP5cC8uTvS9HHxS5jbuxn8esTj1_rKQ0N6AVc0ZnTEjZ-zqK07wV-qOidbw0SS78tw-IHjijS9vGHRvl8ZkxcH7nLJtjikMzJivq7KgZ3ckRyvhx_jTq--w62YcjXK7qkzkRbQnLsZhefJty_DrolLt1dsj5muNw"/>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-md py-lg mb-24">
+<!-- Breadcrumbs & Identity -->
+<div class="flex items-center gap-xs text-on-surface-variant font-label-caps mb-md">
+<span>Home</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+<span>Properties</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-semibold">The Citadel Residences</span>
+</div>
+<!-- Hero Media Gallery -->
+<div class="property-grid mb-lg">
+<div class="md:col-span-2 md:row-span-2 rounded-lg overflow-hidden relative group cursor-pointer">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A wide-angle professional architectural photograph of a modern luxury residential tower in Amman, Jordan. The building features clean limestone facades, expansive floor-to-ceiling glass windows, and lush rooftop gardens. The lighting is golden hour, casting long, soft shadows and highlighting the prestigious institutional architectural style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjX-Vbdw5K4oXmoW8YYVyMZHoFbdFtc9hBRVg0dhzjvx21uVBEIqwR_H_O3K_5tyVUkYWxGP7nAGl-dU5MtUEykKvyKuuXflAOFHqTcHQsQGSmYRU1ouBzu06KiVET0cY29_zSzkX1dvhZPA-olQlDmRcIFAH4t-XgyNX4QZaOuIBBrLo-Tw9Ll2CpGHk1DZGl_93hGbd18ZQ6tlkRmsEwyshFajVqK_Y4EcWUfoeQxvSjBo2CWL14qTfb-fOLg3ltySAXZBe9euU"/>
+<div class="absolute bottom-md left-md">
+<span class="badge-amber text-data-mono">AQARIX SCORE: 9.4</span>
+</div>
+</div>
+<div class="hidden md:block rounded-lg overflow-hidden group cursor-pointer">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A high-density interior shot of a minimalist luxury living room with Italian marble flooring and Noto Serif typography art on the walls. The palette is a sophisticated mix of deep teal, white, and warm wood. Large windows reveal a panoramic view of the Amman city skyline under a clear twilight sky." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEj7iSpfRgwIL7DDw7r1dcKC0iIjXfCGt8yQlUM9ljPf-BrqjMKmB0hmA33PoMWIfNoutFmxvVhYwFvTmXRaQxLuJMQ5UUvwCG_SEoWj4JMUDEvgDfMsckBUBviKBAfYFCDYVslsjtx2ZOvxexmj1jhSG_oajXNt5LfYgFgdoU8n5pqwzDtUlm6S0n1baUB5XYekP7s9hVNFjqtFwceYiZMZors3KOVOBa1pLzsIXwywTDn-8DKdIARW4TYRKK5muqrNIV1D733eE"/>
+</div>
+<div class="hidden md:block rounded-lg overflow-hidden group cursor-pointer relative">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="An ultra-modern gourmet kitchen featuring institutional-grade stainless steel appliances, dark teal cabinetry, and a massive white quartz island. The lighting is precise and architectural, emphasizing the functional yet prestigious design of the space. The mood is one of informed luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAi8gXr4EjfNp87sOwaAJOIkRTpswzUsqTB1pP_93uQ_HSNqKYLcVFycG4loKUgr7OP3JtV0zXvVXAuzjiGpxoSMvr8KtRBdG5NzJteNNWIN9Ft00j17CsK9T99P80MSJbZ5wUuO9cvwieP-HecN_HOiQARXonEa2IQ15VoLzGaxu6GOzsdtUTX129AlAdAq_YZsouXKcXR8AaRG3hpTGmtgcm1PLHG1Z0f9VN-r76LcSl097frCgCAH77olpUHiQAMx-9aAqBhP_s"/>
+<div class="absolute inset-0 bg-primary/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="text-on-primary font-label-caps border border-on-primary px-md py-sm">+18 Photos</span>
+</div>
+</div>
+</div>
+<!-- Main Content Layout -->
+<div class="flex flex-col md:flex-row gap-xl">
+<!-- Left Column: Details -->
+<div class="flex-grow space-y-xl">
+<div>
+<h1 class="font-display-lg text-display-lg mb-xs">The Citadel Residences, Abdoun</h1>
+<p class="text-on-surface-variant font-body-lg flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary" data-icon="location_on">location_on</span>
+                        Abdoun Heights, Block 12-A, Amman, Jordan
+                    </p>
+</div>
+<!-- Key Attributes -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-md p-lg bg-white border border-outline-variant rounded-lg">
+<div class="flex flex-col gap-xs">
+<span class="text-on-surface-variant font-label-caps uppercase tracking-wider">Price</span>
+<span class="text-secondary font-headline-sm">JOD 840,000</span>
+</div>
+<div class="flex flex-col gap-xs border-l border-outline-variant pl-md">
+<span class="text-on-surface-variant font-label-caps uppercase tracking-wider">Living Area</span>
+<span class="font-headline-sm">342 <span class="text-body-sm font-normal">sqm</span></span>
+</div>
+<div class="flex flex-col gap-xs border-l border-outline-variant pl-md">
+<span class="text-on-surface-variant font-label-caps uppercase tracking-wider">Bedrooms</span>
+<span class="font-headline-sm">4 <span class="text-body-sm font-normal">En-suite</span></span>
+</div>
+<div class="flex flex-col gap-xs border-l border-outline-variant pl-md">
+<span class="text-on-surface-variant font-label-caps uppercase tracking-wider">Type</span>
+<span class="font-headline-sm">Penthouse</span>
+</div>
+</div>
+<!-- Description -->
+<section>
+<h2 class="font-headline-md mb-md border-b-2 border-secondary-container inline-block">Property Insight</h2>
+<div class="space-y-md text-on-surface-variant font-body-md leading-relaxed max-w-3xl">
+<p>Located in the heart of Amman's most prestigious enclave, The Citadel Residences represents the pinnacle of modern institutional luxury. This penthouse offering has been meticulously vetted by the AqariX research team, showing a historical appreciation rate of 4.2% annually over the last five years.</p>
+<p>The interior features bespoke Jordanian limestone accents integrated with high-velocity smart home systems. Floor-to-ceiling windows provide 270-degree views of the capital, while the private terrace includes a climate-controlled infinity pool and a fully-equipped outdoor kitchen for diplomatic-grade entertaining.</p>
+</div>
+</section>
+<!-- Features Bento -->
+<section>
+<h2 class="font-headline-md mb-md">Key Features</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="p-md bg-white border border-outline-variant flex gap-md">
+<span class="material-symbols-outlined text-primary-container" data-icon="security">security</span>
+<div>
+<h4 class="font-semibold text-body-md">24/7 Concierge</h4>
+<p class="text-body-sm text-on-surface-variant">Full-service security and executive hosting.</p>
+</div>
+</div>
+<div class="p-md bg-white border border-outline-variant flex gap-md">
+<span class="material-symbols-outlined text-primary-container" data-icon="ev_station">ev_station</span>
+<div>
+<h4 class="font-semibold text-body-md">EV-Ready Parking</h4>
+<p class="text-body-sm text-on-surface-variant">3 private bays with high-speed charging.</p>
+</div>
+</div>
+<div class="p-md bg-white border border-outline-variant flex gap-md">
+<span class="material-symbols-outlined text-primary-container" data-icon="pool">pool</span>
+<div>
+<h4 class="font-semibold text-body-md">Climate Pool</h4>
+<p class="text-body-sm text-on-surface-variant">Private infinity pool with thermal control.</p>
+</div>
+</div>
+<div class="p-md bg-white border border-outline-variant flex gap-md">
+<span class="material-symbols-outlined text-primary-container" data-icon="hvac">hvac</span>
+<div>
+<h4 class="font-semibold text-body-md">Zoned VRF</h4>
+<p class="text-body-sm text-on-surface-variant">Intelligent temperature management system.</p>
+</div>
+</div>
+<div class="p-md bg-white border border-outline-variant flex gap-md">
+<span class="material-symbols-outlined text-primary-container" data-icon="solar_power">solar_power</span>
+<div>
+<h4 class="font-semibold text-body-md">Solar Backup</h4>
+<p class="text-body-sm text-on-surface-variant">Critical load redundancy for off-grid hours.</p>
+</div>
+</div>
+<div class="p-md bg-white border border-outline-variant flex gap-md">
+<span class="material-symbols-outlined text-primary-container" data-icon="kitchen">kitchen</span>
+<div>
+<h4 class="font-semibold text-body-md">Miele Suite</h4>
+<p class="text-body-sm text-on-surface-variant">Integrated top-tier appliance package.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Location Map -->
+<section>
+<div class="flex justify-between items-end mb-md">
+<h2 class="font-headline-md">Neighborhood Location</h2>
+<span class="text-primary font-label-caps flex items-center gap-xs cursor-pointer hover:underline">
+                            Open in Maps <span class="material-symbols-outlined text-[16px]" data-icon="open_in_new">open_in_new</span>
+</span>
+</div>
+<div class="w-full h-80 rounded-lg overflow-hidden border border-outline-variant relative">
+<img class="w-full h-full object-cover" data-alt="A clean, high-contrast digital map of the Abdoun neighborhood in Amman. The map uses a sophisticated data-viz style with deep teal for major routes and a light-mode warm beige for residential blocks. A single primary-colored pin marks the location of the property." data-location="Amman, Jordan" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9PQuYc9zTKy7i-GhiT6Er-D-dbCd7Wk19Zm9fTBAlPK-0Ui1biiT0jeDt0QHQkM378QqSTCwfr33gkXhEaQ44SkzE0tVNMZavu69YjMfiL9a58kTdrBnwsasbu598239dVZdPWYyoHNIwhWXFO4Hi5v_nvyYDNZxLVDjlZ799ANZIklq4Xo4Kf-mbNKGfHllbGVgxMNKdP8N4Ph3J5pIkUzijKO0s1lxVBb5S0afE0V3NXYdqefhsUDDfSAdQ1GWgT6TbzkvgBzw"/>
+<div class="absolute top-md right-md glass-panel p-md space-y-sm max-w-xs">
+<h5 class="font-semibold text-body-sm">Proximity Insights</h5>
+<div class="flex justify-between text-body-sm">
+<span>Airport Express</span>
+<span class="font-data-mono">22 mins</span>
+</div>
+<div class="flex justify-between text-body-sm">
+<span>French Embassy</span>
+<span class="font-data-mono">4 mins</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Interactive Sidebar -->
+<aside class="w-full md:w-[400px]">
+<div class="sticky-summary space-y-md">
+<!-- Action Card -->
+<div class="bg-white border-t-4 border-primary shadow-sm p-lg flex flex-col gap-lg">
+<div class="space-y-base">
+<h3 class="font-headline-sm text-primary">Managed Lead Room</h3>
+<p class="text-body-sm text-on-surface-variant">Connect with a verified specialist to review institutional data, legal paperwork, and investment yield projections for this asset.</p>
+</div>
+<div class="space-y-sm">
+<button class="w-full bg-primary-container text-on-primary-container py-md font-semibold text-body-md transition-all hover:opacity-90 active:scale-[0.98] flex items-center justify-center gap-md">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+                                Start Managed Lead Room
+                            </button>
+<button class="w-full border border-primary text-primary py-md font-semibold text-body-md transition-all hover:bg-surface-container-high flex items-center justify-center gap-md">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+                                Schedule In-Person View
+                            </button>
+</div>
+<div class="pt-md border-t border-outline-variant">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small profile photo of an institutional asset manager, a middle-aged professional woman with a welcoming but serious expression, dressed in business formal attire." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwDypoy-ro5EghU_JjU4U363zeAIw19FIcHksN8_Bm0M0872gUASlAzCdSigTjA6KaFHUDtUTNQnm4Wrf4hxRP5o-TQIGXZ_B0eFimDh7PxWMvAZo03cOqPIoI4wfhvqVsWMrb7jBbRsxezHx04vPO6zoIvi2WFbULn_iFDoVvpZuBM7ZRkaL4l6pqU_0Ak8Q_3R5KiJZlv_EG1JK9P1T31IyOnnsBRASw7sgjSGwSxWQ53QQYzTrpu-RVE7inmba4EUdCjQrl6Ns"/>
+</div>
+<div>
+<p class="text-body-sm font-semibold">Layla Hashimi</p>
+<p class="text-label-caps text-on-surface-variant">Senior Asset Advisor</p>
+</div>
+<div class="ml-auto flex gap-xs">
+<span class="material-symbols-outlined text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="font-data-mono font-bold">4.9</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Confidence Meter -->
+<div class="p-lg bg-surface-container-low border border-outline-variant">
+<div class="flex justify-between items-center mb-sm">
+<span class="font-label-caps">AqariX Confidence</span>
+<span class="font-data-mono font-bold text-primary">High</span>
+</div>
+<div class="flex gap-1 h-2 mb-md">
+<div class="flex-1 bg-primary-container rounded-full"></div>
+<div class="flex-1 bg-primary-container rounded-full"></div>
+<div class="flex-1 bg-primary-container rounded-full"></div>
+</div>
+<p class="text-body-sm text-on-surface-variant">Based on 14 recent comparable transactions in the Abdoun Heights sector within the last 90 days.</p>
+</div>
+<!-- Share/Save -->
+<div class="flex gap-md">
+<button class="flex-1 border border-outline-variant py-sm flex items-center justify-center gap-sm text-body-sm hover:bg-white transition-colors">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span> Save
+                        </button>
+<button class="flex-1 border border-outline-variant py-sm flex items-center justify-center gap-sm text-body-sm hover:bg-white transition-colors">
+<span class="material-symbols-outlined" data-icon="share">share</span> Share
+                        </button>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-sm pb-safe pt-2 bg-surface border-t border-outline-variant shadow-lg">
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="text-label-caps">Explore</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span class="text-label-caps">Saved</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="maps_ugc">maps_ugc</span>
+<span class="text-label-caps">Leads</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+<span class="text-label-caps">Insights</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-label-caps">Profile</span>
+</div>
+</nav>
+<script>
+        // Micro-interactions for gallery hover
+        document.querySelectorAll('.property-grid > div').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.zIndex = '10';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.zIndex = 'auto';
+            });
+        });
+
+        // Simple Lead Room button animation
+        const leadBtn = document.querySelector('button.bg-primary-container');
+        if (leadBtn) {
+            leadBtn.addEventListener('mousedown', () => leadBtn.classList.add('scale-95'));
+            leadBtn.addEventListener('mouseup', () => leadBtn.classList.remove('scale-95'));
+        }
+    </script>
+</body></html>
