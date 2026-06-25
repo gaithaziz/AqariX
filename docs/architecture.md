@@ -32,6 +32,7 @@ Selection criteria:
 | Seller/dealer/admin web | React + Vite first; Next.js only if public SEO/server rendering is needed | Fast private dashboards without unnecessary server-rendering complexity. |
 | Backend | FastAPI | Python-native ML serving, async APIs, and clean OpenAPI documentation. |
 | Database | PostgreSQL + PostGIS | Structured property data, geospatial queries, zones, and proximity features. |
+| Cache | Redis-compatible backend cache | Shared cache for expensive reads, AI output snapshots, rate-limit counters, quotas, and idempotency keys. |
 | Vector search | PostgreSQL/pgvector first; Pinecone or Milvus only when scale/latency requires it | Avoid a separate vector system until matching volume proves the need. |
 | ML stack | XGBoost, LightGBM, Prophet, PyTorch | AVM, forecasting, embeddings, assistant support. |
 | Data pipelines | Python jobs first; Airflow only when orchestration complexity requires it | Keep MVP operations simple while preserving an upgrade path. |
@@ -42,6 +43,7 @@ Selection criteria:
 
 - Do not introduce a service until the app has a real need for it.
 - Prefer PostgreSQL features before adding another database.
+- Use Redis-compatible backend caching for production cache, rate-limit, quota, and idempotency state.
 - Prefer managed infrastructure during MVP unless cost, compliance, or control requires self-hosting.
 - Use Clerk for auth and keep hosting away from Supabase for MVP.
 - Keep AI/model serving close to the Python backend until load requires isolation.
@@ -115,6 +117,8 @@ Handles listing review, user review, dispute review, abuse flags, suspicious pri
 9. Lead room captures communication, tasks, appointments, offers, and outcome.
 10. Outcome data feeds CRM analytics and model calibration.
 
+Redis-backed cache sits beside FastAPI and jobs. It stores short-lived, non-authoritative data such as search/geospatial/comparable results, recommendation snapshots, AI output snapshots, feedback summaries, rate-limit counters, quota counters, and idempotency keys. PostgreSQL remains the source of truth.
+
 ## Key Product Objects
 
 ### Offering Analysis Object
@@ -158,6 +162,7 @@ Handles listing review, user review, dispute review, abuse flags, suspicious pri
 - Keep marketplace, AI, CRM, lead-room, agency, and admin domains separate enough to evolve independently.
 - Store AI outputs with model version, confidence, and evidence links.
 - Use server-side authorization for every object access.
+- Put production caching, rate limits, quotas, and idempotency in the backend Redis-compatible cache; do not rely on browser/mobile cache for controls.
 - Keep lead room events structured; they are core marketplace learning data.
 - Prefer explicit workflow states over vague status strings.
 - Treat off-platform contact exposure as a controlled business rule, not a default listing feature.

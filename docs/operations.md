@@ -107,6 +107,7 @@ Review:
 - AI valuation disputes.
 - Error monitoring.
 - Cost/spend alerts.
+- Rate-limit hits, quota exhaustion, duplicate-action blocks, Redis cache hit rate, and unusual usage spikes.
 - Security or abuse flags.
 
 ## Operations Guardrail

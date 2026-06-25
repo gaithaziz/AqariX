@@ -16,7 +16,17 @@ Run this before deploying or handing off production-ready work.
 - Secrets are not in code or client bundles.
 - Logs do not expose sensitive data.
 - Rate limits exist for expensive or public endpoints.
+- Duplicate-prone writes have idempotency or duplicate-click protection.
+- Uploads, feedback, behavior events, AI calls, and public routes have abuse controls.
 - Dependency and secret scans were run where applicable.
+
+## Cost and Performance
+
+- Search, autocomplete, map movement, autosave, and repeated UI events are debounced or throttled.
+- Expensive AI, recommendation, comparable, aggregation, geospatial, and report results are cached in backend Redis where freshness allows.
+- Large lists and reports are paginated and capped.
+- Paid service usage is tracked by endpoint, feature, role, user, or organization where practical.
+- Spend alerts and quota limits are configured for production paid services.
 
 ## Testing
 
@@ -26,6 +36,7 @@ Run this before deploying or handing off production-ready work.
 - Permission-denied state tested.
 - Bad input tested.
 - Duplicate action tested.
+- Rate-limit, quota, debounce, and idempotency behavior tested where relevant.
 - Mobile behavior tested.
 - API behavior tested directly where relevant.
 - AI output reviewed for confidence and caveats.

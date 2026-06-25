@@ -6,6 +6,8 @@ Initial API style: REST over HTTPS with JSON, implemented with FastAPI. FastAPI 
 
 - Every endpoint must enforce authentication unless explicitly public.
 - Every object endpoint must enforce ownership, organization membership, or admin permission.
+- Every public, expensive, or repeated endpoint must have server-side rate limits and abuse controls.
+- Duplicate-prone writes must support idempotency or server-side duplicate protection.
 - AI output endpoints must return confidence and caveats.
 - Recommendation endpoints must return reason codes or "why recommended" explanations.
 - Lead-room endpoints must preserve structured workflow state.
@@ -104,6 +106,8 @@ Rules:
 - Events must be scoped to the current user or anonymous session.
 - Server must validate event type and entity access.
 - Sensitive message content must not be sent as behavior metadata.
+- Client should batch or debounce high-frequency events.
+- Server must rate-limit event ingestion by user/session/IP and drop or sample noisy duplicates.
 
 ### POST `/listings/{listing_id}/feedback`
 
@@ -136,6 +140,11 @@ Returns:
 - Seller/dealer ad-improvement notes when caller owns the listing
 - Investor-facing note when caller is a buyer/investor
 - Listing quality caveats
+
+Rules:
+
+- Feedback submission and summary reads must be rate-limited.
+- Free-text feedback must have length caps and abuse/spam checks.
 
 ### POST `/listings`
 
@@ -171,6 +180,12 @@ Returns:
 - Comparable evidence
 - Recommendation label
 - Caveats
+
+Rules:
+
+- Analysis generation must be rate-limited and quota-aware by user, organization, listing, and endpoint where practical.
+- Reuse existing analysis snapshots when inputs and model version have not materially changed.
+- Cap prompt, context, and output size.
 
 ### GET `/listings/{listing_id}/nearby-opportunities`
 
@@ -249,6 +264,11 @@ Return room detail, messages, tasks, appointments, offers, and allowed actions.
 
 Send a message.
 
+Rules:
+
+- Message submission must be rate-limited and checked for room participation.
+- Duplicate sends should be guarded with an idempotency key or message client token.
+
 ### POST `/lead-rooms/{room_id}/qualify`
 
 Update qualification status.
@@ -322,5 +342,9 @@ Approve, reject, or request listing correction.
 - Never expose private contact details by default.
 - Return allowed actions per resource to simplify role-based UI.
 - Add idempotency keys for lead-room creation, offer creation, payments, and agency orders.
-- Rate-limit public search, auth, AI analysis, assistant, and upload endpoints.
+- Rate-limit public search, auth, AI analysis, assistants, uploads, behavior events, feedback, lead-room messages/actions, webhooks, and high-volume reporting endpoints.
+- Debounce/throttle client calls for search, autocomplete, map bounds changes, autosave, behavior events, and assistant draft generation.
+- Paginate and cap list, search, admin, analytics, and report responses.
+- Cache expensive search, geospatial, comparable, recommendation, analysis, feedback-summary, and AI assistant responses in backend Redis when freshness allows.
+- Track cost-heavy endpoint usage by user, organization, role, endpoint, and feature.
 - Log request IDs for support and incident response.

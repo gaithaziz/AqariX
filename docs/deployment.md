@@ -11,6 +11,7 @@ Required environments:
 Each environment must have separate:
 
 - Neon database
+- Redis-compatible cache
 - Object storage
 - API keys
 - Clerk project
@@ -36,6 +37,7 @@ Supabase must not be used for MVP auth or hosting.
 
 - Render-hosted FastAPI backend service.
 - Neon PostgreSQL database with PostGIS and pgvector enabled.
+- Redis-compatible managed cache for API/jobs caching, rate limits, quotas, and idempotency keys.
 - Cloudflare R2 object storage for listing media and agency assets.
 - PostgreSQL/pgvector for MVP vector matching unless scale proves otherwise.
 - Render background worker for jobs.
@@ -43,7 +45,7 @@ Supabase must not be used for MVP auth or hosting.
 - Flutter mobile app build pipeline.
 - Vercel-hosted React + Vite web dashboard for seller/dealer, admin, and agency surfaces.
 - Clerk for authentication and organization-aware role access.
-- Docker Compose for local service separation across API, jobs, and database.
+- Docker Compose for local service separation across API, jobs, database, and Redis.
 
 Do not add a separate vector search service, Airflow, Kubernetes, or microservice split during MVP unless the proof-of-fit checks in [tech-stack.md](./tech-stack.md) show a real need.
 
@@ -56,8 +58,9 @@ Expected services:
 - `api`: FastAPI backend.
 - `jobs`: Python jobs/worker.
 - `db`: local PostgreSQL with PostGIS and pgvector for development fallback.
+- `redis`: local Redis-compatible cache for backend cache, rate limits, quotas, and idempotency development.
 
-Production should stay on the approved managed providers unless requirements change: Render, Neon, Vercel, Clerk, and Cloudflare R2.
+Production should stay on the approved managed providers unless requirements change: Render, Neon, a managed Redis-compatible cache, Vercel, Clerk, and Cloudflare R2.
 
 ## Monitoring
 
@@ -72,6 +75,7 @@ Track:
 - Payment/subscription failures when added.
 - Background job failures.
 - Model output volume and cost.
+- Rate-limit hits, quota exhaustion, duplicate-action blocks, Redis cache hit rate, and paid API usage spikes.
 
 Recommended tools from proposal:
 
@@ -98,18 +102,26 @@ Do not release if:
 - Critical flows lack smoke tests.
 - Error monitoring is not configured.
 - Environment variables are undocumented.
+- Rate limits, quotas, spend alerts, or rollback plans are missing for expensive production features.
 
 ## Cost Controls
 
 - Set alerts for Render, Neon, Cloudflare R2, Clerk, email/SMS, maps, vector search, and AI API spend.
 - Cache repeated expensive AI outputs.
+- Store production cache entries, rate-limit counters, quota counters, and idempotency keys in backend Redis-compatible cache.
 - Rate-limit AI analysis and assistant usage.
+- Rate-limit public search, uploads, behavior events, feedback, lead-room actions, webhooks, and high-volume reporting endpoints.
+- Debounce search, autocomplete, map movement, autosave, behavior events, and assistant draft generation in clients.
+- Paginate and cap expensive list, analytics, and report responses.
+- Use quotas by role, organization, user, endpoint, and feature where practical.
+- Queue heavy jobs and cap retries to avoid runaway loops.
 - Track usage by user role, organization, and endpoint.
 
 ## MVP Provider Defaults
 
 - Auth: Clerk.
 - Database: Neon Postgres.
+- Cache: managed Redis-compatible service.
 - Backend/API/jobs: Render.
 - Web dashboard: Vercel.
 - Object storage: Cloudflare R2.

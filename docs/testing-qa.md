@@ -117,6 +117,7 @@ For each flow, test:
 - Object-level authorization checks.
 - CORS checks.
 - Rate-limit checks.
+- Quota and duplicate-action/idempotency checks.
 - Upload validation.
 - Log hygiene.
 - Admin audit log checks.
@@ -132,6 +133,8 @@ For each flow, test:
 - Mobile performance.
 - Database index coverage.
 - AI and vector-search cost.
+- Debounce/throttle behavior for search, autocomplete, map movement, autosave, behavior events, and assistant draft generation.
+- Redis cache hit behavior for expensive AI, recommendation, comparable, geospatial, aggregation, and report endpoints.
 
 ### Deployment Testing
 
@@ -173,6 +176,7 @@ After production:
 | Admin | Flags, review, supervision |
 | Agency | Order, asset, approval, reporting |
 | Security | Ownership, secrets, dependencies, uploads |
+| Cost/abuse | Rate limits, quotas, debounce, idempotency, Redis cache behavior |
 | Deployment | Staging smoke, production smoke, backup restore |
 
 ## QA Guardrail
