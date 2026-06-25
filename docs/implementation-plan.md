@@ -11,6 +11,7 @@ Status: Planned
 - Web dashboards: React + Vite on Vercel.
 - Mobile: Flutter.
 - Object storage: Cloudflare R2.
+- Local service separation: Docker Compose.
 - Initial build strategy: one vertical slice before broad platform expansion.
 
 ## First Vertical Slice
@@ -51,6 +52,7 @@ services/
 packages/
   shared/        # Shared schemas/types/docs helpers if needed
 infra/
+  docker/        # Docker Compose notes and local service setup
   render/        # Render service notes/config
   neon/          # Database setup and migrations notes
   vercel/        # Web deployment notes
@@ -60,24 +62,25 @@ docs/
 ## Phase 0 Tasks
 
 1. Create monorepo folders.
-2. Scaffold FastAPI service.
-3. Add health endpoint and OpenAPI docs.
-4. Add Neon connection settings.
-5. Add initial migrations for users, roles, properties, listings, behavior events, listing feedback, recommendation snapshots, offering analyses, and lead rooms.
-6. Enable PostGIS and pgvector.
-7. Configure Clerk JWT verification in FastAPI.
-8. Scaffold React + Vite dashboard.
-9. Add Clerk web auth.
-10. Add seed listings and neighborhoods.
-11. Add search/listing API.
-12. Add buyer/investor intake API.
-13. Add behavior event API.
-14. Add personalized recommendations API.
-15. Add listing feedback API.
-16. Add lead-room creation API.
-17. Add smoke tests.
-18. Deploy staging API to Render.
-19. Deploy staging web to Vercel.
+2. Add Docker Compose for local API, jobs, and database service separation.
+3. Scaffold FastAPI service.
+4. Add health endpoint and OpenAPI docs.
+5. Add Neon connection settings.
+6. Add initial migrations for users, roles, properties, listings, behavior events, listing feedback, recommendation snapshots, offering analyses, and lead rooms.
+7. Enable PostGIS and pgvector.
+8. Configure Clerk JWT verification in FastAPI.
+9. Scaffold React + Vite dashboard.
+10. Add Clerk web auth.
+11. Add seed listings and neighborhoods.
+12. Add search/listing API.
+13. Add buyer/investor intake API.
+14. Add behavior event API.
+15. Add personalized recommendations API.
+16. Add listing feedback API.
+17. Add lead-room creation API.
+18. Add smoke tests.
+19. Deploy staging API to Render.
+20. Deploy staging web to Vercel.
 
 ## Phase 1 Tasks
 
@@ -110,5 +113,6 @@ docs/
 - Render service target chosen.
 - Vercel project target chosen.
 - Cloudflare R2 bucket created or deferred with local placeholder storage.
+- Docker Desktop and Docker Compose are installed.
 - Environment variables documented.
 - First vertical slice accepted as the starting scope.

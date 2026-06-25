@@ -17,7 +17,8 @@ Install:
 - Xcode for iOS builds on macOS
 - Android Studio and Android SDK for Android builds
 - PostgreSQL client tools: `psql`
-- Docker Desktop, optional but useful for local Postgres and service parity
+- Docker Desktop
+- Docker Compose
 - GitHub CLI, optional but recommended
 
 Recommended checks:
@@ -30,6 +31,43 @@ python3 --version
 flutter --version
 flutter doctor
 psql --version
+docker --version
+docker compose version
+```
+
+## Docker Requirements
+
+Docker is required for AqariX local development. Use Docker Compose to separate and run local services consistently.
+
+Docker should be used for:
+
+- FastAPI backend container
+- Python jobs/worker container
+- Local PostgreSQL container with PostGIS and pgvector when not using Neon directly
+- Optional local object-storage emulator if needed
+- Local dependency isolation for repeatable onboarding
+
+Docker should not be used as an excuse to overcomplicate the MVP:
+
+- Do not add Kubernetes during MVP.
+- Do not split into unnecessary microservices.
+- Do not containerize the Flutter mobile app for normal development.
+- Do not replace simple managed hosting with custom container orchestration unless deployment requirements force it.
+
+Expected local commands once implementation begins:
+
+```bash
+docker compose up --build
+docker compose down
+docker compose logs -f api
+```
+
+Expected local Docker files:
+
+```text
+docker-compose.yml
+services/api/Dockerfile
+services/jobs/Dockerfile
 ```
 
 ## Flutter Requirements

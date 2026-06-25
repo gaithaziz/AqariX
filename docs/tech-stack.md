@@ -17,6 +17,7 @@ AqariX will use the following MVP stack:
 | Data jobs | Python jobs first | Add Airflow only when orchestration complexity requires it. |
 | Auth | Clerk | Approved auth provider for MVP. Do not use Supabase Auth. |
 | Monitoring | Sentry + product analytics | Track errors, latency, key events, lead-room funnel, model quality, and cost. |
+| Local service separation | Docker Compose | Run local API, jobs, and database consistently without adding Kubernetes or microservice complexity. |
 
 ## Approved MVP Hosting Plan
 
@@ -53,6 +54,7 @@ It fits AqariX because:
 - Keep AI/model serving close to FastAPI until load or reliability requirements justify separation.
 - Keep public marketing pages separate from private dashboards if their needs diverge.
 - Keep hosting away from Supabase unless this decision is explicitly reopened.
+- Use Docker Compose for local service separation, not Kubernetes.
 
 ## Required Proof-of-Fit Before Deep Build
 

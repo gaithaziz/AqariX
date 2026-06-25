@@ -43,8 +43,21 @@ Supabase must not be used for MVP auth or hosting.
 - Flutter mobile app build pipeline.
 - Vercel-hosted React + Vite web dashboard for seller/dealer, admin, and agency surfaces.
 - Clerk for authentication and organization-aware role access.
+- Docker Compose for local service separation across API, jobs, and database.
 
 Do not add a separate vector search service, Airflow, Kubernetes, or microservice split during MVP unless the proof-of-fit checks in [tech-stack.md](./tech-stack.md) show a real need.
+
+## Local Docker Policy
+
+Use Docker Compose locally so developers can run separated services without hand-configuring every dependency.
+
+Expected services:
+
+- `api`: FastAPI backend.
+- `jobs`: Python jobs/worker.
+- `db`: local PostgreSQL with PostGIS and pgvector for development fallback.
+
+Production should stay on the approved managed providers unless requirements change: Render, Neon, Vercel, Clerk, and Cloudflare R2.
 
 ## Monitoring
 

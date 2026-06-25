@@ -32,6 +32,7 @@ Run this before starting a change.
 - Does this follow the approved stack in `docs/tech-stack.md`?
 - Does this fit the first vertical slice in `docs/implementation-plan.md`, or is it explicitly deferred?
 - Are local and external requirements from `docs/implementation-requirements.md` satisfied?
+- Does local service work fit the Docker Compose setup instead of ad hoc per-machine setup?
 - Is there an existing pattern to follow?
 - Are new dependencies truly needed?
 - Are API changes documented?
