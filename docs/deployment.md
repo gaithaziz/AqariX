@@ -10,13 +10,15 @@ Required environments:
 
 Each environment must have separate:
 
-- Database
+- Neon database
 - Object storage
 - API keys
-- Auth project
+- Clerk project
 - Analytics project
 - Error monitoring project
 - AI/model configuration
+
+Supabase must not be used for MVP auth or hosting.
 
 ## Release Flow
 
@@ -32,14 +34,15 @@ Each environment must have separate:
 
 ## Infrastructure Components
 
-- FastAPI backend service.
-- PostgreSQL/PostGIS database.
-- Object storage for listing media and agency assets.
+- Render-hosted FastAPI backend service.
+- Neon PostgreSQL database with PostGIS and pgvector enabled.
+- Cloudflare R2 object storage for listing media and agency assets.
 - PostgreSQL/pgvector for MVP vector matching unless scale proves otherwise.
-- Background worker for jobs.
-- Python scheduler/jobs for ingestion, alerts, retraining, and maintenance tasks.
+- Render background worker for jobs.
+- Render cron jobs or simple scheduled Python jobs for ingestion, alerts, retraining, and maintenance tasks.
 - Flutter mobile app build pipeline.
-- React + Vite web dashboard deployment for seller/dealer, admin, and agency surfaces.
+- Vercel-hosted React + Vite web dashboard for seller/dealer, admin, and agency surfaces.
+- Clerk for authentication and organization-aware role access.
 
 Do not add a separate vector search service, Airflow, Kubernetes, or microservice split during MVP unless the proof-of-fit checks in [tech-stack.md](./tech-stack.md) show a real need.
 
@@ -85,10 +88,19 @@ Do not release if:
 
 ## Cost Controls
 
-- Set alerts for hosting, database, storage, email/SMS, maps, vector search, and AI API spend.
+- Set alerts for Render, Neon, Cloudflare R2, Clerk, email/SMS, maps, vector search, and AI API spend.
 - Cache repeated expensive AI outputs.
 - Rate-limit AI analysis and assistant usage.
 - Track usage by user role, organization, and endpoint.
+
+## MVP Provider Defaults
+
+- Auth: Clerk.
+- Database: Neon Postgres.
+- Backend/API/jobs: Render.
+- Web dashboard: Vercel.
+- Object storage: Cloudflare R2.
+- Mobile app distribution: local builds first; add Codemagic or GitHub Actions when repeated mobile builds become painful.
 
 ## Deployment Guardrail
 

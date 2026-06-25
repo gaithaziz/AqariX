@@ -36,13 +36,14 @@ Selection criteria:
 | ML stack | XGBoost, LightGBM, Prophet, PyTorch | AVM, forecasting, embeddings, assistant support. |
 | Data pipelines | Python jobs first; Airflow only when orchestration complexity requires it | Keep MVP operations simple while preserving an upgrade path. |
 | Analytics | Mixpanel + Sentry | Funnel metrics, behavior tracking, lead-room events, and error monitoring. |
-| Auth | Managed auth first, or JWT-based auth only if the team is ready to operate it | Auth must be reliable, secure, and role-aware from day one. |
+| Auth | Clerk | Approved MVP auth provider. Auth must be reliable, secure, and role-aware from day one. |
 
 ## Stack Decision Rules
 
 - Do not introduce a service until the app has a real need for it.
 - Prefer PostgreSQL features before adding another database.
 - Prefer managed infrastructure during MVP unless cost, compliance, or control requires self-hosting.
+- Use Clerk for auth and keep hosting away from Supabase for MVP.
 - Keep AI/model serving close to the Python backend until load requires isolation.
 - Keep public marketing pages separate from private dashboards if their needs diverge.
 - Run a short proof-of-fit before locking any major technology choice.

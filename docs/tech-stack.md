@@ -15,8 +15,21 @@ AqariX will use the following MVP stack:
 | Vector search | PostgreSQL/pgvector first | Add Pinecone or Milvus only if scale, latency, or matching quality proves the need. |
 | ML/AI | XGBoost, LightGBM, Prophet, PyTorch as needed | Use the simplest model that meets accuracy and explainability requirements. |
 | Data jobs | Python jobs first | Add Airflow only when orchestration complexity requires it. |
-| Auth | Managed auth first | Use JWT/custom auth only if the team is ready to operate it securely. |
+| Auth | Clerk | Approved auth provider for MVP. Do not use Supabase Auth. |
 | Monitoring | Sentry + product analytics | Track errors, latency, key events, lead-room funnel, model quality, and cost. |
+
+## Approved MVP Hosting Plan
+
+| Need | Default Choice | Why |
+| --- | --- | --- |
+| Auth | Clerk | Simple managed auth, generous free starting point, organization support path. |
+| Database | Neon Postgres | Managed Postgres with PostGIS and pgvector support; keeps database separate from Supabase. |
+| Backend API and jobs | Render | Simple Git-based deploys for FastAPI services and workers without heavy DevOps. |
+| Web dashboard | Vercel | Simple React/Vite static hosting and preview deployments. |
+| Object/media storage | Cloudflare R2 | Cost-effective object storage for listing photos and agency assets. |
+| Mobile builds | Local first, then Codemagic or GitHub Actions | Avoid mobile CI cost until app builds need automation. |
+
+Supabase is intentionally not part of the MVP hosting/auth plan.
 
 ## Why This Stack
 
@@ -39,6 +52,7 @@ It fits AqariX because:
 - Prefer boring, debuggable infrastructure.
 - Keep AI/model serving close to FastAPI until load or reliability requirements justify separation.
 - Keep public marketing pages separate from private dashboards if their needs diverge.
+- Keep hosting away from Supabase unless this decision is explicitly reopened.
 
 ## Required Proof-of-Fit Before Deep Build
 

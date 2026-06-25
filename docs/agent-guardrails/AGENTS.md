@@ -9,6 +9,7 @@ Before implementing or changing AqariX, read:
 - [../prd.md](../prd.md)
 - [../architecture.md](../architecture.md)
 - [../tech-stack.md](../tech-stack.md)
+- [../implementation-plan.md](../implementation-plan.md)
 - [../database-schema.md](../database-schema.md)
 - [../testing-qa.md](../testing-qa.md)
 - [vibe-coding-mistakes-summary.md](./vibe-coding-mistakes-summary.md)
