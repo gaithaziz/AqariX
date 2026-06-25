@@ -1,0 +1,5 @@
+{
+  "workbench.editorAssociations": {
+    "*.docx": "docxreader.docxEditor"
+  }
+}
