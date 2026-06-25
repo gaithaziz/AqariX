@@ -8,6 +8,7 @@ Before implementing or changing AqariX, read:
 
 - [../prd.md](../prd.md)
 - [../architecture.md](../architecture.md)
+- [../tech-stack.md](../tech-stack.md)
 - [../database-schema.md](../database-schema.md)
 - [../testing-qa.md](../testing-qa.md)
 - [vibe-coding-mistakes-summary.md](./vibe-coding-mistakes-summary.md)
@@ -38,6 +39,7 @@ For release or deployment work, also read:
 - Do not present valuation or forecast output as certainty.
 - Do not rely on frontend-only permission checks.
 - Do not add packages, services, or architecture without a reason.
+- Do not change the approved tech stack without updating `docs/tech-stack.md` and related docs.
 - Do not make broad changes without tests and a rollback path.
 
 ## Required Change Template

@@ -29,6 +29,7 @@ Run this before starting a change.
 
 ## Technical Context
 
+- Does this follow the approved stack in `docs/tech-stack.md`?
 - Is there an existing pattern to follow?
 - Are new dependencies truly needed?
 - Are API changes documented?

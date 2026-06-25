@@ -35,11 +35,13 @@ Each environment must have separate:
 - FastAPI backend service.
 - PostgreSQL/PostGIS database.
 - Object storage for listing media and agency assets.
-- Vector search service.
+- PostgreSQL/pgvector for MVP vector matching unless scale proves otherwise.
 - Background worker for jobs.
-- Scheduler for ingestion, alerts, retraining, and maintenance tasks.
-- Mobile app build pipeline.
-- Web dashboard deployment for seller/dealer, admin, and agency surfaces.
+- Python scheduler/jobs for ingestion, alerts, retraining, and maintenance tasks.
+- Flutter mobile app build pipeline.
+- React + Vite web dashboard deployment for seller/dealer, admin, and agency surfaces.
+
+Do not add a separate vector search service, Airflow, Kubernetes, or microservice split during MVP unless the proof-of-fit checks in [tech-stack.md](./tech-stack.md) show a real need.
 
 ## Monitoring
 

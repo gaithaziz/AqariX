@@ -16,3 +16,10 @@ The full research note lives at:
 - [../../vibe-coding-mistakes-research.md](../../vibe-coding-mistakes-research.md)
 
 Agents should use the full research for deeper context and the summary/checklists for day-to-day execution.
+
+## Recommended Skills
+
+- `$ponytail`: use for minimal, non-overengineered implementation.
+- `$ui-ux-pro-max`: use for UI/UX design intelligence, design-system selection, color/typography guidance, accessibility checks, and frontend polish.
+- `$imagegen`: use when bitmap visual assets are needed.
+- `$openai-docs`: use for OpenAI or Codex product/API questions.

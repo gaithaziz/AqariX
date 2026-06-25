@@ -13,16 +13,54 @@ AqariX has six major product layers:
 
 ## Recommended Stack
 
+The stack is not chosen because a tool is popular. AqariX should use boring, well-supported technology where reliability matters, and specialized tools only where the product genuinely needs them.
+
+Selection criteria:
+
+- Fast enough for search, maps, CRM dashboards, and AI analysis workflows.
+- Reliable under real production traffic and operational incidents.
+- Scalable without forcing a rewrite after the first launch zones.
+- Strong geospatial support for property search, neighborhoods, zones, and proximity.
+- Strong Python/ML fit for valuation, forecasting, recommendations, and data pipelines.
+- Easy to hire for, debug, monitor, and maintain.
+- Good ecosystem for auth, testing, observability, and deployment.
+- Minimal custom infrastructure during MVP.
+
 | Layer | Recommended Technology | Rationale |
 | --- | --- | --- |
 | Mobile app | Flutter | Single codebase for iOS and Android with native-feeling performance. |
+| Seller/dealer/admin web | React + Vite first; Next.js only if public SEO/server rendering is needed | Fast private dashboards without unnecessary server-rendering complexity. |
 | Backend | FastAPI | Python-native ML serving, async APIs, and clean OpenAPI documentation. |
 | Database | PostgreSQL + PostGIS | Structured property data, geospatial queries, zones, and proximity features. |
-| Vector search | Pinecone or Milvus | Matching between user profiles and property/offering embeddings. |
+| Vector search | PostgreSQL/pgvector first; Pinecone or Milvus only when scale/latency requires it | Avoid a separate vector system until matching volume proves the need. |
 | ML stack | XGBoost, LightGBM, Prophet, PyTorch | AVM, forecasting, embeddings, assistant support. |
-| Data pipelines | Scrapy, Airflow, validation jobs | Listing ingestion, cleaning, deduplication, scheduled retraining. |
+| Data pipelines | Python jobs first; Airflow only when orchestration complexity requires it | Keep MVP operations simple while preserving an upgrade path. |
 | Analytics | Mixpanel + Sentry | Funnel metrics, behavior tracking, lead-room events, and error monitoring. |
-| Auth | Firebase Auth or JWT-based auth | Role-aware access control, social login, admin/dealer separation. |
+| Auth | Managed auth first, or JWT-based auth only if the team is ready to operate it | Auth must be reliable, secure, and role-aware from day one. |
+
+## Stack Decision Rules
+
+- Do not introduce a service until the app has a real need for it.
+- Prefer PostgreSQL features before adding another database.
+- Prefer managed infrastructure during MVP unless cost, compliance, or control requires self-hosting.
+- Keep AI/model serving close to the Python backend until load requires isolation.
+- Keep public marketing pages separate from private dashboards if their needs diverge.
+- Run a short proof-of-fit before locking any major technology choice.
+
+## Proof-of-Fit Checks
+
+Before finalizing the stack, build small spikes for:
+
+- Map search: filter 10k-100k listings by city, neighborhood, price, type, and bounding box.
+- Geospatial proximity: nearby alternatives and comparable properties.
+- Offering analysis API: valuation, comparable evidence, and explanation under acceptable latency.
+- Lead room: concurrent messages, stage transitions, tasks, appointments, and offer history.
+- Dealer CRM dashboard: pipeline, filters, tasks, and listing performance with realistic data.
+- Arabic/RTL UI: mobile and web forms, tables, maps, and dashboards.
+- Backup/restore: database plus media assets.
+- Deployment: staging to production with rollback and monitoring.
+
+If a candidate stack fails these checks, replace it before building deeper features.
 
 ## Core Domains
 

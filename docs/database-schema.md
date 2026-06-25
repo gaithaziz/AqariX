@@ -1,6 +1,6 @@
 # Database Schema
 
-Proposed database: PostgreSQL with PostGIS.
+Approved MVP database: PostgreSQL with PostGIS. Use PostgreSQL/pgvector for initial vector matching unless scale or latency proves a separate vector database is needed.
 
 This is an initial logical schema for MVP planning. Field names and types should be finalized during implementation.
 

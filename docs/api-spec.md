@@ -1,6 +1,6 @@
 # API Spec
 
-Initial API style: REST over HTTPS with JSON. FastAPI should expose OpenAPI documentation for internal development.
+Initial API style: REST over HTTPS with JSON, implemented with FastAPI. FastAPI should expose OpenAPI documentation for internal development.
 
 ## API Principles
 
