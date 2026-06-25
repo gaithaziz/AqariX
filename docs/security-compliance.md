@@ -16,6 +16,7 @@ AqariX handles user identity, property data, communications, offers, business le
 - Weak admin permissions.
 - Off-platform leakage.
 - Abuse, spam, scams, and suspicious listings.
+- Cost-amplification abuse through repeated search, upload, feedback, AI, behavior-event, or public API calls.
 - Unverified or misleading property claims.
 
 ## Authorization Rules
@@ -26,6 +27,7 @@ AqariX handles user identity, property data, communications, offers, business le
 - Dealer users should only access leads/listings connected to their organization.
 - Lead-room participants should only see room data they are allowed to see.
 - Contact details must follow qualification and reveal rules.
+- Quotas, rate limits, and duplicate-action protections must be enforced server-side, not only in the UI.
 
 ## Data Privacy
 
@@ -58,6 +60,8 @@ Required disclaimers:
 - Suspicious pricing flags.
 - Spam and abuse reporting.
 - Off-platform leakage detection.
+- Rate limits and quotas for auth, search, uploads, feedback, behavior events, lead-room actions, AI analysis, assistants, webhooks, and public endpoints.
+- Idempotency keys or duplicate-action guards for lead-room creation, offers, agency orders, uploads, and payment-like actions.
 - Dispute review process.
 - Admin review for high-risk communications.
 - Audit logs for admin actions.
@@ -70,6 +74,12 @@ Required disclaimers:
 - Validate input server-side.
 - Use ORM-safe or parameterized queries.
 - Rate-limit auth, search, uploads, AI analysis, and public endpoints.
+- Rate-limit behavior events, listing feedback, lead-room messages/actions, assistants, webhooks, and high-volume admin/reporting endpoints.
+- Debounce or throttle client-triggered search, autocomplete, map queries, autosave, and behavior-event submission.
+- Add idempotency keys for duplicate-prone writes.
+- Cap request payload size, result size, upload size, and AI prompt/output size.
+- Cache expensive reads and generated outputs in backend Redis where freshness allows.
+- Track usage for paid services and alert on abnormal spikes.
 - Scan dependencies.
 - Scan commits for secrets.
 - Use restrictive CORS.

@@ -4,6 +4,7 @@ from fastapi import Depends, FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.auth import CurrentUser, get_current_user
+from app.cache import cache_get_json, cache_key, cache_set_json
 from app.repository import (
     create_lead_room,
     get_feedback_summary,
@@ -57,8 +58,18 @@ def listings(
     neighborhood: str | None = None,
     property_type: PropertyType | None = Query(default=None),
 ) -> ListingSearchResponse:
+    key = cache_key(
+        "listing-search",
+        {"city": city, "neighborhood": neighborhood, "property_type": property_type},
+    )
+    cached = cache_get_json(key)
+    if cached is not None:
+        return ListingSearchResponse.model_validate(cached)
+
     items = search_listings(city=city, neighborhood=neighborhood, property_type=property_type)
-    return ListingSearchResponse(items=items, total=len(items))
+    response = ListingSearchResponse(items=items, total=len(items))
+    cache_set_json(key, response.model_dump(mode="json"), ttl_seconds=60)
+    return response
 
 
 @app.get("/profiles/buyer-investor", response_model=BuyerInvestorProfile | None)
@@ -98,7 +109,14 @@ def create_listing_feedback(
 
 @app.get("/listings/{listing_id}/feedback-summary", response_model=ListingFeedbackSummary)
 def listing_feedback_summary(listing_id: UUID) -> ListingFeedbackSummary:
-    return get_feedback_summary(listing_id)
+    key = cache_key("feedback-summary", {"listing_id": listing_id})
+    cached = cache_get_json(key)
+    if cached is not None:
+        return ListingFeedbackSummary.model_validate(cached)
+
+    response = get_feedback_summary(listing_id)
+    cache_set_json(key, response.model_dump(mode="json"), ttl_seconds=30)
+    return response
 
 
 @app.post("/lead-rooms", response_model=LeadRoom)

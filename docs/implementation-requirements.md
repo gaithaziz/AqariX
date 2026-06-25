@@ -44,6 +44,7 @@ Docker should be used for:
 - FastAPI backend container
 - Python jobs/worker container
 - Local PostgreSQL container with PostGIS and pgvector when not using Neon directly
+- Local Redis-compatible cache container for API/jobs caching, rate limits, quotas, and idempotency
 - Optional local object-storage emulator if needed
 - Local dependency isolation for repeatable onboarding
 
@@ -147,6 +148,7 @@ Required setup:
 - Alembic for migrations
 - Pydantic
 - psycopg or asyncpg
+- Redis client for backend cache, rate limits, quotas, and idempotency
 - pytest
 
 Expected first scaffold:
@@ -230,6 +232,7 @@ Approved MVP hosting:
 - API and jobs: Render
 - Web dashboard: Vercel
 - Database: Neon
+- Cache: managed Redis-compatible service
 - Auth: Clerk
 - Media storage: Cloudflare R2
 
@@ -243,6 +246,7 @@ Each environment must have separate:
 
 - Clerk project or app config
 - Neon database
+- Redis-compatible cache
 - R2 bucket or prefix
 - API keys
 - Sentry project
@@ -276,6 +280,7 @@ Expected backend variables:
 
 ```bash
 DATABASE_URL=
+REDIS_URL=
 CLERK_JWKS_URL=
 CLERK_ISSUER=
 CLERK_SECRET_KEY=
@@ -313,6 +318,7 @@ Before coding Phase 0:
 - Clerk development project exists.
 - Neon development database exists.
 - PostGIS and pgvector are enabled.
+- Redis-compatible development cache exists locally through Docker Compose.
 - Render account/project target exists.
 - Vercel project target exists.
 - Cloudflare R2 bucket exists or local storage fallback is approved.

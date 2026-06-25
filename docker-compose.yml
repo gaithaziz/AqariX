@@ -7,12 +7,15 @@ services:
       - ./services/api/.env.example
     environment:
       DATABASE_URL: postgresql+psycopg://aqarix:aqarix@db:5432/aqarix
+      REDIS_URL: redis://redis:6379/0
     ports:
       - "8000:8000"
     volumes:
       - ./services/api:/app
     depends_on:
       db:
+        condition: service_healthy
+      redis:
         condition: service_healthy
 
   jobs:
@@ -22,11 +25,26 @@ services:
       - ./services/api/.env.example
     environment:
       DATABASE_URL: postgresql+psycopg://aqarix:aqarix@db:5432/aqarix
+      REDIS_URL: redis://redis:6379/0
     volumes:
       - ./services/jobs:/jobs
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - aqarix-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   db:
     build:
@@ -47,3 +65,4 @@ services:
 
 volumes:
   aqarix-db-data:
+  aqarix-redis-data:

@@ -13,6 +13,7 @@ Outcomes:
 - Listing ingestion plan.
 - Initial zones.
 - Auth roles.
+- Baseline rate limits, quotas, debounce patterns, and cost/spend alerts.
 - Design system.
 - Documentation baseline.
 
@@ -28,6 +29,7 @@ Outcomes:
 - Forecast prototype.
 - Offering-analysis API.
 - Evidence and confidence object.
+- Redis-cached AI output snapshots and token/cost tracking.
 
 ## Phase 2 - Role-Complete MVP
 

@@ -29,6 +29,7 @@ For release or deployment work, also read:
 - Keep managed lead rooms central.
 - Keep AI outputs explainable and caveated.
 - Keep authorization server-side.
+- Keep public and expensive workflows rate-limited, debounced, Redis-cached, paginated, or quota-controlled.
 - Test beyond the happy path.
 - Document every meaningful change in the relevant Markdown docs.
 - Keep docs consistent when product, API, schema, AI, security, deployment, or testing behavior changes.
@@ -40,6 +41,7 @@ For release or deployment work, also read:
 - Do not expose contact details without qualification logic.
 - Do not present valuation or forecast output as certainty.
 - Do not rely on frontend-only permission checks.
+- Do not ship search, uploads, AI calls, lead-room actions, behavior events, feedback, or public endpoints without abuse and cost controls.
 - Do not add packages, services, or architecture without a reason.
 - Do not change the approved tech stack without updating `docs/tech-stack.md` and related docs.
 - Do not make broad changes without tests and a rollback path.
@@ -52,6 +54,7 @@ Affected role:
 Affected workflow:
 Data touched:
 Authorization impact:
+Rate limit / cost impact:
 AI impact:
 UX states affected:
 Testing completed:

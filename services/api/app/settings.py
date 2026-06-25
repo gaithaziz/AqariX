@@ -6,6 +6,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     app_env: str = "local"
     database_url: str = "postgresql+psycopg://aqarix:aqarix@localhost:5432/aqarix"
+    redis_url: str = "redis://localhost:6379/0"
     clerk_jwks_url: str = ""
     clerk_issuer: str = ""
     clerk_secret_key: str = ""

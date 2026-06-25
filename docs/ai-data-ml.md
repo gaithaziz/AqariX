@@ -205,3 +205,13 @@ Outputs:
 - Use aggregated listing feedback for ad improvement and investor notes only after privacy and quality thresholds are met.
 - Do not recommend listings outside hard user constraints unless clearly labeled as exploratory.
 - Store model version and output snapshot for auditability.
+
+## AI Cost and Abuse Guardrails
+
+- Rate-limit AI analysis, seller assistant, marketing assistant, recommendation refresh, CRM intelligence, and report generation by user, organization, listing, and endpoint where practical.
+- Cache or reuse generated outputs in backend Redis when inputs, model version, and freshness requirements have not materially changed.
+- Cap prompt context, retrieved comparable count, behavior history size, and generated output length.
+- Debounce assistant draft generation and recommendation/search-triggered AI calls in the UI.
+- Prefer queued background jobs for heavy analysis, with retry limits and visible failure states.
+- Track token usage, model calls, vector queries, latency, cache hit rate, and cost by feature.
+- Add quota messaging and graceful fallbacks when a user or organization reaches limits.

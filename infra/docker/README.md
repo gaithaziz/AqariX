@@ -13,5 +13,6 @@ Services:
 - `api`: FastAPI backend.
 - `jobs`: placeholder Python worker.
 - `db`: local PostgreSQL with PostGIS and pgvector.
+- `redis`: local Redis-compatible backend cache for expensive reads, rate limits, quotas, and idempotency keys.
 
-Production uses Render, Neon, Vercel, Clerk, and Cloudflare R2. Do not introduce Kubernetes for the MVP.
+Production uses Render, Neon, managed Redis-compatible cache, Vercel, Clerk, and Cloudflare R2. Do not introduce Kubernetes for the MVP.

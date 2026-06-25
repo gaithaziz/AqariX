@@ -12,6 +12,7 @@ AqariX will use the following MVP stack:
 | Seller/dealer/admin web | React + Vite | Private dashboards should stay fast and simple. Use Next.js only for public SEO pages if needed. |
 | Backend API | FastAPI | Python-native backend for APIs, AI/ML integration, async workflows, and OpenAPI docs. |
 | Database | PostgreSQL + PostGIS | Main system of record with strong relational and geospatial support. |
+| Cache and rate-limit store | Redis-compatible cache | Shared backend cache for expensive reads, AI output snapshots, rate-limit counters, quotas, and idempotency keys. |
 | Vector search | PostgreSQL/pgvector first | Add Pinecone or Milvus only if scale, latency, or matching quality proves the need. |
 | ML/AI | XGBoost, LightGBM, Prophet, PyTorch as needed | Use the simplest model that meets accuracy and explainability requirements. |
 | Data jobs | Python jobs first | Add Airflow only when orchestration complexity requires it. |
@@ -25,6 +26,7 @@ AqariX will use the following MVP stack:
 | --- | --- | --- |
 | Auth | Clerk | Simple managed auth, generous free starting point, organization support path. |
 | Database | Neon Postgres | Managed Postgres with PostGIS and pgvector support; keeps database separate from Supabase. |
+| Cache | Managed Redis-compatible service | Use Redis from FastAPI/jobs for shared caching, rate limits, quotas, and idempotency. |
 | Backend API and jobs | Render | Simple Git-based deploys for FastAPI services and workers without heavy DevOps. |
 | Web dashboard | Vercel | Simple React/Vite static hosting and preview deployments. |
 | Object/media storage | Cloudflare R2 | Cost-effective object storage for listing photos and agency assets. |
@@ -43,6 +45,7 @@ It fits AqariX because:
 - The MVP needs fast mobile delivery without two native teams.
 - Seller, dealer, admin, and agency dashboards are private tools, so they do not need server rendering by default.
 - PostgreSQL can carry relational data, geospatial data, transactional workflows, and initial vector search before adding specialized infrastructure.
+- Redis keeps production caching and abuse controls server-side and shared across web, mobile, API instances, and workers.
 - Managed services reduce operational risk while the product is still validating demand.
 
 ## Decision Rules
@@ -50,6 +53,7 @@ It fits AqariX because:
 - Do not add a service because it is fashionable.
 - Do not add a second database until PostgreSQL is proven insufficient.
 - Do not add Pinecone, Milvus, Kafka, Airflow, Kubernetes, or microservices during MVP unless a proof-of-fit shows a real need.
+- Use Redis-compatible backend caching for shared cache entries, rate limits, quotas, and idempotency keys; frontend cache is only a UX optimization.
 - Prefer boring, debuggable infrastructure.
 - Keep AI/model serving close to FastAPI until load or reliability requirements justify separation.
 - Keep public marketing pages separate from private dashboards if their needs diverge.
