@@ -8,6 +8,8 @@ Outcomes:
 
 - Data schema.
 - PostGIS setup.
+- Behavior event model.
+- Listing feedback and ad-improvement loop.
 - Listing ingestion plan.
 - Initial zones.
 - Auth roles.
@@ -22,7 +24,7 @@ Outcomes:
 
 - AVM baseline.
 - Comparable logic.
-- Recommendation baseline.
+- Recommendation baseline using intake and behavior events.
 - Forecast prototype.
 - Offering-analysis API.
 - Evidence and confidence object.

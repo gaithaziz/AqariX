@@ -80,11 +80,11 @@ Roles:
 
 ### Marketplace
 
-Handles listings, properties, media, comparable properties, search, filters, map results, saved offerings, and listing quality.
+Handles listings, properties, media, comparable properties, search, filters, map results, saved offerings, user behavior events, personalized recommendations, and listing quality.
 
 ### Intelligence
 
-Handles AVM estimates, forecasts, recommendation scoring, location momentum, liquidity estimates, and explanation objects.
+Handles AVM estimates, forecasts, behavior-aware recommendation scoring, location momentum, liquidity estimates, and explanation objects.
 
 ### Managed Lead Room
 
@@ -107,12 +107,13 @@ Handles listing review, user review, dispute review, abuse flags, suspicious pri
 1. Seller/dealer creates a listing.
 2. Listing is validated, enriched with geospatial data, and optionally reviewed.
 3. AI modules generate valuation, confidence, comparable evidence, and listing quality signals.
-4. Buyer/investor intake creates a user preference vector.
-5. Recommendation engine ranks compatible offerings.
-6. User opens an offering analysis.
-7. User starts a managed lead room.
-8. Lead room captures communication, tasks, appointments, offers, and outcome.
-9. Outcome data feeds CRM analytics and model calibration.
+4. Buyer/investor intake creates an initial user preference vector.
+5. In-app behavior events update personalization signals.
+6. Recommendation engine ranks compatible offerings from declared preferences and behavior.
+7. User opens an offering analysis.
+8. User starts a managed lead room.
+9. Lead room captures communication, tasks, appointments, offers, and outcome.
+10. Outcome data feeds CRM analytics and model calibration.
 
 ## Key Product Objects
 

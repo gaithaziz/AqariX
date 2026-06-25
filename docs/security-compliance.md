@@ -10,6 +10,8 @@ AqariX handles user identity, property data, communications, offers, business le
 - Lead-room privacy leaks.
 - Seller/dealer contact exposure.
 - Misuse of AI forecasts.
+- Behavioral data misuse or hidden profiling.
+- Misuse of listing feedback or exposing individual feedback to sellers/dealers.
 - Sensitive data in logs.
 - Weak admin permissions.
 - Off-platform leakage.
@@ -28,9 +30,15 @@ AqariX handles user identity, property data, communications, offers, business le
 ## Data Privacy
 
 - Collect only data needed for matching, valuation, CRM, and operations.
+- Collect in-app behavior only for clear product purposes: recommendations, analytics, fraud/abuse prevention, and product improvement.
+- Explain that behavior such as searches, filters, listing views, saves, comparisons, analysis opens, and lead-room starts may improve recommendations.
+- Explain that optional listing feedback may be used to improve ads/listings and create aggregated investor-facing notes.
+- Provide a practical path to reset or reduce personalization when feasible.
 - Use explicit consent for sensitive uses of lead-room data.
 - Keep message retention policy documented.
 - Protect phone numbers, emails, offer amounts, and user notes.
+- Treat behavioral data as private user data.
+- Treat raw listing feedback as private user data.
 - Do not log secrets, tokens, passwords, private messages, or sensitive user profile data.
 
 ## AI Compliance and Disclaimers
@@ -76,6 +84,8 @@ Required disclaimers:
 - Consumer protection requirements.
 - Terms for AI-generated valuations and forecasts.
 - Consent and retention rules for lead-room communications.
+- Consent, retention, deletion, and user controls for behavioral personalization data.
+- Aggregation thresholds and moderation rules for listing feedback notes.
 
 ## Security Guardrail
 

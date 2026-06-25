@@ -60,12 +60,12 @@ Outputs:
 
 ### Recommendation Engine
 
-Purpose: match users to compatible offerings.
+Purpose: match users to compatible offerings using both declared preferences and observed in-app behavior.
 
 Inputs:
 
 - Buyer/investor intake
-- Behavioral signals
+- Behavioral signals from in-app activity
 - Budget
 - Risk tolerance
 - Location preferences
@@ -79,8 +79,28 @@ Outputs:
 - Match reason
 - Compatibility score
 - Sponsored listing eligibility
+- "Why recommended" explanation
+- Personalization confidence
 
-Guardrail: sponsored listings should only appear when compatible enough to preserve trust.
+Behavioral signals may include:
+
+- Search filters used and changed
+- Map areas viewed or revisited
+- Listing views
+- Dwell time on listing detail and analysis sections
+- Saves and unsaves
+- Comparisons
+- Analysis opens
+- Nearby opportunity clicks
+- Lead-room starts
+- Explicit dismissals or "not interested" actions
+
+Guardrails:
+
+- Sponsored listings should only appear when compatible enough to preserve trust.
+- Recommendations must remain explainable enough for users to understand why a listing appeared.
+- Do not treat behavior as more important than hard constraints such as budget, city, property type, or risk tolerance.
+- Let users reset or tune personalization when practical.
 
 ### Offering Assistant
 
@@ -95,6 +115,7 @@ Outputs:
 - Liquidity estimate
 - Comparable context
 - Nearby alternatives
+- Aggregated user feedback notes about listing clarity, missing information, photo quality, price trust, and investor concerns
 
 ### Seller Assistant
 
@@ -112,6 +133,7 @@ Outputs:
 - Video script ideas
 - Buyer persona recommendations
 - Boost suggestions
+- Ad/listing improvement notes derived from aggregated user feedback
 
 ### CRM Intelligence
 
@@ -130,10 +152,13 @@ Outputs:
 
 1. Listings enter the marketplace.
 2. AI generates valuation, forecast, and recommendation signals.
-3. Users interact with offerings.
-4. Lead rooms capture inquiry quality, objections, offers, and outcomes.
-5. Final prices and loss reasons calibrate models.
-6. Admin review corrects disputed or suspicious outputs.
+3. Users interact with search, maps, listings, analysis, saves, comparisons, and lead rooms.
+4. Behavior events update recommendation features and user preference signals.
+5. Users submit lightweight listing feedback at the end of listing review.
+6. Aggregated feedback creates ad-improvement notes for sellers/dealers and investor-facing listing-quality notes.
+7. Lead rooms capture inquiry quality, objections, offers, and outcomes.
+8. Final prices and loss reasons calibrate models.
+9. Admin review corrects disputed or suspicious outputs.
 
 ## Explainability Rules
 
@@ -148,6 +173,14 @@ Outputs:
 - AVM MAPE by zone and property type.
 - Forecast error by horizon and zone.
 - Recommendation click-through and save rate.
+- Recommendation-to-analysis-open rate.
+- Recommendation-to-lead-room-start rate.
+- Dismissal and "not interested" rate.
+- Listing feedback submission rate.
+- Listing feedback sentiment and completeness score.
+- Seller/dealer completion rate for suggested ad improvements.
+- Diversity of recommended neighborhoods and property types.
+- Hard-constraint violation rate for recommended listings.
 - Analysis-to-lead-room conversion.
 - Lead quality by recommendation source.
 - Dispute rate for valuations.
@@ -167,4 +200,8 @@ Outputs:
 - Never provide legal advice.
 - Never expose private user data in generated summaries.
 - Never use lead-room content for model training without consent and policy review.
+- Do not use sensitive behavioral inferences for targeting without explicit policy review.
+- Do not expose individual feedback authors or raw private feedback to sellers, dealers, or investors.
+- Use aggregated listing feedback for ad improvement and investor notes only after privacy and quality thresholds are met.
+- Do not recommend listings outside hard user constraints unless clearly labeled as exploratory.
 - Store model version and output snapshot for auditability.

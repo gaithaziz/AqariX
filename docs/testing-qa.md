@@ -40,6 +40,8 @@ Critical flows:
 - Signup/login and role selection.
 - Buyer/investor intake.
 - Listing search and filtering.
+- Personalized recommendations.
+- Listing feedback prompt and submission.
 - Offering detail and analysis.
 - Save and compare.
 - Seller listing creation.
@@ -67,6 +69,9 @@ For each flow, test:
 
 - Call endpoints directly without the UI.
 - Confirm users cannot access other users' saved offerings.
+- Confirm users cannot access other users' behavior events or recommendation snapshots.
+- Confirm sellers/dealers cannot access raw individual listing feedback.
+- Confirm investors see only aggregated listing feedback notes when thresholds are met.
 - Confirm dealers cannot access other dealers' leads.
 - Confirm lead-room participants cannot access unrelated rooms.
 - Confirm sellers cannot edit listings they do not own.
@@ -83,6 +88,10 @@ For each flow, test:
 - Test long Arabic text and RTL data.
 - Test old archived records.
 - Test concurrent lead-room and offer updates.
+- Test behavior event volume and retention.
+- Test listing feedback aggregation thresholds.
+- Test listing feedback with missing, abusive, low-quality, and conflicting input.
+- Test recommendation snapshots with missing, stale, and conflicting behavior data.
 
 ### AI Testing
 
@@ -91,6 +100,11 @@ For each flow, test:
 - Verify confidence drops for weak data.
 - Verify forecasts include caveats.
 - Verify no output guarantees appreciation.
+- Verify behavior-aware recommendations obey hard constraints.
+- Verify "why recommended" explanations are present.
+- Verify dismissals and negative signals reduce similar recommendations.
+- Verify seller/dealer ad-improvement notes are generated from aggregated feedback.
+- Verify investor-facing notes do not expose private user identity or raw feedback.
 - Test prompt injection in user-generated listing text.
 - Test assistant outputs for sensitive data leakage.
 - Test model version tracking.
@@ -151,8 +165,8 @@ After production:
 | Area | Required Test |
 | --- | --- |
 | Auth | Role selection and protected route checks |
-| Marketplace | Search, filters, map, listing detail |
-| AI | Valuation, confidence, caveats, comparable evidence |
+| Marketplace | Search, filters, map, listing detail, listing feedback |
+| AI | Valuation, confidence, caveats, comparable evidence, behavior-aware recommendations |
 | Seller | Listing setup, pricing assistant, marketing assistant |
 | Dealer | CRM pipeline, tasks, appointments |
 | Lead room | Create, message, qualify, schedule, offer, close |

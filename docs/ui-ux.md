@@ -22,6 +22,7 @@ First screen should prioritize:
 - Map
 - Filters
 - Matched offerings
+- Personalized recommendations with "why recommended"
 - Saved listings
 - Clear CTA to inspect analysis
 
@@ -31,6 +32,7 @@ First screen should prioritize:
 
 - Investment intake completion
 - Ranked opportunities
+- Behavior-aware recommendations
 - Forecast watchlist
 - Comparison
 - Yield and risk indicators
@@ -102,7 +104,40 @@ Must show:
 - Confidence and caveats
 - Comparable evidence
 - Nearby alternatives
+- Why recommended
+- Personalization confidence when relevant
+- Aggregated feedback note when enough listing feedback exists
 - CTA to save, compare, or start lead room
+- End-of-listing feedback prompt
+
+### Recommendation Surfaces
+
+Must show:
+
+- Recommended listing card
+- Reason codes such as "matches your budget," "similar to saved listings," "near areas you viewed," or "better value than compared listings"
+- Clear dismiss or "not interested" action
+- Avoid showing recommendations that violate hard constraints unless clearly labeled as exploratory
+- Privacy-friendly language explaining that in-app behavior improves recommendations
+
+### Listing Feedback Prompt
+
+At the end of listing review, ask for lightweight feedback:
+
+- Was this listing clear?
+- Were the photos useful?
+- Does the price feel trustworthy?
+- Is the location information enough?
+- What is missing?
+- Are you interested, watching, or not interested?
+
+The prompt should be quick, optional, and never block saving, comparing, or starting a lead room.
+
+Use collected feedback to:
+
+- Improve the ad/listing for sellers and dealers.
+- Create investor-facing notes when enough users report the same issue.
+- Improve recommendation quality.
 
 ### Managed Lead Room
 
@@ -126,6 +161,7 @@ Must show:
 - Required vs optional fields
 - AI pricing action
 - Listing quality prompts
+- User-feedback improvement notes
 - Trial/upgrade limits
 
 ## Accessibility

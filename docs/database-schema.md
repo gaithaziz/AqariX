@@ -12,6 +12,10 @@ This is an initial logical schema for MVP planning. Field names and types should
 - `listings` are marketplace offerings attached to properties.
 - `offering_analyses` store AI valuation, forecast, and recommendation outputs for listings.
 - `buyer_investor_profiles` store intake data and matching preferences.
+- `user_behavior_events` store in-app behavior used to improve recommendations.
+- `listing_feedback` stores user feedback captured after listing review.
+- `listing_feedback_summaries` store aggregated ad-improvement and investor-facing notes.
+- `recommendation_snapshots` store personalized recommendation results and explanations.
 - `saved_offerings` and `saved_searches` support discovery workflows.
 - `lead_rooms` connect buyer/investor users with seller/dealer users around a listing.
 - `lead_room_events`, `messages`, `tasks`, `appointments`, and `offers` track the managed workflow.
@@ -204,6 +208,120 @@ Allowed listing statuses:
 - `created_at` timestamp
 - `updated_at` timestamp
 
+### user_behavior_events
+
+- `id` UUID primary key
+- `user_id` UUID nullable references `users.id`
+- `session_id` text nullable
+- `event_type` text
+- `listing_id` UUID nullable references `listings.id`
+- `property_id` UUID nullable references `properties.id`
+- `lead_room_id` UUID nullable references `lead_rooms.id`
+- `search_filters` jsonb nullable
+- `map_bounds` jsonb nullable
+- `event_weight` numeric nullable
+- `metadata` jsonb
+- `created_at` timestamp
+
+Tracked event types:
+
+- `search_performed`
+- `filter_applied`
+- `map_area_viewed`
+- `listing_viewed`
+- `listing_saved`
+- `listing_unsaved`
+- `listing_compared`
+- `analysis_opened`
+- `nearby_opportunity_clicked`
+- `lead_room_started`
+- `listing_dismissed`
+- `recommendation_clicked`
+- `listing_feedback_prompt_shown`
+- `listing_feedback_submitted`
+
+Recommended indexes:
+
+- B-tree index on `user_id`, `created_at`
+- B-tree index on `event_type`, `created_at`
+- B-tree index on `listing_id`, `created_at`
+
+### recommendation_snapshots
+
+- `id` UUID primary key
+- `user_id` UUID references `users.id`
+- `listing_id` UUID references `listings.id`
+- `rank_position` integer
+- `recommendation_score` numeric
+- `source` text
+- `reason_codes` text array
+- `explanation` text nullable
+- `model_version` text nullable
+- `created_at` timestamp
+
+Allowed sources:
+
+- `intake_match`
+- `behavior_match`
+- `nearby_opportunity`
+- `saved_search_alert`
+- `sponsored_compatible`
+
+### listing_feedback
+
+- `id` UUID primary key
+- `listing_id` UUID references `listings.id`
+- `user_id` UUID nullable references `users.id`
+- `session_id` text nullable
+- `clarity_rating` integer nullable
+- `photo_quality_rating` integer nullable
+- `price_trust_rating` integer nullable
+- `location_confidence_rating` integer nullable
+- `interest_level` text nullable
+- `missing_information` text array
+- `free_text` text nullable
+- `created_at` timestamp
+
+Allowed interest levels:
+
+- `not_interested`
+- `watching`
+- `interested`
+- `high_intent`
+
+Common missing information tags:
+
+- `exact_location`
+- `better_photos`
+- `floor_plan`
+- `building_age`
+- `ownership_verification`
+- `nearby_services`
+- `fees_or_taxes`
+- `rental_yield`
+- `negotiability`
+
+### listing_feedback_summaries
+
+- `id` UUID primary key
+- `listing_id` UUID references `listings.id`
+- `feedback_count` integer
+- `average_clarity_rating` numeric nullable
+- `average_photo_quality_rating` numeric nullable
+- `average_price_trust_rating` numeric nullable
+- `average_location_confidence_rating` numeric nullable
+- `top_missing_information` text array
+- `seller_improvement_notes` text array
+- `investor_note` text nullable
+- `generated_at` timestamp
+- `model_version` text nullable
+
+Rules:
+
+- Create investor-facing notes only after a minimum feedback threshold.
+- Keep raw feedback private to AqariX operations unless policy explicitly allows otherwise.
+- Seller/dealer notes should focus on improving the ad, not identifying users.
+
 ## Managed Lead Room Tables
 
 ### lead_rooms
@@ -378,6 +496,9 @@ Lead room stages:
 
 - Every user-owned record must have an ownership path.
 - Every lead-room object must be scoped to room participants and authorized admins.
+- Behavior events must be scoped to the owning user and must not expose one user's behavior to another user.
+- Recommendation snapshots must store enough reason codes to support "why recommended" explanations.
+- Listing feedback must be aggregated before seller/dealer or investor display.
 - Store AI output snapshots; do not recompute history silently.
 - Use `jsonb` for flexible evidence/explanation data, but avoid hiding core query fields inside JSON.
 - Add indexes before public launch for common search, map, CRM, and lead-room queries.

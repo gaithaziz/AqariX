@@ -7,6 +7,7 @@ Initial API style: REST over HTTPS with JSON, implemented with FastAPI. FastAPI 
 - Every endpoint must enforce authentication unless explicitly public.
 - Every object endpoint must enforce ownership, organization membership, or admin permission.
 - AI output endpoints must return confidence and caveats.
+- Recommendation endpoints must return reason codes or "why recommended" explanations.
 - Lead-room endpoints must preserve structured workflow state.
 - Public listing search must avoid exposing sensitive seller/dealer details.
 
@@ -59,6 +60,82 @@ Filters:
 - Listing freshness
 - Verified status
 - Map bounding box
+
+### GET `/recommendations`
+
+Return personalized listing recommendations for the current buyer/investor.
+
+Inputs:
+
+- Current intake profile
+- Saved searches
+- Recent behavior events
+- Hard constraints such as budget, city, property type, and risk tolerance
+
+Returns:
+
+- Ranked listings
+- Recommendation score
+- Reason codes
+- "Why recommended" explanation
+- Personalization confidence
+- Sponsored compatibility flag where applicable
+
+### POST `/behavior-events`
+
+Record in-app behavior used for analytics and recommendation quality.
+
+Allowed events:
+
+- Search performed
+- Filter applied
+- Map area viewed
+- Listing viewed
+- Listing saved or unsaved
+- Listing compared
+- Analysis opened
+- Nearby opportunity clicked
+- Lead room started
+- Listing dismissed
+- Recommendation clicked
+
+Rules:
+
+- Events must be scoped to the current user or anonymous session.
+- Server must validate event type and entity access.
+- Sensitive message content must not be sent as behavior metadata.
+
+### POST `/listings/{listing_id}/feedback`
+
+Submit lightweight feedback after reviewing a listing.
+
+Fields:
+
+- Clarity rating
+- Photo quality rating
+- Price trust rating
+- Location confidence rating
+- Interest level
+- Missing information tags
+- Optional free-text note
+
+Rules:
+
+- Feedback is private by default.
+- Seller/dealer and investor-facing outputs must use aggregated summaries.
+- Free text must be moderated or filtered before it influences public notes.
+
+### GET `/listings/{listing_id}/feedback-summary`
+
+Return aggregated listing feedback summary when enough signals exist.
+
+Returns:
+
+- Feedback count
+- Top missing information
+- Seller/dealer ad-improvement notes when caller owns the listing
+- Investor-facing note when caller is a buyer/investor
+- Listing quality caveats
 
 ### POST `/listings`
 

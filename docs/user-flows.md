@@ -7,23 +7,28 @@
 3. Complete intake: budget, city, property type, family/lifestyle needs, financing status, and preferred timeline.
 4. Browse home/map feed.
 5. Filter by city, neighborhood, price, area, type, bedrooms, freshness, and verified status.
-6. Open offering detail.
-7. Review AI analysis: fair value, price gap, bargain range, forecast, location momentum, liquidity, and recommendation.
-8. Save, compare, or start a managed lead room.
-9. Complete inquiry qualification.
-10. Communicate, schedule viewing, make offer, negotiate, and close or archive.
+6. AqariX analyzes in-app behavior such as viewed areas, filters, listing views, saves, comparisons, dismissals, and analysis opens.
+7. Review personalized recommendations with "why recommended" explanations.
+8. Open offering detail.
+9. At the end of listing review, optionally give feedback about clarity, photos, price trust, location confidence, missing information, and interest level.
+10. Review AI analysis: fair value, price gap, bargain range, forecast, location momentum, liquidity, recommendation, and aggregated listing-quality note if available.
+11. Save, compare, dismiss, or start a managed lead room.
+12. Complete inquiry qualification.
+13. Communicate, schedule viewing, make offer, negotiate, and close or archive.
 
 ## Investor Flow
 
 1. Sign up or log in.
 2. Select investor role.
 3. Complete investment intake: budget, risk tolerance, investment horizon, expected rental use, target city/neighborhood, and yield preferences.
-4. View ranked offerings.
-5. Compare up to four offerings.
-6. Review forecast watchlist.
-7. If a listing is weak or overpriced, inspect nearby opportunity scout.
-8. Start lead room for selected offering.
-9. Track offer, negotiation, and outcome.
+4. View ranked offerings from declared preferences.
+5. AqariX refines recommendations based on behavior: analysis opens, saved properties, comparisons, map areas, dismissals, and lead-room starts.
+6. Compare up to four offerings.
+7. Review forecast watchlist and aggregated listing-quality notes.
+8. Submit optional feedback on listing clarity, missing information, and investor confidence.
+9. If a listing is weak or overpriced, inspect nearby opportunity scout.
+10. Start lead room for selected offering.
+11. Track offer, negotiation, and outcome.
 
 ## Seller Flow
 
@@ -32,7 +37,7 @@
 3. Activate free trial.
 4. Create listing with structured property data and media.
 5. Use pricing assistant for suggested asking price, bargain range, comparable evidence, and days-on-market risk.
-6. Use marketing assistant for copy, photo guidance, captions, and campaign suggestions.
+6. Use marketing assistant for copy, photo guidance, captions, campaign suggestions, and ad-improvement notes from aggregated user feedback.
 7. Publish listing or submit for review.
 8. Receive qualified inquiries through managed lead rooms.
 9. Track lead status, viewings, offers, and outcomes.
