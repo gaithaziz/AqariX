@@ -16,12 +16,11 @@ Outcomes:
 - Auth roles: Clerk JWT boundary and local demo-user fallback exist; real Clerk project/env values are still pending.
 - Baseline rate limits, quotas, debounce patterns, and cost/spend alerts: Redis-backed API counters and debounced web listing search exist; provider spend alerts expand when paid integrations are connected.
 - Design system: web shell has Arabic/RTL, light/dark, and role-oriented MVP surfaces.
-- Documentation baseline: core docs, guardrails, deployment notes, and Phase 0 status exist.
+- Docker verification: `docker compose build` passes and the API returns `/health` through Docker.
+- Documentation baseline: core docs, guardrails, deployment notes, and roadmap phase status exist.
 
 Left:
 
-- Start Docker daemon and verify `docker compose build`.
-- Run the API through Docker.
 - Create real Clerk development project and fill env values.
 - Create Neon development database and run migrations.
 - Deploy staging API to Render from `render.yaml`.
