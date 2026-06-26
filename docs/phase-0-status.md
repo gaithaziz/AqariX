@@ -30,6 +30,10 @@ Branch: `Ghaith`
 - Added infra notes for Docker, Neon, Render, and Vercel.
 - Added API smoke tests.
 - Added root scripts for common web and API checks.
+- Added Redis-backed baseline rate limits, write quotas, and request-volume cost alerts for existing API routes.
+- Added debounced web listing search connected to the `/listings` API with static fallback when the API is unavailable.
+- Chose MapLibre/OpenStreetMap as the default MVP map provider path.
+- Added root `render.yaml` and `vercel.json` staging deployment configuration.
 
 ## Intentionally Not Implemented
 
@@ -53,6 +57,16 @@ pnpm api:lint
 docker compose config
 ```
 
+Latest local check:
+
+```bash
+pnpm web:build
+pnpm web:lint
+pnpm api:test
+pnpm api:lint
+docker compose config
+```
+
 Blocked locally:
 
 ```bash
@@ -65,9 +79,9 @@ Reason: Docker daemon is not running at the configured local socket.
 
 - Start Docker daemon and verify `docker compose build`.
 - Run the API through Docker.
-- Decide the map provider.
 - Create real Clerk development project and fill env values.
 - Create Neon development database and run migrations.
-- Connect the web shell to API endpoints.
+- Deploy staging API to Render from `render.yaml`.
+- Deploy staging web to Vercel from `vercel.json`.
 - Add `.env.example` files for any new service folders.
-- Add staging deploy configuration for Render and Vercel.
+- Expand web-to-API wiring beyond listing search when the next non-AI workflow is ready.

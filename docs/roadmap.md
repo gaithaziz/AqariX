@@ -3,23 +3,36 @@
 ## Phase 0 - Foundation
 
 Timeline: Weeks 1-4
+Status: In progress
 
 Outcomes:
 
-- Data schema.
-- PostGIS setup.
-- Behavior event model.
-- Listing feedback and ad-improvement loop.
-- Listing ingestion plan.
-- Initial zones.
-- Auth roles.
-- Baseline rate limits, quotas, debounce patterns, and cost/spend alerts.
-- Design system.
-- Documentation baseline.
+- Data schema: initial Alembic migration exists for users, roles, properties, listings, behavior events, listing feedback, recommendation snapshots, offering analyses, and lead rooms.
+- PostGIS setup: migration enables PostGIS.
+- Behavior event model: API schema and route exist.
+- Listing feedback and ad-improvement loop: API schema, feedback route, and aggregated summary route exist.
+- Listing ingestion plan: seed/demo listing data exists; real ingestion is still pending.
+- Initial zones: Amman-first demo data exists; real zone dataset is still pending.
+- Auth roles: Clerk JWT boundary and local demo-user fallback exist; real Clerk project/env values are still pending.
+- Baseline rate limits, quotas, debounce patterns, and cost/spend alerts: Redis-backed API counters and debounced web listing search exist; provider spend alerts expand when paid integrations are connected.
+- Design system: web shell has Arabic/RTL, light/dark, and role-oriented MVP surfaces.
+- Documentation baseline: core docs, guardrails, deployment notes, and Phase 0 status exist.
+
+Left:
+
+- Start Docker daemon and verify `docker compose build`.
+- Run the API through Docker.
+- Create real Clerk development project and fill env values.
+- Create Neon development database and run migrations.
+- Deploy staging API to Render from `render.yaml`.
+- Deploy staging web to Vercel from `vercel.json`.
+- Add `.env.example` files for any new service folders.
+- Expand web-to-API wiring beyond listing search when the next non-AI workflow is ready.
 
 ## Phase 1 - AI/Data Core
 
 Timeline: Weeks 5-12
+Status: Not started
 
 Outcomes:
 
@@ -31,9 +44,15 @@ Outcomes:
 - Evidence and confidence object.
 - Redis-cached AI output snapshots and token/cost tracking.
 
+Left:
+
+- All Phase 1 outcomes are pending.
+- AI-owned features stay deferred until the AI teammate begins this phase.
+
 ## Phase 2 - Role-Complete MVP
 
 Timeline: Weeks 9-20
+Status: Not started
 
 Outcomes:
 
@@ -44,9 +63,15 @@ Outcomes:
 - Agency order flow.
 - Role-specific dashboards.
 
+Left:
+
+- All Phase 2 outcomes are pending.
+- Current web surfaces are shells only, not role-complete product workflows.
+
 ## Phase 3 - Closed Beta
 
 Timeline: Weeks 21-28
+Status: Not started
 
 Outcomes:
 
@@ -57,9 +82,15 @@ Outcomes:
 - Model calibration.
 - User feedback loop.
 
+Left:
+
+- All Phase 3 outcomes are pending.
+- Requires Phase 0 foundation and Phase 2 role-complete workflows first.
+
 ## Phase 4 - Public Launch
 
 Timeline: Weeks 29-36
+Status: Not started
 
 Outcomes:
 
@@ -70,7 +101,14 @@ Outcomes:
 - Premium reports.
 - B2B outreach.
 
+Left:
+
+- All Phase 4 outcomes are pending.
+- Requires closed beta validation, operations readiness, monitoring, backups, and rollback.
+
 ## Post-MVP Expansion
+
+Status: Deferred
 
 - Verified Listing Badge.
 - Mortgage and affordability calculator.

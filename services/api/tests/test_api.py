@@ -1,10 +1,18 @@
 from uuid import UUID
 
+import pytest
+from fastapi import HTTPException
 from fastapi.testclient import TestClient
 
+from app import limits
 from app.main import app
 
 client = TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def disable_redis(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(limits, "get_redis_client", lambda: None)
 
 
 def test_health() -> None:
@@ -86,3 +94,27 @@ def test_profile_behavior_recommendation_feedback_and_lead_room_flow() -> None:
     )
     assert lead_room_response.status_code == 200
     assert lead_room_response.json()["stage"] == "new_inquiry"
+
+
+def test_limit_counter_blocks_after_threshold(monkeypatch: pytest.MonkeyPatch) -> None:
+    class FakeRedis:
+        def __init__(self) -> None:
+            self.counts: dict[str, int] = {}
+
+        def incr(self, key: str) -> int:
+            self.counts[key] = self.counts.get(key, 0) + 1
+            return self.counts[key]
+
+        def expire(self, key: str, seconds: int) -> None:
+            return None
+
+    fake = FakeRedis()
+    monkeypatch.setattr(limits, "get_redis_client", lambda: fake)
+
+    limits.enforce_limit("test", "user-1", limit=2, seconds=60)
+    limits.enforce_limit("test", "user-1", limit=2, seconds=60)
+
+    with pytest.raises(HTTPException) as exc:
+        limits.enforce_limit("test", "user-1", limit=2, seconds=60)
+
+    assert exc.value.status_code == 429

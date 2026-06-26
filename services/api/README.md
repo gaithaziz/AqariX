@@ -12,6 +12,7 @@ This service currently implements non-AI product contracts only:
 - Listing feedback
 - Lead-room creation
 - Redis-backed caching for read-heavy endpoints when `REDIS_URL` is configured
+- Redis-backed rate limits, write quotas, and request-volume cost alerts when `REDIS_URL` is configured
 
 AI valuation, forecasting, and model-backed recommendation work is intentionally not implemented here.
 

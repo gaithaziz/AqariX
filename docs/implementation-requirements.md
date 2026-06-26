@@ -254,13 +254,9 @@ Each environment must have separate:
 
 ## Maps Requirements
 
-Map provider is still a decision point.
+Default MVP map provider path: MapLibre with OpenStreetMap-compatible tiles.
 
-Compare before implementation:
-
-- Google Maps
-- Mapbox
-- MapLibre/OpenStreetMap
+Google Maps and Mapbox remain fallback options only if Jordan coverage, Arabic labels, geocoding quality, or operational needs prove MapLibre/OpenStreetMap insufficient.
 
 Decision criteria:
 

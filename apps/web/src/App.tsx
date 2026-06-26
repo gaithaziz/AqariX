@@ -46,7 +46,25 @@ type Listing = {
   investorNote: string
 }
 
-const listings: Listing[] = [
+type ApiListing = {
+  id: string
+  title: string
+  city: string
+  neighborhood: string
+  property_type: string
+  asking_price_jod: number
+  area_sqm: number
+  bedrooms: number | null
+  bathrooms: number | null
+  aqari_score: number
+  confidence: 'high' | 'medium'
+  price_signal: string
+  image_url: string
+}
+
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL as string | undefined
+
+const fallbackListings: Listing[] = [
   {
     id: 'aqx-1024',
     title: 'Stately Limestone Residence',
@@ -126,7 +144,10 @@ const tabIds = ['explore', 'detail', 'lead-room', 'seller', 'dealer'] as const
 function App() {
   const [locale, setLocale] = useState<Locale>('ar')
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
-  const activeListing = listings[0]
+  const [listings, setListings] = useState<Listing[]>(fallbackListings)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [debouncedQuery, setDebouncedQuery] = useState('')
+  const activeListing = listings[0] ?? fallbackListings[0]
   const t = copy[locale]
   const meta = localeMeta[locale]
   const navItems = useMemo(
@@ -142,6 +163,29 @@ function App() {
   useEffect(() => {
     document.documentElement.dataset.theme = theme
   }, [theme])
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => setDebouncedQuery(searchQuery.trim()), 300)
+    return () => window.clearTimeout(timeout)
+  }, [searchQuery])
+
+  useEffect(() => {
+    if (!apiBaseUrl) return
+
+    const controller = new AbortController()
+    const params = new URLSearchParams()
+    if (debouncedQuery) params.set('neighborhood', debouncedQuery)
+    const query = params.size ? `?${params.toString()}` : ''
+
+    fetch(`${apiBaseUrl}/listings${query}`, { signal: controller.signal })
+      .then((response) => (response.ok ? response.json() : Promise.reject(new Error(response.statusText))))
+      .then((body: { items?: ApiListing[] }) => {
+        setListings(body.items ? body.items.map(mapApiListing) : fallbackListings)
+      })
+      .catch(() => undefined)
+
+    return () => controller.abort()
+  }, [debouncedQuery])
 
   return (
     <div className="app-shell">
@@ -228,7 +272,13 @@ function App() {
               <label htmlFor="search">{t.searchLabel}</label>
               <div className="search-row">
                 <Search size={20} aria-hidden="true" />
-                <input id="search" name="search" placeholder={t.searchPlaceholder} />
+                <input
+                  id="search"
+                  name="search"
+                  placeholder={t.searchPlaceholder}
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.currentTarget.value)}
+                />
               </div>
               <div className="filter-row">
                 <button type="button">
@@ -554,3 +604,37 @@ function Bar({ label, value }: { label: string; value: number }) {
 }
 
 export default App
+
+function mapApiListing(listing: ApiListing): Listing {
+  const pricePerSqm = Math.round(listing.asking_price_jod / listing.area_sqm)
+  const specs = [
+    listing.bedrooms === null ? null : `${listing.bedrooms} beds`,
+    listing.bathrooms === null ? null : `${listing.bathrooms} baths`,
+    `${listing.area_sqm} sqm`,
+  ].filter((value): value is string => Boolean(value))
+
+  return {
+    id: listing.id,
+    title: listing.title,
+    area: listing.neighborhood,
+    district: listing.city,
+    type: titleCase(listing.property_type),
+    price: `JOD ${formatNumber(listing.asking_price_jod)}`,
+    pricePerSqm: `JOD ${formatNumber(pricePerSqm)} / sqm`,
+    specs,
+    score: listing.aqari_score.toFixed(1),
+    priceSignal: titleCase(listing.price_signal.replaceAll('_', ' ')),
+    confidence: listing.confidence === 'high' ? 'High' : 'Medium',
+    image: `${listing.image_url}?auto=format&fit=crop&w=1200&q=80`,
+    recommendedBecause: [`Listed in ${listing.neighborhood}`],
+    investorNote: 'Listing feedback summary appears here after enough private signals are collected.',
+  }
+}
+
+function formatNumber(value: number) {
+  return new Intl.NumberFormat('en-US').format(value)
+}
+
+function titleCase(value: string) {
+  return value.replace(/\b\w/g, (match) => match.toUpperCase())
+}
