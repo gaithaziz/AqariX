@@ -12,7 +12,7 @@ This folder turns the AqariX business and technical proposal into build-ready Ma
 - [Tech Stack](./tech-stack.md): approved MVP stack and decision rules.
 - [Implementation Plan](./implementation-plan.md): first vertical slice, repo layout, and Phase 0 tasks.
 - [Implementation Requirements](./implementation-requirements.md): local tools, external services, env vars, and readiness checks.
-- [Phase 0 Status](./phase-0-status.md): current implementation progress and verification state.
+- [Roadmap](./roadmap.md): phase outcomes, current status, remaining work, and verification notes.
 - [Database Schema](./database-schema.md): proposed PostgreSQL/PostGIS schema and entity relationships.
 - [API Spec](./api-spec.md): initial REST API surface for the mobile app, portals, CRM, lead rooms, admin, and agency.
 - [User Flows](./user-flows.md): buyer, investor, seller, dealer, admin, and agency workflows.
