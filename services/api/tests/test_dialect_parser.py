@@ -127,12 +127,18 @@ def test_irbid_listing_fixture_examples(example: dict[str, object]) -> None:
         "property_type",
         "price_jod",
         "price_period",
+        "price_per_sqm_jod",
+        "price_per_dunum_jod",
         "negotiable",
         "area_sqm",
         "land_area_dunum",
         "bedrooms",
         "bathrooms",
+        "floor_number",
+        "building_age_years",
         "furnished",
+        "has_phone_number",
+        "contact_exposure",
         "motivated_seller",
     ):
         if field in expected:

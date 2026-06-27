@@ -69,12 +69,18 @@ class ParsedListingTextResponse(BaseModel):
     property_type: str | None
     price_jod: int | None
     price_period: str | None
+    price_per_sqm_jod: float | None
+    price_per_dunum_jod: float | None
     negotiable: bool
     area_sqm: int | None
     land_area_dunum: float | None
     bedrooms: int | None
     bathrooms: int | None
+    floor_number: int | None
+    building_age_years: int | None
     furnished: bool | None
+    has_phone_number: bool
+    contact_exposure: bool
     audiences: list[str]
     motivated_seller: bool
     neighborhoods: list[ParsedNeighborhood]

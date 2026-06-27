@@ -7,6 +7,7 @@
       "intent": "rent",
       "property_type": "apartment",
       "price_jod": 250,
+      "price_per_sqm_jod": 2.78,
       "area_sqm": 90,
       "bedrooms": 2,
       "bathrooms": 1,
@@ -86,6 +87,7 @@
       "intent": "sale",
       "property_type": "land",
       "price_jod": 70000,
+      "price_per_dunum_jod": 35000.0,
       "negotiable": true,
       "land_area_dunum": 2.0,
       "neighborhoods": ["al_husn"]
@@ -98,6 +100,7 @@
       "intent": "sale",
       "property_type": "apartment",
       "price_jod": 95000,
+      "price_per_sqm_jod": 593.75,
       "negotiable": true,
       "area_sqm": 160,
       "bedrooms": 3,
@@ -115,6 +118,111 @@
       "price_period": "monthly",
       "area_sqm": 45,
       "neighborhoods": ["eastern_district"]
+    }
+  },
+  {
+    "name": "family villa in southern irbid",
+    "text": "فيلا للبيع جنوب اربد اربع غرف ثلاث حمامات مساحة 420 متر مطلوب 210 الف دينار",
+    "expected": {
+      "intent": "sale",
+      "property_type": "villa",
+      "price_jod": 210000,
+      "price_per_sqm_jod": 500.0,
+      "area_sqm": 420,
+      "bedrooms": 4,
+      "bathrooms": 3,
+      "neighborhoods": ["southern_irbid"]
+    }
+  },
+  {
+    "name": "student apartment near techno gate",
+    "text": "شقة فاضي للايجار قرب بوابة التكنو غرفتين حمامين مساحة 100 متر اجار شهري 230 دينار",
+    "expected": {
+      "intent": "rent",
+      "property_type": "apartment",
+      "price_jod": 230,
+      "price_period": "monthly",
+      "area_sqm": 100,
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "furnished": false,
+      "landmarks": ["just"],
+      "location_signals": ["proximity_phrase"]
+    }
+  },
+  {
+    "name": "land sale in bushra",
+    "text": "قطعة ارض للبيع في بشرى 1.5 دونم المطلوب 55 الف قابل للنقاش",
+    "expected": {
+      "intent": "sale",
+      "property_type": "land",
+      "price_jod": 55000,
+      "price_per_dunum_jod": 36666.67,
+      "negotiable": true,
+      "land_area_dunum": 1.5,
+      "neighborhoods": ["bushra"]
+    }
+  },
+  {
+    "name": "apartment in sarih",
+    "text": "شقة للايجار في الصريح ثلاث غرف حمامين مساحة 130 متر السعر 190 دينار",
+    "expected": {
+      "intent": "rent",
+      "property_type": "apartment",
+      "price_jod": 190,
+      "area_sqm": 130,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "neighborhoods": ["sarih"]
+    }
+  },
+  {
+    "name": "apartment in al barha",
+    "text": "شقه للبيع في البارحة خمس غرف ثلاث حمامات مساحة 220 متر بسعر 120 الف دينار",
+    "expected": {
+      "intent": "sale",
+      "property_type": "apartment",
+      "price_jod": 120000,
+      "area_sqm": 220,
+      "bedrooms": 5,
+      "bathrooms": 3,
+      "neighborhoods": ["al_barha"]
+    }
+  },
+  {
+    "name": "new apartment with phone exposure",
+    "text": "شقة للايجار في حي الجامعة طابق اول غرفتين حمامين مساحة 110 متر بناء جديد السعر 260 دينار للتواصل 0791234567",
+    "expected": {
+      "intent": "rent",
+      "property_type": "apartment",
+      "price_jod": 260,
+      "price_per_sqm_jod": 2.36,
+      "area_sqm": 110,
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "floor_number": 1,
+      "building_age_years": 0,
+      "has_phone_number": true,
+      "contact_exposure": true,
+      "neighborhoods": ["hay_al_jameaa"]
+    }
+  },
+  {
+    "name": "older apartment without phone",
+    "text": "شقة للبيع في ايدون الدور الثالث ثلاث غرف حمامين مساحة 150 متر عمر البناء 12 سنة السعر 88 الف",
+    "expected": {
+      "intent": "sale",
+      "property_type": "apartment",
+      "price_jod": 88000,
+      "price_per_sqm_jod": 586.67,
+      "area_sqm": 150,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "floor_number": 3,
+      "building_age_years": 12,
+      "has_phone_number": false,
+      "contact_exposure": false,
+      "neighborhoods": ["aidoun"]
     }
   }
 ]
