@@ -25,7 +25,6 @@ Left:
 - Create Neon development database and run migrations.
 - Deploy staging API to Render from `render.yaml`.
 - Deploy staging web to Vercel from `vercel.json`.
-- Add `.env.example` files for any new service folders.
 - Expand web-to-API wiring beyond listing search when the next non-AI workflow is ready.
 
 ## Phase 1 - AI/Data Core
