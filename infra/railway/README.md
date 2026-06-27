@@ -10,7 +10,26 @@ Deploy settings:
 - Dockerfile: `Dockerfile.railway` at the repo root.
 - Health check: `/health`.
 
-Required variables:
+## Railway Steps
+
+1. Create a Railway project.
+2. Choose **Deploy from GitHub repo**.
+3. Select `gaithaziz/AqariX`.
+4. Select branch `Ghaith`.
+5. Let Railway use the root `railway.json`.
+6. Add the variables below.
+7. Deploy.
+8. Open `/health` on the Railway domain.
+
+Expected response:
+
+```json
+{"status":"ok","env":"staging"}
+```
+
+## Variables
+
+Use the real values from local `services/api/.env` for `DATABASE_URL`, `CLERK_JWKS_URL`, `CLERK_ISSUER`, and `CLERK_SECRET_KEY`.
 
 ```bash
 APP_ENV=staging
@@ -32,3 +51,5 @@ SENTRY_DSN=
 ```
 
 For the free/minimal staging path, leave `REDIS_URL`, R2, and Sentry empty. The API fails open without Redis, and media/Sentry are not required for Phase 0 staging.
+
+Do not commit real Railway, Neon, Clerk, R2, or Sentry secrets to the repo.
