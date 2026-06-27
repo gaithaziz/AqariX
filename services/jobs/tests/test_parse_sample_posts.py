@@ -18,12 +18,14 @@ def test_parse_sample_irbid_posts() -> None:
     assert first["intent"] == "rent"
     assert first["property_type"] == "apartment"
     assert first["landmarks"][0]["key"] == "yarmouk_university_north_gate"
+    assert first["quality"]["is_model_ready"] is True
 
     land_post = parsed_posts[3]["parsed"]
     assert land_post["property_type"] == "land"
     assert land_post["price_jod"] == 70000
     assert land_post["land_area_dunum"] == 2.0
     assert land_post["neighborhoods"][0]["key"] == "al_husn"
+    assert land_post["quality"]["grade"] == "high"
 
 
 def test_build_ingest_payload_from_sample_posts() -> None:

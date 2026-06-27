@@ -53,6 +53,14 @@ class ParsedNeighborhood(BaseModel):
     display_name: str
 
 
+class ParsedListingQuality(BaseModel):
+    score: int
+    grade: str
+    is_model_ready: bool
+    missing_fields: list[str]
+    warnings: list[str]
+
+
 class ParsedListingTextResponse(BaseModel):
     original_text: str
     normalized_text: str
@@ -73,6 +81,7 @@ class ParsedListingTextResponse(BaseModel):
     landmarks: list[ParsedLandmark]
     location_signals: list[str]
     extracted_terms: list[str]
+    quality: ParsedListingQuality
 
 
 class ParsedListingTextBatchResponse(BaseModel):

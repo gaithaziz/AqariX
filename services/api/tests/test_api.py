@@ -45,6 +45,7 @@ def test_parse_listing_text_endpoint() -> None:
     assert body["land_area_dunum"] == 2.0
     assert body["negotiable"] is True
     assert body["neighborhoods"][0]["key"] == "al_husn"
+    assert body["quality"]["is_model_ready"] is True
 
 
 def test_parse_listing_text_batch_endpoint() -> None:
@@ -91,6 +92,7 @@ def test_ingest_raw_listing_posts_endpoint() -> None:
     assert record["parsed"]["property_type"] == "land"
     assert record["parsed"]["price_jod"] == 70000
     assert record["parsed"]["neighborhoods"][0]["key"] == "al_husn"
+    assert record["parsed"]["quality"]["grade"] == "high"
 
 
 def test_profile_behavior_recommendation_feedback_and_lead_room_flow() -> None:

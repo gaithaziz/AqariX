@@ -11,6 +11,7 @@ if str(API_ROOT) not in sys.path:
     sys.path.insert(0, str(API_ROOT))
 
 from app.nlp.dialect_parser import ParsedListingText, parse_listing_text  # noqa: E402
+from app.nlp.quality import assess_listing_quality  # noqa: E402
 
 
 DEFAULT_INPUT = Path(__file__).with_name("sample_irbid_posts.json")
@@ -48,6 +49,7 @@ def parse_post(post: dict[str, Any]) -> dict[str, Any]:
 
 
 def parsed_to_dict(parsed: ParsedListingText) -> dict[str, Any]:
+    quality = assess_listing_quality(parsed)
     return {
         "city": parsed.city,
         "intent": parsed.intent.value,
@@ -77,6 +79,13 @@ def parsed_to_dict(parsed: ParsedListingText) -> dict[str, Any]:
         ],
         "location_signals": parsed.location_signals,
         "extracted_terms": parsed.extracted_terms,
+        "quality": {
+            "score": quality.score,
+            "grade": quality.grade,
+            "is_model_ready": quality.is_model_ready,
+            "missing_fields": quality.missing_fields,
+            "warnings": quality.warnings,
+        },
     }
 
 

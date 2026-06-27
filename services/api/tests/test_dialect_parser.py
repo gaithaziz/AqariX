@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 
 from app.nlp.dialect_parser import HousingAudience, ListingIntent, parse_listing_text
+from app.nlp.quality import assess_listing_quality
 
 
 FIXTURE_PATH = Path(__file__).parent / "fixtures" / "irbid_listing_examples.json"
@@ -77,6 +78,28 @@ def test_parse_yearly_family_apartment_with_word_counts() -> None:
     assert parsed.area_sqm == 140
     assert HousingAudience.families in parsed.audiences
     assert {landmark.key for landmark in parsed.landmarks} == {"university_street"}
+
+
+def test_quality_marks_complete_listing_model_ready() -> None:
+    parsed = parse_listing_text(
+        "شقة مفروشة للايجار في اربد قريبة من البوابة الشمالية غرفتين حمام 1 مساحة 90 متر السعر 250 دينار"
+    )
+    quality = assess_listing_quality(parsed)
+
+    assert quality.score >= 85
+    assert quality.grade == "high"
+    assert quality.is_model_ready is True
+    assert quality.missing_fields == []
+
+
+def test_quality_marks_incomplete_listing_not_model_ready() -> None:
+    parsed = parse_listing_text("شقة للايجار قرب جامعة اليرموك")
+    quality = assess_listing_quality(parsed)
+
+    assert quality.grade == "low"
+    assert quality.is_model_ready is False
+    assert "price_jod" in quality.missing_fields
+    assert "area_sqm" in quality.missing_fields
 
 
 def load_fixture_examples() -> list[dict[str, object]]:
