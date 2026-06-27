@@ -105,6 +105,8 @@ class StoredParsedListingRecord(BaseModel):
     raw_listing_post_id: UUID
     source: str
     external_id: str | None
+    raw_text_fingerprint: str
+    ingest_status: str
     raw_text: str
     source_url: str | None
     parser_version: str

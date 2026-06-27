@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 
 from app.nlp.dialect_parser import HousingAudience, ListingIntent, parse_listing_text
+from app.nlp.fingerprint import listing_text_fingerprint
 from app.nlp.quality import assess_listing_quality
 
 
@@ -100,6 +101,13 @@ def test_quality_marks_incomplete_listing_not_model_ready() -> None:
     assert quality.is_model_ready is False
     assert "price_jod" in quality.missing_fields
     assert "area_sqm" in quality.missing_fields
+
+
+def test_fingerprint_normalizes_equivalent_arabic_text() -> None:
+    first = listing_text_fingerprint("للبيع فيلا في إربد بسعر ١٨٥٠٠٠ دينار")
+    second = listing_text_fingerprint("للبيع  فيلا في اربد بسعر 185000 دينار")
+
+    assert first == second
 
 
 def load_fixture_examples() -> list[dict[str, object]]:

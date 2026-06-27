@@ -2,6 +2,7 @@ from collections import Counter
 from uuid import UUID, uuid4
 
 from app.nlp.dialect_parser import ParsedListingText, parse_listing_text
+from app.nlp.fingerprint import listing_text_fingerprint
 from app.nlp.quality import assess_listing_quality
 from app.schemas import (
     BehaviorEvent,
@@ -199,6 +200,11 @@ def create_lead_room(user_id: str, payload: LeadRoomIn) -> LeadRoom:
 
 
 def ingest_raw_listing_post(payload: RawListingPostIn) -> StoredParsedListingRecord:
+    fingerprint = listing_text_fingerprint(payload.text)
+    existing = find_existing_ingested_record(payload, fingerprint)
+    if existing:
+        return copy_record_with_status(existing, "duplicate")
+
     raw_post_id = uuid4()
     parsed = parse_listing_text(payload.text)
     record = StoredParsedListingRecord(
@@ -206,6 +212,8 @@ def ingest_raw_listing_post(payload: RawListingPostIn) -> StoredParsedListingRec
         raw_listing_post_id=raw_post_id,
         source=payload.source,
         external_id=payload.external_id,
+        raw_text_fingerprint=fingerprint,
+        ingest_status="created",
         raw_text=payload.text,
         source_url=payload.source_url,
         parser_version="irbid-dialect-parser-v0.1",
@@ -213,6 +221,31 @@ def ingest_raw_listing_post(payload: RawListingPostIn) -> StoredParsedListingRec
     )
     stored_parsed_listing_records.append(record)
     return record
+
+
+def find_existing_ingested_record(
+    payload: RawListingPostIn,
+    fingerprint: str,
+) -> StoredParsedListingRecord | None:
+    for record in stored_parsed_listing_records:
+        same_external_id = (
+            payload.external_id is not None
+            and record.source == payload.source
+            and record.external_id == payload.external_id
+        )
+        same_fingerprint = record.source == payload.source and record.raw_text_fingerprint == fingerprint
+        if same_external_id or same_fingerprint:
+            return record
+    return None
+
+
+def copy_record_with_status(
+    record: StoredParsedListingRecord,
+    ingest_status: str,
+) -> StoredParsedListingRecord:
+    data = record.model_dump()
+    data["ingest_status"] = ingest_status
+    return StoredParsedListingRecord(**data)
 
 
 def ingest_raw_listing_posts(payload: RawListingPostBatchIn) -> StoredParsedListingBatchResponse:
