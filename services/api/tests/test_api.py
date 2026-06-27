@@ -88,11 +88,39 @@ def test_ingest_raw_listing_posts_endpoint() -> None:
     record = body["items"][0]
     assert record["source"] == "manual_seed"
     assert record["external_id"] == "api-ingest-001"
+    assert record["ingest_status"] == "created"
+    assert len(record["raw_text_fingerprint"]) == 64
     assert record["parser_version"] == "irbid-dialect-parser-v0.1"
     assert record["parsed"]["property_type"] == "land"
     assert record["parsed"]["price_jod"] == 70000
     assert record["parsed"]["neighborhoods"][0]["key"] == "al_husn"
     assert record["parsed"]["quality"]["grade"] == "high"
+
+
+def test_ingest_raw_listing_posts_marks_duplicates() -> None:
+    payload = {
+        "items": [
+            {
+                "source": "manual_seed",
+                "external_id": "api-duplicate-001",
+                "text": "شقة للايجار قرب جامعة اليرموك السعر 200 دينار",
+            },
+            {
+                "source": "manual_seed",
+                "external_id": "api-duplicate-001",
+                "text": "شقة للايجار قرب جامعة اليرموك السعر 200 دينار",
+            },
+        ]
+    }
+
+    response = client.post("/ai/ingest-raw-listing-posts", json=payload)
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["total"] == 2
+    assert body["items"][0]["ingest_status"] == "created"
+    assert body["items"][1]["ingest_status"] == "duplicate"
+    assert body["items"][0]["id"] == body["items"][1]["id"]
 
 
 def test_profile_behavior_recommendation_feedback_and_lead_room_flow() -> None:
