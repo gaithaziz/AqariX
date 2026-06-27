@@ -99,6 +99,7 @@ services/jobs/scraper/parsed_irbid_posts.json
 services/jobs/scraper/ingested_irbid_posts_response.json
 services/jobs/scraper/sample_irbid_posts_summary.json
 services/jobs/modeling/baseline_valuation_report.json
+services/jobs/modeling/baseline_valuation_model.json
 services/jobs/data/collected_*.csv
 services/jobs/data/*.ingest.json
 services/jobs/data/*.response.json

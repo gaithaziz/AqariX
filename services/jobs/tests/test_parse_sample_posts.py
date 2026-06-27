@@ -12,6 +12,8 @@ from scraper.parse_sample_posts import DEFAULT_INPUT, parse_posts_file  # noqa: 
 from scraper.summarize_sample_posts import summarize_parsed_posts  # noqa: E402
 
 from modeling.baseline_valuation import build_baseline_report  # noqa: E402
+from modeling.predict_baseline_model import predict_price  # noqa: E402
+from modeling.train_baseline_model import MODEL_VERSION, train_baseline_model  # noqa: E402
 from data.csv_to_ingest_posts import DEFAULT_INPUT as REAL_DATA_TEMPLATE  # noqa: E402
 from data.csv_to_ingest_posts import csv_to_ingest_payload  # noqa: E402
 from data.audit_collected_posts import audit_collected_posts  # noqa: E402
@@ -73,6 +75,20 @@ def test_build_baseline_valuation_report() -> None:
     assert report["readiness"]["next_step"] == "collect_real_irbid_posts"
     assert report["baseline_evaluation"]["method"] == "leave_one_out_median_unit_price"
     assert report["group_unit_price_stats"]
+
+
+def test_train_and_predict_baseline_model() -> None:
+    model = train_baseline_model(parse_posts_file(DEFAULT_INPUT))
+
+    assert model["model_version"] == MODEL_VERSION
+    assert model["group_unit_price_lookup"]
+    assert model["fallback_unit_price_lookup"]
+
+    prediction = predict_price("شقة للبيع في ايدون ثلاث غرف حمامين مساحة 150 متر", model)
+
+    assert prediction["estimated_price_jod"] is not None
+    assert prediction["model_version"] == MODEL_VERSION
+    assert prediction["confidence"] in {"low", "medium"}
 
 
 def test_convert_real_irbid_csv_template_to_ingest_payload() -> None:
