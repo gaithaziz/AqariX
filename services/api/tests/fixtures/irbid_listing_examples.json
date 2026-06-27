@@ -1,0 +1,120 @@
+[
+  {
+    "name": "student apartment near north gate",
+    "text": "شقة مفروشة للايجار في اربد قريبة من البوابة الشمالية، سكن طلاب، غرفتين و حمام 1، المساحة 90 متر، السعر 250 دينار",
+    "expected": {
+      "city": "Irbid",
+      "intent": "rent",
+      "property_type": "apartment",
+      "price_jod": 250,
+      "area_sqm": 90,
+      "bedrooms": 2,
+      "bathrooms": 1,
+      "furnished": true,
+      "audiences": ["students"],
+      "landmarks": ["yarmouk_university_north_gate"]
+    }
+  },
+  {
+    "name": "motivated villa sale",
+    "text": "للبيع فيلا في إربد بداعي السفر مساحة ٣٥٠ متر بسعر ١٨٥٠٠٠ دينار",
+    "expected": {
+      "city": "Irbid",
+      "intent": "sale",
+      "property_type": "villa",
+      "price_jod": 185000,
+      "area_sqm": 350,
+      "motivated_seller": true
+    }
+  },
+  {
+    "name": "family apartment near JUST and hospital",
+    "text": "شقه غير مفروش للايجار للعائلات قرب جامعة العلوم والتكنولوجيا ومستشفى الملك عبدالله",
+    "expected": {
+      "intent": "rent",
+      "property_type": "apartment",
+      "furnished": false,
+      "audiences": ["families"],
+      "landmarks": ["just", "kauh"],
+      "location_signals": ["proximity_phrase"]
+    }
+  },
+  {
+    "name": "monthly studio downtown",
+    "text": "استديو مفروش للايجار الشهري وسط البلد اربد السعر 180 دينار",
+    "expected": {
+      "city": "Irbid",
+      "intent": "rent",
+      "property_type": "studio",
+      "price_jod": 180,
+      "price_period": "monthly",
+      "furnished": true,
+      "landmarks": ["irbid_city_center"]
+    }
+  },
+  {
+    "name": "yearly family apartment university street",
+    "text": "شقة للايجار السنوي للعائلات في شارع الجامعة ثلاث غرف حمامين مساحة 140 متر",
+    "expected": {
+      "intent": "rent",
+      "property_type": "apartment",
+      "price_period": "yearly",
+      "area_sqm": 140,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "audiences": ["families"],
+      "landmarks": ["university_street"]
+    }
+  },
+  {
+    "name": "singles housing near yarmouk",
+    "text": "سكن شباب قريب من جامعة اليرموك اجار شهري 120 دينار بدون فرش",
+    "expected": {
+      "intent": "rent",
+      "price_jod": 120,
+      "price_period": "monthly",
+      "furnished": false,
+      "audiences": ["singles"],
+      "landmarks": ["yarmouk_university"],
+      "location_signals": ["proximity_phrase"]
+    }
+  },
+  {
+    "name": "land sale in al husn",
+    "text": "ارض للبيع في الحصن مساحة 2 دونم السعر 70 الف دينار قابل للتفاوض",
+    "expected": {
+      "intent": "sale",
+      "property_type": "land",
+      "price_jod": 70000,
+      "negotiable": true,
+      "land_area_dunum": 2.0,
+      "neighborhoods": ["al_husn"]
+    }
+  },
+  {
+    "name": "negotiable apartment in aidoun",
+    "text": "شقة للبيع في ايدون 3 غرف و حمامين مساحة 160 متر السعر 95 الف قابل للنقاش",
+    "expected": {
+      "intent": "sale",
+      "property_type": "apartment",
+      "price_jod": 95000,
+      "negotiable": true,
+      "area_sqm": 160,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "neighborhoods": ["aidoun"]
+    }
+  },
+  {
+    "name": "commercial shop eastern district",
+    "text": "محل تجاري للايجار في الحي الشرقي مساحة 45 متر اجار شهري 350 دينار",
+    "expected": {
+      "intent": "rent",
+      "property_type": "commercial",
+      "price_jod": 350,
+      "price_period": "monthly",
+      "area_sqm": 45,
+      "neighborhoods": ["eastern_district"]
+    }
+  }
+]
