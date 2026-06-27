@@ -1,0 +1,30 @@
+[project]
+name = "aqarix-api"
+version = "0.1.0"
+description = "AqariX FastAPI backend"
+requires-python = ">=3.11"
+dependencies = [
+  "alembic>=1.17.0",
+  "fastapi>=0.124.0",
+  "pydantic-settings>=2.12.0",
+  "psycopg[binary]>=3.3.2",
+  "python-jose[cryptography]>=3.5.0",
+  "redis>=5.3.0",
+  "sqlalchemy>=2.0.45",
+  "uvicorn[standard]>=0.38.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "httpx>=0.28.0",
+  "pytest>=9.0.0",
+  "ruff>=0.14.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
