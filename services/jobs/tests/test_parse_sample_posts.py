@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+import tempfile
 
 
 JOBS_ROOT = Path(__file__).resolve().parents[1]
@@ -11,6 +12,9 @@ from scraper.parse_sample_posts import DEFAULT_INPUT, parse_posts_file  # noqa: 
 from scraper.summarize_sample_posts import summarize_parsed_posts  # noqa: E402
 
 from modeling.baseline_valuation import build_baseline_report  # noqa: E402
+from data.csv_to_ingest_posts import DEFAULT_INPUT as REAL_DATA_TEMPLATE  # noqa: E402
+from data.csv_to_ingest_posts import csv_to_ingest_payload  # noqa: E402
+from data.ingest_collected_posts import DEFAULT_OUTPUT as COLLECTED_INGEST_RESPONSE  # noqa: E402
 
 
 def test_parse_sample_irbid_posts() -> None:
@@ -68,3 +72,29 @@ def test_build_baseline_valuation_report() -> None:
     assert report["readiness"]["next_step"] == "collect_real_irbid_posts"
     assert report["baseline_evaluation"]["method"] == "leave_one_out_median_unit_price"
     assert report["group_unit_price_stats"]
+
+
+def test_convert_real_irbid_csv_template_to_ingest_payload() -> None:
+    payload = csv_to_ingest_payload(REAL_DATA_TEMPLATE)
+
+    assert len(payload["items"]) == 2
+    assert payload["items"][0]["source"] == "manual_collection"
+    assert payload["items"][0]["external_id"] == "real-irbid-001"
+    assert "جامعة اليرموك" in payload["items"][0]["text"]
+
+
+def test_convert_real_irbid_csv_rejects_missing_text() -> None:
+    with tempfile.TemporaryDirectory() as tmpdir:
+        path = Path(tmpdir) / "bad.csv"
+        path.write_text("source,external_id,text\nmanual,x1,\n", encoding="utf-8")
+
+        try:
+            csv_to_ingest_payload(path)
+        except ValueError as exc:
+            assert "missing text" in str(exc)
+        else:
+            raise AssertionError("Expected missing text validation error")
+
+
+def test_collected_ingest_response_default_is_ignored_output() -> None:
+    assert COLLECTED_INGEST_RESPONSE.name == "collected_irbid_posts.response.json"
