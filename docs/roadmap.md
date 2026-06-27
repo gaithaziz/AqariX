@@ -13,7 +13,7 @@ Outcomes:
 - Listing feedback and ad-improvement loop: API schema, feedback route, and aggregated summary route exist.
 - Listing ingestion plan: seed/demo listing data exists; real ingestion is still pending.
 - Initial zones: Amman-first demo data exists; real zone dataset is still pending.
-- Auth roles: Clerk JWT boundary and local demo-user fallback exist; real Clerk project/env values are still pending.
+- Auth roles: Clerk JWT boundary, local demo-user fallback, and local Clerk development env values exist.
 - Baseline rate limits, quotas, debounce patterns, and cost/spend alerts: Redis-backed API counters and debounced web listing search exist; provider spend alerts expand when paid integrations are connected.
 - Design system: web shell has Arabic/RTL, light/dark, and role-oriented MVP surfaces.
 - Docker verification: `docker compose build` passes and the API returns `/health` through Docker.
@@ -21,7 +21,6 @@ Outcomes:
 
 Left:
 
-- Create real Clerk development project and fill env values.
 - Create Neon development database and run migrations.
 - Deploy staging API to Render from `render.yaml`.
 - Deploy staging web to Vercel from `vercel.json`.
