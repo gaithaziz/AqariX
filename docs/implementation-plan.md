@@ -7,7 +7,7 @@ Status: Planned
 - Auth provider: Clerk.
 - Hosting should avoid Supabase.
 - MVP database: Neon Postgres with PostGIS and pgvector.
-- Backend: FastAPI on Render.
+- Backend: FastAPI on Railway.
 - Web dashboards: React + Vite on Vercel.
 - Mobile: Flutter.
 - Object storage: Cloudflare R2.
@@ -53,7 +53,7 @@ packages/
   shared/        # Shared schemas/types/docs helpers if needed
 infra/
   docker/        # Docker Compose notes and local service setup
-  render/        # Render service notes/config
+  railway/       # Railway service notes/config
   neon/          # Database setup and migrations notes
   vercel/        # Web deployment notes
 docs/
@@ -79,7 +79,7 @@ docs/
 16. Add listing feedback API.
 17. Add lead-room creation API.
 18. Add smoke tests.
-19. Deploy staging API to Render.
+19. Deploy staging API to Railway.
 20. Deploy staging web to Vercel.
 
 ## Phase 1 Tasks
@@ -110,7 +110,7 @@ docs/
 
 - Clerk project created for development.
 - Neon database created for development.
-- Render service target chosen.
+- Railway service target chosen.
 - Vercel project target chosen.
 - Cloudflare R2 bucket created or deferred with local placeholder storage.
 - Docker Desktop and Docker Compose are installed.

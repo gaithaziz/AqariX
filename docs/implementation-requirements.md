@@ -229,10 +229,10 @@ Required controls:
 
 Approved MVP hosting:
 
-- API and jobs: Render
+- API: Railway
 - Web dashboard: Vercel
 - Database: Neon
-- Cache: managed Redis-compatible service
+- Cache: managed Redis-compatible service when needed; omit for free Railway staging
 - Auth: Clerk
 - Media storage: Cloudflare R2
 
@@ -246,7 +246,7 @@ Each environment must have separate:
 
 - Clerk project or app config
 - Neon database
-- Redis-compatible cache
+- Redis-compatible cache when needed beyond free staging
 - R2 bucket or prefix
 - API keys
 - Sentry project
@@ -315,7 +315,7 @@ Before coding Phase 0:
 - Neon development database exists.
 - PostGIS and pgvector are enabled.
 - Redis-compatible development cache exists locally through Docker Compose.
-- Render account/project target exists.
+- Railway account/project target exists.
 - Vercel project target exists.
 - Cloudflare R2 bucket exists or local storage fallback is approved.
 - Local Flutter doctor passes for at least one target platform.

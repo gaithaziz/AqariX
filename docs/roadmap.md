@@ -21,7 +21,7 @@ Outcomes:
 
 Left:
 
-- Deploy staging API to Render from `render.yaml`.
+- Deploy staging API to Railway from `railway.json`.
 - Deploy staging web to Vercel from `vercel.json`.
 - Expand web-to-API wiring beyond listing search when the next non-AI workflow is ready.
 

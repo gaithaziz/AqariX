@@ -11,7 +11,7 @@ Required environments:
 Each environment must have separate:
 
 - Neon database
-- Redis-compatible cache
+- Redis-compatible cache when cache/rate-limit persistence is required beyond local staging
 - Object storage
 - API keys
 - Clerk project
@@ -35,13 +35,13 @@ Supabase must not be used for MVP auth or hosting.
 
 ## Infrastructure Components
 
-- Render-hosted FastAPI backend service.
+- Railway-hosted FastAPI backend service.
 - Neon PostgreSQL database with PostGIS and pgvector enabled.
-- Redis-compatible managed cache for API/jobs caching, rate limits, quotas, and idempotency keys.
+- Redis-compatible managed cache for API/jobs caching, rate limits, quotas, and idempotency keys when paid/production usage needs persistence. Free Railway staging may leave `REDIS_URL` empty.
 - Cloudflare R2 object storage for listing media and agency assets.
 - PostgreSQL/pgvector for MVP vector matching unless scale proves otherwise.
-- Render background worker for jobs.
-- Render cron jobs or simple scheduled Python jobs for ingestion, alerts, retraining, and maintenance tasks.
+- Railway API service for staging; background jobs remain local/deferred until they do real work.
+- Railway cron jobs or simple scheduled Python jobs for ingestion, alerts, retraining, and maintenance tasks when needed.
 - Flutter mobile app build pipeline.
 - Vercel-hosted React + Vite web dashboard for seller/dealer, admin, and agency surfaces.
 - Clerk for authentication and organization-aware role access.
@@ -60,7 +60,7 @@ Expected services:
 - `db`: local PostgreSQL with PostGIS and pgvector for development fallback.
 - `redis`: local Redis-compatible cache for backend cache, rate limits, quotas, and idempotency development.
 
-Production should stay on the approved managed providers unless requirements change: Render, Neon, a managed Redis-compatible cache, Vercel, Clerk, and Cloudflare R2.
+Production should stay on the approved managed providers unless requirements change: Railway, Neon, a managed Redis-compatible cache when needed, Vercel, Clerk, and Cloudflare R2.
 
 ## Monitoring
 
@@ -106,7 +106,7 @@ Do not release if:
 
 ## Cost Controls
 
-- Set alerts for Render, Neon, Cloudflare R2, Clerk, email/SMS, maps, vector search, and AI API spend.
+- Set alerts for Railway, Neon, Cloudflare R2, Clerk, email/SMS, maps, vector search, and AI API spend.
 - Cache repeated expensive AI outputs.
 - Store production cache entries, rate-limit counters, quota counters, and idempotency keys in backend Redis-compatible cache.
 - Rate-limit AI analysis and assistant usage.
@@ -121,8 +121,8 @@ Do not release if:
 
 - Auth: Clerk.
 - Database: Neon Postgres.
-- Cache: managed Redis-compatible service.
-- Backend/API/jobs: Render.
+- Cache: managed Redis-compatible service when needed; omit for free Railway staging.
+- Backend/API: Railway.
 - Web dashboard: Vercel.
 - Object storage: Cloudflare R2.
 - Mobile app distribution: local builds first; add Codemagic or GitHub Actions when repeated mobile builds become painful.

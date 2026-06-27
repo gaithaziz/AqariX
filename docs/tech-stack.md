@@ -26,8 +26,8 @@ AqariX will use the following MVP stack:
 | --- | --- | --- |
 | Auth | Clerk | Simple managed auth, generous free starting point, organization support path. |
 | Database | Neon Postgres | Managed Postgres with PostGIS and pgvector support; keeps database separate from Supabase. |
-| Cache | Managed Redis-compatible service | Use Redis from FastAPI/jobs for shared caching, rate limits, quotas, and idempotency. |
-| Backend API and jobs | Render | Simple Git-based deploys for FastAPI services and workers without heavy DevOps. |
+| Cache | Redis-compatible service when needed | Use Redis from FastAPI/jobs for shared caching, rate limits, quotas, and idempotency; omit hosted Redis for free Railway staging. |
+| Backend API | Railway | Simple Git-based FastAPI deploys for staging without heavy DevOps. |
 | Web dashboard | Vercel | Simple React/Vite static hosting and preview deployments. |
 | Object/media storage | Cloudflare R2 | Cost-effective object storage for listing photos and agency assets. |
 | Mobile builds | Local first, then Codemagic or GitHub Actions | Avoid mobile CI cost until app builds need automation. |
@@ -45,7 +45,7 @@ It fits AqariX because:
 - The MVP needs fast mobile delivery without two native teams.
 - Seller, dealer, admin, and agency dashboards are private tools, so they do not need server rendering by default.
 - PostgreSQL can carry relational data, geospatial data, transactional workflows, and initial vector search before adding specialized infrastructure.
-- Redis keeps production caching and abuse controls server-side and shared across web, mobile, API instances, and workers.
+- Redis keeps production caching and abuse controls server-side and shared across web, mobile, API instances, and workers. Free staging can run without hosted Redis because the API fails open.
 - Managed services reduce operational risk while the product is still validating demand.
 
 ## Decision Rules
