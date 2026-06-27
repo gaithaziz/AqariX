@@ -17,7 +17,7 @@ Outcomes:
 - Baseline rate limits, quotas, debounce patterns, and cost/spend alerts: Redis-backed API counters and debounced web listing search exist; provider spend alerts expand when paid integrations are connected.
 - Design system: web shell has Arabic/RTL, light/dark, and role-oriented MVP surfaces.
 - Docker verification: `docker compose build` passes and the API returns `/health` through Docker.
-- Staging API deployment: Railway service configuration and variables are set; public `/health` smoke test is pending the Railway URL.
+- Staging API deployment: Railway service is live at `https://aqarix-production.up.railway.app`; `/health` responds successfully. Railway still needs `APP_ENV=staging` applied because the current health payload reports `env` as `local`.
 - Documentation baseline: core docs, guardrails, deployment notes, and roadmap phase status exist.
 
 Left:

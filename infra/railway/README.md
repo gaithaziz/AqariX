@@ -27,6 +27,8 @@ Expected response:
 {"status":"ok","env":"staging"}
 ```
 
+If `/health` returns `"env":"local"`, add or fix `APP_ENV=staging` in Railway variables, click **Apply changes**, and redeploy.
+
 ## Variables
 
 Use the real values from local `services/api/.env` for `DATABASE_URL`, `CLERK_JWKS_URL`, `CLERK_ISSUER`, and `CLERK_SECRET_KEY`.
