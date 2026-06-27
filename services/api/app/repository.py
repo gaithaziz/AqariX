@@ -2,6 +2,7 @@ from collections import Counter
 from uuid import UUID, uuid4
 
 from app.nlp.dialect_parser import ParsedListingText, parse_listing_text
+from app.nlp.quality import assess_listing_quality
 from app.schemas import (
     BehaviorEvent,
     BehaviorEventIn,
@@ -220,7 +221,14 @@ def ingest_raw_listing_posts(payload: RawListingPostBatchIn) -> StoredParsedList
 
 
 def parsed_to_response(parsed: ParsedListingText):
-    from app.schemas import ParsedLandmark, ParsedListingTextResponse, ParsedNeighborhood
+    from app.schemas import (
+        ParsedLandmark,
+        ParsedListingQuality,
+        ParsedListingTextResponse,
+        ParsedNeighborhood,
+    )
+
+    quality = assess_listing_quality(parsed)
 
     return ParsedListingTextResponse(
         original_text=parsed.original_text,
@@ -253,4 +261,11 @@ def parsed_to_response(parsed: ParsedListingText):
         ],
         location_signals=parsed.location_signals,
         extracted_terms=parsed.extracted_terms,
+        quality=ParsedListingQuality(
+            score=quality.score,
+            grade=quality.grade,
+            is_model_ready=quality.is_model_ready,
+            missing_fields=quality.missing_fields,
+            warnings=quality.warnings,
+        ),
     )
