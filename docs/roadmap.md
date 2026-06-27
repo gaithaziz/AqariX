@@ -7,8 +7,8 @@ Status: In progress
 
 Outcomes:
 
-- Data schema: initial Alembic migration exists for users, roles, properties, listings, behavior events, listing feedback, recommendation snapshots, offering analyses, and lead rooms.
-- PostGIS setup: migration enables PostGIS.
+- Data schema: initial Alembic migration exists and has run on the Neon development database for users, roles, properties, listings, behavior events, listing feedback, recommendation snapshots, offering analyses, and lead rooms.
+- PostGIS setup: migration enables PostGIS on the Neon development database.
 - Behavior event model: API schema and route exist.
 - Listing feedback and ad-improvement loop: API schema, feedback route, and aggregated summary route exist.
 - Listing ingestion plan: seed/demo listing data exists; real ingestion is still pending.
@@ -21,7 +21,6 @@ Outcomes:
 
 Left:
 
-- Create Neon development database and run migrations.
 - Deploy staging API to Render from `render.yaml`.
 - Deploy staging web to Vercel from `vercel.json`.
 - Expand web-to-API wiring beyond listing search when the next non-AI workflow is ready.
