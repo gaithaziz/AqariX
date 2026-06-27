@@ -17,11 +17,11 @@ Outcomes:
 - Baseline rate limits, quotas, debounce patterns, and cost/spend alerts: Redis-backed API counters and debounced web listing search exist; provider spend alerts expand when paid integrations are connected.
 - Design system: web shell has Arabic/RTL, light/dark, and role-oriented MVP surfaces.
 - Docker verification: `docker compose build` passes and the API returns `/health` through Docker.
+- Staging API deployment: Railway service configuration and variables are set; public `/health` smoke test is pending the Railway URL.
 - Documentation baseline: core docs, guardrails, deployment notes, and roadmap phase status exist.
 
 Left:
 
-- Deploy staging API to Railway from `railway.json`.
 - Deploy staging web to Vercel from `vercel.json`.
 - Expand web-to-API wiring beyond listing search when the next non-AI workflow is ready.
 
