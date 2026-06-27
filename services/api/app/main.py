@@ -6,11 +6,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.auth import CurrentUser, get_current_user
 from app.cache import cache_get_json, cache_key, cache_set_json
 from app.limits import enforce_limit, record_usage, request_identity
+from app.nlp.dialect_parser import parse_listing_text
 from app.repository import (
     create_lead_room,
     get_feedback_summary,
     get_profile,
     get_recommendations,
+    ingest_raw_listing_posts,
+    parsed_to_response,
     record_behavior,
     save_profile,
     search_listings,
@@ -27,8 +30,14 @@ from app.schemas import (
     ListingFeedbackIn,
     ListingFeedbackSummary,
     ListingSearchResponse,
+    ParsedListingTextBatchResponse,
+    ParsedListingTextResponse,
     PropertyType,
+    RawListingPostBatchIn,
+    RawListingTextBatchIn,
+    RawListingTextIn,
     Recommendation,
+    StoredParsedListingBatchResponse,
 )
 from app.settings import get_settings
 
@@ -81,6 +90,52 @@ def listings(
     response = ListingSearchResponse(items=items, total=len(items))
     cache_set_json(key, response.model_dump(mode="json"), ttl_seconds=60)
     return response
+
+
+@app.post("/ai/parse-listing-text", response_model=ParsedListingTextResponse)
+def parse_raw_listing_text(request: Request, payload: RawListingTextIn) -> ParsedListingTextResponse:
+    settings = get_settings()
+    enforce_limit(
+        "ai-parse-listing-text",
+        request_identity(request),
+        settings.rate_limit_public_per_minute,
+        60,
+    )
+    record_usage("ai-parse-listing-text", settings.cost_alert_requests_per_day)
+    return parsed_to_response(parse_listing_text(payload.text))
+
+
+@app.post("/ai/parse-listing-text/batch", response_model=ParsedListingTextBatchResponse)
+def parse_raw_listing_text_batch(
+    request: Request,
+    payload: RawListingTextBatchIn,
+) -> ParsedListingTextBatchResponse:
+    settings = get_settings()
+    enforce_limit(
+        "ai-parse-listing-text-batch",
+        request_identity(request),
+        settings.rate_limit_public_per_minute,
+        60,
+    )
+    record_usage("ai-parse-listing-text-batch", settings.cost_alert_requests_per_day)
+    items = [parsed_to_response(parse_listing_text(item.text)) for item in payload.items]
+    return ParsedListingTextBatchResponse(items=items, total=len(items))
+
+
+@app.post("/ai/ingest-raw-listing-posts", response_model=StoredParsedListingBatchResponse)
+def ingest_raw_listing_posts_endpoint(
+    request: Request,
+    payload: RawListingPostBatchIn,
+) -> StoredParsedListingBatchResponse:
+    settings = get_settings()
+    enforce_limit(
+        "ai-ingest-raw-listing-posts",
+        request_identity(request),
+        settings.rate_limit_public_per_minute,
+        60,
+    )
+    record_usage("ai-ingest-raw-listing-posts", settings.cost_alert_requests_per_day)
+    return ingest_raw_listing_posts(payload)
 
 
 @app.get("/profiles/buyer-investor", response_model=BuyerInvestorProfile | None)

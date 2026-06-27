@@ -1,6 +1,7 @@
 from collections import Counter
 from uuid import UUID, uuid4
 
+from app.nlp.dialect_parser import ParsedListingText, parse_listing_text
 from app.schemas import (
     BehaviorEvent,
     BehaviorEventIn,
@@ -14,6 +15,10 @@ from app.schemas import (
     ListingFeedbackSummary,
     PropertyType,
     Recommendation,
+    RawListingPostBatchIn,
+    RawListingPostIn,
+    StoredParsedListingBatchResponse,
+    StoredParsedListingRecord,
 )
 
 
@@ -69,6 +74,7 @@ profiles: dict[str, BuyerInvestorProfile] = {}
 behavior_events: list[BehaviorEvent] = []
 listing_feedback: list[ListingFeedback] = []
 lead_rooms: list[LeadRoom] = []
+stored_parsed_listing_records: list[StoredParsedListingRecord] = []
 
 
 def search_listings(
@@ -189,3 +195,62 @@ def create_lead_room(user_id: str, payload: LeadRoomIn) -> LeadRoom:
         ),
     )
     return room
+
+
+def ingest_raw_listing_post(payload: RawListingPostIn) -> StoredParsedListingRecord:
+    raw_post_id = uuid4()
+    parsed = parse_listing_text(payload.text)
+    record = StoredParsedListingRecord(
+        id=uuid4(),
+        raw_listing_post_id=raw_post_id,
+        source=payload.source,
+        external_id=payload.external_id,
+        raw_text=payload.text,
+        source_url=payload.source_url,
+        parser_version="irbid-dialect-parser-v0.1",
+        parsed=parsed_to_response(parsed),
+    )
+    stored_parsed_listing_records.append(record)
+    return record
+
+
+def ingest_raw_listing_posts(payload: RawListingPostBatchIn) -> StoredParsedListingBatchResponse:
+    items = [ingest_raw_listing_post(item) for item in payload.items]
+    return StoredParsedListingBatchResponse(items=items, total=len(items))
+
+
+def parsed_to_response(parsed: ParsedListingText):
+    from app.schemas import ParsedLandmark, ParsedListingTextResponse, ParsedNeighborhood
+
+    return ParsedListingTextResponse(
+        original_text=parsed.original_text,
+        normalized_text=parsed.normalized_text,
+        city=parsed.city,
+        intent=parsed.intent.value,
+        property_type=parsed.property_type,
+        price_jod=parsed.price_jod,
+        price_period=parsed.price_period,
+        negotiable=parsed.negotiable,
+        area_sqm=parsed.area_sqm,
+        land_area_dunum=parsed.land_area_dunum,
+        bedrooms=parsed.bedrooms,
+        bathrooms=parsed.bathrooms,
+        furnished=parsed.furnished,
+        audiences=[audience.value for audience in parsed.audiences],
+        motivated_seller=parsed.motivated_seller,
+        neighborhoods=[
+            ParsedNeighborhood(key=neighborhood.key, display_name=neighborhood.display_name)
+            for neighborhood in parsed.neighborhoods
+        ],
+        landmarks=[
+            ParsedLandmark(
+                key=landmark.key,
+                display_name=landmark.display_name,
+                latitude=landmark.latitude,
+                longitude=landmark.longitude,
+            )
+            for landmark in parsed.landmarks
+        ],
+        location_signals=parsed.location_signals,
+        extracted_terms=parsed.extracted_terms,
+    )

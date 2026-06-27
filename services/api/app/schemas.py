@@ -33,6 +33,80 @@ class ListingSearchResponse(BaseModel):
     total: int
 
 
+class RawListingTextIn(BaseModel):
+    text: str = Field(min_length=1, max_length=5_000)
+
+
+class RawListingTextBatchIn(BaseModel):
+    items: list[RawListingTextIn] = Field(min_length=1, max_length=100)
+
+
+class ParsedLandmark(BaseModel):
+    key: str
+    display_name: str
+    latitude: float
+    longitude: float
+
+
+class ParsedNeighborhood(BaseModel):
+    key: str
+    display_name: str
+
+
+class ParsedListingTextResponse(BaseModel):
+    original_text: str
+    normalized_text: str
+    city: str | None
+    intent: str
+    property_type: str | None
+    price_jod: int | None
+    price_period: str | None
+    negotiable: bool
+    area_sqm: int | None
+    land_area_dunum: float | None
+    bedrooms: int | None
+    bathrooms: int | None
+    furnished: bool | None
+    audiences: list[str]
+    motivated_seller: bool
+    neighborhoods: list[ParsedNeighborhood]
+    landmarks: list[ParsedLandmark]
+    location_signals: list[str]
+    extracted_terms: list[str]
+
+
+class ParsedListingTextBatchResponse(BaseModel):
+    items: list[ParsedListingTextResponse]
+    total: int
+
+
+class RawListingPostIn(BaseModel):
+    source: str = Field(min_length=1, max_length=100)
+    external_id: str | None = Field(default=None, max_length=200)
+    text: str = Field(min_length=1, max_length=5_000)
+    source_url: str | None = Field(default=None, max_length=2_000)
+
+
+class RawListingPostBatchIn(BaseModel):
+    items: list[RawListingPostIn] = Field(min_length=1, max_length=100)
+
+
+class StoredParsedListingRecord(BaseModel):
+    id: UUID
+    raw_listing_post_id: UUID
+    source: str
+    external_id: str | None
+    raw_text: str
+    source_url: str | None
+    parser_version: str
+    parsed: ParsedListingTextResponse
+
+
+class StoredParsedListingBatchResponse(BaseModel):
+    items: list[StoredParsedListingRecord]
+    total: int
+
+
 class BuyerInvestorProfileIn(BaseModel):
     budget_min_jod: int | None = None
     budget_max_jod: int | None = None

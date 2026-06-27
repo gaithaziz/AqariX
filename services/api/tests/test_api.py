@@ -31,6 +31,68 @@ def test_listing_search() -> None:
     assert body["items"][0]["city"] == "Amman"
 
 
+def test_parse_listing_text_endpoint() -> None:
+    response = client.post(
+        "/ai/parse-listing-text",
+        json={"text": "ارض للبيع في الحصن مساحة 2 دونم السعر 70 الف دينار قابل للتفاوض"},
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["intent"] == "sale"
+    assert body["property_type"] == "land"
+    assert body["price_jod"] == 70000
+    assert body["land_area_dunum"] == 2.0
+    assert body["negotiable"] is True
+    assert body["neighborhoods"][0]["key"] == "al_husn"
+
+
+def test_parse_listing_text_batch_endpoint() -> None:
+    response = client.post(
+        "/ai/parse-listing-text/batch",
+        json={
+            "items": [
+                {"text": "سكن شباب قريب من جامعة اليرموك اجار شهري 120 دينار بدون فرش"},
+                {"text": "محل تجاري للايجار في الحي الشرقي مساحة 45 متر اجار شهري 350 دينار"},
+            ]
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["total"] == 2
+    assert body["items"][0]["audiences"] == ["singles"]
+    assert body["items"][0]["landmarks"][0]["key"] == "yarmouk_university"
+    assert body["items"][1]["property_type"] == "commercial"
+    assert body["items"][1]["neighborhoods"][0]["key"] == "eastern_district"
+
+
+def test_ingest_raw_listing_posts_endpoint() -> None:
+    response = client.post(
+        "/ai/ingest-raw-listing-posts",
+        json={
+            "items": [
+                {
+                    "source": "manual_seed",
+                    "external_id": "api-ingest-001",
+                    "text": "ارض للبيع في الحصن مساحة 2 دونم السعر 70 الف دينار قابل للتفاوض",
+                }
+            ]
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["total"] == 1
+    record = body["items"][0]
+    assert record["source"] == "manual_seed"
+    assert record["external_id"] == "api-ingest-001"
+    assert record["parser_version"] == "irbid-dialect-parser-v0.1"
+    assert record["parsed"]["property_type"] == "land"
+    assert record["parsed"]["price_jod"] == 70000
+    assert record["parsed"]["neighborhoods"][0]["key"] == "al_husn"
+
+
 def test_profile_behavior_recommendation_feedback_and_lead_room_flow() -> None:
     headers = {"x-demo-user": "test-user"}
 
