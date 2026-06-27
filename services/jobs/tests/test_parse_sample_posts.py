@@ -10,6 +10,8 @@ from scraper.ingest_sample_posts import build_ingest_payload  # noqa: E402
 from scraper.parse_sample_posts import DEFAULT_INPUT, parse_posts_file  # noqa: E402
 from scraper.summarize_sample_posts import summarize_parsed_posts  # noqa: E402
 
+from modeling.baseline_valuation import build_baseline_report  # noqa: E402
+
 
 def test_parse_sample_irbid_posts() -> None:
     parsed_posts = parse_posts_file(DEFAULT_INPUT)
@@ -55,3 +57,14 @@ def test_summarize_sample_irbid_posts() -> None:
     assert summary["property_type_counts"]["land"] == 2
     assert summary["intent_counts"] == {"rent": 6, "sale": 6}
     assert summary["contact_exposed_posts"] == 1
+
+
+def test_build_baseline_valuation_report() -> None:
+    report = build_baseline_report(parse_posts_file(DEFAULT_INPUT))
+
+    assert report["dataset"]["total_posts"] == 12
+    assert report["dataset"]["model_ready_posts"] >= 10
+    assert report["readiness"]["training_ready"] is False
+    assert report["readiness"]["next_step"] == "collect_real_irbid_posts"
+    assert report["baseline_evaluation"]["method"] == "leave_one_out_median_unit_price"
+    assert report["group_unit_price_stats"]

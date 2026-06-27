@@ -98,6 +98,7 @@ test-results/
 services/jobs/scraper/parsed_irbid_posts.json
 services/jobs/scraper/ingested_irbid_posts_response.json
 services/jobs/scraper/sample_irbid_posts_summary.json
+services/jobs/modeling/baseline_valuation_report.json
 
 # Keep committed Codex project skills, ignore runtime caches inside them
 .codex/**/__pycache__/
