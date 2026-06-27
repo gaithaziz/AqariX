@@ -37,3 +37,11 @@ python services/jobs/data/csv_to_ingest_posts.py --input services/jobs/data/coll
 ```bash
 python services/jobs/data/ingest_collected_posts.py --input services/jobs/data/collected_irbid_posts.csv --api-base-url http://127.0.0.1:8000
 ```
+
+5. Audit modeling readiness locally:
+
+```bash
+python services/jobs/data/audit_collected_posts.py --input services/jobs/data/collected_irbid_posts.csv
+```
+
+This writes `collected_irbid_posts.audit.json`.

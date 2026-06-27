@@ -14,6 +14,7 @@ from scraper.summarize_sample_posts import summarize_parsed_posts  # noqa: E402
 from modeling.baseline_valuation import build_baseline_report  # noqa: E402
 from data.csv_to_ingest_posts import DEFAULT_INPUT as REAL_DATA_TEMPLATE  # noqa: E402
 from data.csv_to_ingest_posts import csv_to_ingest_payload  # noqa: E402
+from data.audit_collected_posts import audit_collected_posts  # noqa: E402
 from data.ingest_collected_posts import DEFAULT_OUTPUT as COLLECTED_INGEST_RESPONSE  # noqa: E402
 
 
@@ -98,3 +99,12 @@ def test_convert_real_irbid_csv_rejects_missing_text() -> None:
 
 def test_collected_ingest_response_default_is_ignored_output() -> None:
     assert COLLECTED_INGEST_RESPONSE.name == "collected_irbid_posts.response.json"
+
+
+def test_audit_real_irbid_csv_template() -> None:
+    audit = audit_collected_posts(REAL_DATA_TEMPLATE)
+
+    assert audit["summary"]["total_posts"] == 2
+    assert audit["summary"]["model_ready_posts"] == 2
+    assert audit["baseline"]["readiness"]["training_ready"] is False
+    assert audit["baseline"]["readiness"]["next_step"] == "collect_real_irbid_posts"

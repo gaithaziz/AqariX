@@ -102,6 +102,7 @@ services/jobs/modeling/baseline_valuation_report.json
 services/jobs/data/collected_*.csv
 services/jobs/data/*.ingest.json
 services/jobs/data/*.response.json
+services/jobs/data/*.audit.json
 
 # Keep committed Codex project skills, ignore runtime caches inside them
 .codex/**/__pycache__/
