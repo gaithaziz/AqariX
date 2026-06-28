@@ -40,10 +40,10 @@ Supabase must not be used for MVP auth or hosting.
 - Redis-compatible managed cache for API/jobs caching, rate limits, quotas, and idempotency keys when paid/production usage needs persistence. Free Railway staging may leave `REDIS_URL` empty.
 - Cloudflare R2 object storage for listing media and agency assets.
 - PostgreSQL/pgvector for MVP vector matching unless scale proves otherwise.
-- Railway API service for staging; background jobs remain local/deferred until they do real work.
+- Railway API service for staging; it also serves the built React web app as a static fallback when Vercel's `.vercel.app` edge is unavailable.
 - Railway cron jobs or simple scheduled Python jobs for ingestion, alerts, retraining, and maintenance tasks when needed.
 - Flutter mobile app build pipeline.
-- Vercel-hosted React + Vite web dashboard for seller/dealer, admin, and agency surfaces.
+- Vercel-hosted React + Vite web dashboard for seller/dealer, admin, and agency surfaces, with the Railway root URL as the staging fallback.
 - Clerk for authentication and organization-aware role access.
 - Docker Compose for local service separation across API, jobs, database, and Redis.
 

@@ -83,7 +83,7 @@ type FeedbackValues = {
 
 type ApiStatus = 'idle' | 'saving' | 'saved' | 'error'
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL as string | undefined
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL as string | undefined) || window.location.origin
 const hasClerkPublishableKey = Boolean(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY)
 
 const fallbackListings: Listing[] = [

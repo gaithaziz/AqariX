@@ -1,3 +1,16 @@
+FROM node:24-alpine AS web
+
+WORKDIR /repo
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/web/package.json apps/web/package.json
+RUN corepack enable && pnpm install --frozen-lockfile
+
+COPY apps/web apps/web
+ENV VITE_API_BASE_URL=""
+ENV VITE_APP_ENV=staging
+RUN pnpm --dir apps/web build
+
 FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -9,5 +22,6 @@ COPY services/api/pyproject.toml ./
 RUN pip install --no-cache-dir -e .
 
 COPY services/api ./
+COPY --from=web /repo/apps/web/dist ./web-dist
 
 CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]

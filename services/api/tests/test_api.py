@@ -30,6 +30,13 @@ def test_root_index() -> None:
     assert "/health" in response.json()["endpoints"]
 
 
+def test_api_index() -> None:
+    response = client.get("/api")
+
+    assert response.status_code == 200
+    assert response.json()["name"] == "AqariX API"
+
+
 def test_listing_search() -> None:
     response = client.get("/listings", params={"city": "Irbid"})
 

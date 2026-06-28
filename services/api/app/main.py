@@ -1,7 +1,10 @@
+from pathlib import Path
 from uuid import UUID
 
-from fastapi import Depends, FastAPI, Query, Request
+from fastapi import Depends, FastAPI, HTTPException, Query, Request
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.auth import CurrentUser, get_current_user
 from app.cache import cache_get_json, cache_key, cache_set_json
@@ -39,6 +42,11 @@ app = FastAPI(
 )
 
 settings = get_settings()
+web_dist = Path(__file__).resolve().parent.parent / "web-dist"
+web_index = web_dist / "index.html"
+
+if (web_dist / "assets").exists():
+    app.mount("/assets", StaticFiles(directory=web_dist / "assets"), name="assets")
 
 app.add_middleware(
     CORSMiddleware,
@@ -55,8 +63,15 @@ def health() -> dict[str, str]:
     return {"status": "ok", "env": settings.app_env}
 
 
-@app.get("/")
-def root() -> dict[str, object]:
+@app.get("/", response_model=None)
+def root():
+    if web_index.exists():
+        return FileResponse(web_index)
+    return api_index()
+
+
+@app.get("/api")
+def api_index() -> dict[str, object]:
     settings = get_settings()
     return {
         "name": "AqariX API",
@@ -179,3 +194,13 @@ def start_lead_room(
     enforce_limit("lead-room-daily", current_user.id, settings.quota_lead_rooms_per_day, 86_400)
     record_usage("lead-room", settings.cost_alert_requests_per_day)
     return create_lead_room(current_user.id, payload)
+
+
+@app.get("/{path:path}", response_model=None)
+def web_fallback(path: str):
+    target = (web_dist / path).resolve()
+    if web_dist.resolve() in target.parents and target.is_file():
+        return FileResponse(target)
+    if web_index.exists():
+        return FileResponse(web_index)
+    raise HTTPException(status_code=404, detail="Not Found")

@@ -17,8 +17,8 @@ Outcomes:
 - Baseline rate limits, quotas, debounce patterns, and cost/spend alerts: Redis-backed API counters and debounced web listing search exist; provider spend alerts expand when paid integrations are connected.
 - Design system: web shell has Arabic/RTL, light/dark, and role-oriented MVP surfaces.
 - Docker verification: `docker compose build` passes and the API returns `/health` through Docker.
-- Staging API deployment: Railway service is live at `https://aqarix-production.up.railway.app`; `/health` responds successfully with the staging environment.
-- Staging web deployment: Vercel production deployment is ready at `https://aqari-x.vercel.app` with Railway API and Clerk public env values configured; browser smoke test passed.
+- Staging API deployment: Railway service is live at `https://aqarix-production.up.railway.app`; `/health` responds successfully with the staging environment, and `/api` exposes the API index.
+- Staging web deployment: Vercel production deployment exists at `https://aqari-x.vercel.app`, but `.vercel.app` edge access is unreliable; Railway now serves the built React web app from `/` as the working staging fallback.
 - Web-to-API wiring: listing search, listing-view behavior events, listing feedback submission/summary, and lead-room creation call the FastAPI staging API.
 - Documentation baseline: core docs, guardrails, deployment notes, and roadmap phase status exist.
 

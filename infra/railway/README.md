@@ -1,6 +1,6 @@
 # Railway Setup
 
-Use Railway for the staging FastAPI API only.
+Use Railway for the staging FastAPI API and static web fallback.
 
 Deploy settings:
 
@@ -8,6 +8,7 @@ Deploy settings:
 - Branch: `Ghaith`.
 - Config file: `railway.json` at the repo root.
 - Dockerfile: `Dockerfile.railway` at the repo root.
+- Public app/API root: `/`.
 - Health check: `/health`.
 
 ## Railway Steps
@@ -20,6 +21,7 @@ Deploy settings:
 6. Add the variables below.
 7. Deploy.
 8. Open `/health` on the Railway domain.
+9. Open `/` on the Railway domain if Vercel's `.vercel.app` edge is unavailable.
 
 Expected response:
 
@@ -45,7 +47,7 @@ RATE_LIMIT_USER_PER_MINUTE=120
 QUOTA_WRITES_PER_DAY=1000
 QUOTA_LEAD_ROOMS_PER_DAY=25
 COST_ALERT_REQUESTS_PER_DAY=1000
-CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,https://aqari-x.vercel.app
+CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,https://aqari-x.vercel.app,https://aqarix-production.up.railway.app
 R2_ACCOUNT_ID=
 R2_ACCESS_KEY_ID=
 R2_SECRET_ACCESS_KEY=
