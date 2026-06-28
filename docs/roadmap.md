@@ -18,11 +18,12 @@ Outcomes:
 - Design system: web shell has Arabic/RTL, light/dark, and role-oriented MVP surfaces.
 - Docker verification: `docker compose build` passes and the API returns `/health` through Docker.
 - Staging API deployment: Railway service is live at `https://aqarix-production.up.railway.app`; `/health` responds successfully. Railway still needs `APP_ENV=staging` applied because the current health payload reports `env` as `local`.
+- Staging web deployment: Vercel production deployment is ready at `https://aqari-x.vercel.app` with Railway API and Clerk public env values configured.
 - Documentation baseline: core docs, guardrails, deployment notes, and roadmap phase status exist.
 
 Left:
 
-- Deploy staging web to Vercel from `vercel.json`.
+- Confirm the Vercel web URL in a browser and verify listing search reaches the Railway API.
 - Expand web-to-API wiring beyond listing search when the next non-AI workflow is ready.
 
 ## Phase 1 - AI/Data Core
