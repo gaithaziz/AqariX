@@ -20,6 +20,10 @@ from modeling.export_modeling_dataset import (  # noqa: E402
     write_modeling_dataset,
 )
 from modeling.train_baseline_model import MODEL_VERSION, train_baseline_model  # noqa: E402
+from modeling.train_valuation_experiment import (  # noqa: E402
+    MODEL_VERSION as EXPERIMENT_MODEL_VERSION,
+)
+from modeling.train_valuation_experiment import load_modeling_dataset, train_valuation_experiment  # noqa: E402
 from data.csv_to_ingest_posts import DEFAULT_INPUT as REAL_DATA_TEMPLATE  # noqa: E402
 from data.csv_to_ingest_posts import csv_to_ingest_payload  # noqa: E402
 from data.audit_collected_posts import audit_collected_posts  # noqa: E402
@@ -131,6 +135,23 @@ def test_export_modeling_dataset_loads_real_csv_template() -> None:
     assert rows[0]["external_id"] == "real-irbid-001"
     assert rows[0]["target_price_jod"] is not None
     assert rows[0]["raw_text"]
+
+
+def test_train_valuation_experiment_from_exported_dataset() -> None:
+    rows = build_modeling_rows(parse_posts_file(DEFAULT_INPUT), model_ready_only=True)
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        dataset = Path(tmpdir) / "valuation_modeling_dataset.csv"
+        write_modeling_dataset(rows, dataset)
+
+        artifact = train_valuation_experiment(load_modeling_dataset(dataset))
+
+    assert artifact["model_version"] == EXPERIMENT_MODEL_VERSION
+    assert artifact["dataset"]["usable_records"] >= 10
+    assert artifact["model"]["fallback_unit_price_lookup"]
+    assert artifact["evaluation"]["method"] == "holdout_median_comparable_unit_price"
+    assert artifact["promotion"]["status"] == "blocked"
+    assert "not_enough_promotion_records" in artifact["promotion"]["blocking_reasons"]
 
 
 def test_convert_real_irbid_csv_template_to_ingest_payload() -> None:

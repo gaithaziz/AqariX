@@ -32,6 +32,16 @@ This writes `valuation_modeling_dataset.csv`, which is ignored by Git.
 
 Use this CSV as the first Colab/sklearn/XGBoost input table. The target column is `target_price_jod`; the main baseline feature is `unit_price_jod`, and the other columns carry parsed property, location, quality, and text signals.
 
+## Train Valuation Experiment
+
+```bash
+python services/jobs/modeling/train_valuation_experiment.py
+```
+
+This writes `valuation_experiment.json`, which is ignored by Git.
+
+The experiment trains a deterministic median-comparable model from `valuation_modeling_dataset.csv` and reports holdout MAE/MAPE. It is a workflow gate before heavier ML, not the final AVM.
+
 ## Predict With Baseline Model
 
 ```bash
