@@ -10,7 +10,7 @@ if str(JOBS_ROOT) not in sys.path:
     sys.path.insert(0, str(JOBS_ROOT))
 
 from data.audit_collected_posts import audit_collected_posts  # noqa: E402
-from data.audit_collection_sources import audit_collection_sources  # noqa: E402
+from data.audit_collection_sources import DEFAULT_SOURCE_LOG, audit_collection_sources  # noqa: E402
 DEFAULT_COLLECTION = Path(__file__).with_name("collected_irbid_posts.csv")
 DEFAULT_OUTPUT = Path(__file__).with_name("collection_progress.json")
 TARGETS = {
@@ -23,17 +23,18 @@ TARGETS = {
 def main() -> None:
     parser = argparse.ArgumentParser(description="Report Irbid listing collection progress.")
     parser.add_argument("--input", type=Path, default=DEFAULT_COLLECTION)
+    parser.add_argument("--source-log", type=Path, default=DEFAULT_SOURCE_LOG)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
 
-    report = build_collection_progress(args.input)
+    report = build_collection_progress(args.input, source_log_path=args.source_log)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print_progress(report)
 
 
-def build_collection_progress(path: Path) -> dict[str, Any]:
+def build_collection_progress(path: Path, source_log_path: Path = DEFAULT_SOURCE_LOG) -> dict[str, Any]:
     audit = audit_collected_posts(path)
-    source_audit = audit_collection_sources(path)
+    source_audit = audit_collection_sources(path, source_log_path)
     summary = audit["summary"]
     model_ready = summary["model_ready_posts"]
     total = summary["total_posts"]

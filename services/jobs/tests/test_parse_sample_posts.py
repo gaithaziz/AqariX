@@ -32,6 +32,7 @@ from data.audit_collection_sources import audit_collection_sources  # noqa: E402
 from data.append_collected_post import append_collected_post, next_external_id  # noqa: E402
 from data.append_collected_posts import append_batch_rows, load_input_rows  # noqa: E402
 from data.collection_progress import build_collection_progress  # noqa: E402
+from data.run_collection_pipeline import run_collection_pipeline  # noqa: E402
 from data.ingest_collected_posts import DEFAULT_OUTPUT as COLLECTED_INGEST_RESPONSE  # noqa: E402
 
 
@@ -376,3 +377,23 @@ def test_collection_progress_reports_targets() -> None:
     assert progress["targets"]["colab_ml_starter"]["remaining_model_ready_rows"] == 98
     assert progress["targets"]["promotion_candidate"]["remaining_model_ready_rows"] == 298
     assert progress["next_action"] == "collect_more_real_irbid_listings"
+
+
+def test_run_collection_pipeline_writes_dataset_and_experiment() -> None:
+    with tempfile.TemporaryDirectory() as tmpdir:
+        dataset_output = Path(tmpdir) / "valuation_modeling_dataset.csv"
+        experiment_output = Path(tmpdir) / "valuation_experiment.json"
+        report = run_collection_pipeline(
+            REAL_DATA_TEMPLATE,
+            dataset_output=dataset_output,
+            experiment_output=experiment_output,
+        )
+
+        assert dataset_output.exists()
+        assert experiment_output.exists()
+
+    assert report["status"] == "ok"
+    assert report["collection"]["known_source_rows"] == 2
+    assert report["dataset"]["rows"] == 2
+    assert report["experiment"]["promotion"]["status"] == "blocked"
+    assert report["next_action"] == "collect_more_real_irbid_listings"

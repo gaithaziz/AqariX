@@ -102,4 +102,12 @@ This writes `collection_source_audit.json` and flags unknown source keys.
 python services/jobs/modeling/export_modeling_dataset.py --input services/jobs/data/collected_irbid_posts.csv --model-ready-only
 ```
 
+9. Run the full collection-to-modeling pipeline:
+
+```bash
+uv run python services/jobs/data/run_collection_pipeline.py --input services/jobs/data/collected_irbid_posts.csv
+```
+
+This writes `collection_pipeline_report.json`, `valuation_modeling_dataset.csv`, and `valuation_experiment.json` for the current collection file.
+
 The exporter accepts the collected CSV directly and writes `services/jobs/modeling/valuation_modeling_dataset.csv`.
