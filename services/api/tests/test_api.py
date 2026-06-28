@@ -1,4 +1,14 @@
+import sys
+import tempfile
+from pathlib import Path
 from uuid import UUID
+
+
+API_ROOT = Path(__file__).resolve().parents[1]
+JOBS_ROOT = API_ROOT.parent / "jobs"
+for path in (API_ROOT, JOBS_ROOT):
+    if str(path) not in sys.path:
+        sys.path.insert(0, str(path))
 
 import pytest
 from fastapi import HTTPException
@@ -6,6 +16,10 @@ from fastapi.testclient import TestClient
 
 from app import limits
 from app.main import app
+from app.nlp import valuation_ml as learned_valuation
+from modeling.export_modeling_dataset import build_modeling_rows, load_parsed_posts, write_modeling_dataset
+from modeling.valuation_ml import run_valuation_ml_experiment
+from scraper.parse_sample_posts import DEFAULT_INPUT
 
 client = TestClient(app)
 
@@ -107,6 +121,33 @@ def test_baseline_valuation_endpoint_returns_reason_when_missing_fields() -> Non
     assert body["matched_count"] == 0
     assert body["parsed"]["property_type"] == "apartment"
     assert "area_sqm" in body["quality"]["missing_fields"]
+
+
+def test_ai_valuation_endpoint_uses_learned_model_when_available(monkeypatch: pytest.MonkeyPatch) -> None:
+    rows = build_modeling_rows(load_parsed_posts(DEFAULT_INPUT), model_ready_only=True)
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp_path = Path(tmpdir)
+        dataset_path = tmp_path / "valuation_modeling_dataset.csv"
+        model_output = tmp_path / "valuation_ml_model.joblib"
+        report_output = tmp_path / "valuation_ml_experiment.json"
+        write_modeling_dataset(rows, dataset_path)
+        run_valuation_ml_experiment(
+            dataset_path,
+            model_output=model_output,
+            report_output=report_output,
+        )
+
+        monkeypatch.setattr(learned_valuation, "MODEL_ARTIFACT", model_output)
+        response = client.post("/ai/valuation", json={"text": rows[0]["raw_text"]})
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["method"] == "sklearn_ridge_text_regressor"
+    assert body["model_version"] == "sklearn-ridge-text-v0.1"
+    assert body["estimated_price_jod"] is not None
+    assert body["training_rows"] == len(rows)
+    assert body["feature_completeness"] > 0
 
 
 def test_ingest_raw_listing_posts_endpoint() -> None:

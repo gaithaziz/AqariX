@@ -116,6 +116,22 @@ class BaselineValuationResponse(BaseModel):
     parsed: ParsedListingTextResponse
 
 
+class AIValuationResponse(BaseModel):
+    estimated_price_jod: int | None
+    confidence: str
+    reason: str | None
+    method: str
+    model_version: str
+    quality: ParsedListingQuality
+    parsed: ParsedListingTextResponse
+    unit_metric: str | None = None
+    unit_area: float | None = None
+    matched_unit_price_jod: float | None = None
+    matched_count: int | None = None
+    feature_completeness: float | None = None
+    training_rows: int | None = None
+
+
 class RawListingPostIn(BaseModel):
     source: str = Field(min_length=1, max_length=100)
     external_id: str | None = Field(default=None, max_length=200)

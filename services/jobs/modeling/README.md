@@ -63,6 +63,8 @@ Predict with the saved model artifact:
 python services/jobs/modeling/predict_valuation_ml_model.py --text "شقة للبيع في ايدون ثلاث غرف حمامين مساحة 150 متر السعر 120000 دينار"
 ```
 
+The API route `POST /ai/valuation` uses this learned artifact when `valuation_ml_model.joblib` is present, and falls back to the baseline valuation path when it is not.
+
 ## Colab ML Starter
 
 Upload `valuation_modeling_dataset.csv` to Colab, then run:

@@ -6,8 +6,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.auth import CurrentUser, get_current_user
 from app.cache import cache_get_json, cache_key, cache_set_json
 from app.limits import enforce_limit, record_usage, request_identity
-from app.nlp.baseline_valuation import estimate_baseline_valuation
 from app.nlp.dialect_parser import parse_listing_text
+from app.nlp.baseline_valuation import estimate_baseline_valuation
+from app.nlp.valuation_ml import estimate_valuation
 from app.repository import (
     create_lead_room,
     get_feedback_summary,
@@ -32,6 +33,7 @@ from app.schemas import (
     ListingFeedbackIn,
     ListingFeedbackSummary,
     ListingSearchResponse,
+    AIValuationResponse,
     ParsedListingTextBatchResponse,
     ParsedListingTextResponse,
     ParsedListingQuality,
@@ -47,7 +49,7 @@ from app.settings import get_settings
 app = FastAPI(
     title="AqariX API",
     version="0.1.0",
-    description="MVP API shell. AI valuation and forecasting are intentionally not implemented.",
+    description="AqariX API for listing parsing, valuation, and investor workflows.",
 )
 
 app.add_middleware(
@@ -158,6 +160,23 @@ def estimate_raw_listing_value(
         ),
         parsed=parsed_to_response(valuation.parsed),
     )
+
+
+@app.post("/ai/valuation", response_model=AIValuationResponse)
+def estimate_ai_listing_value(
+    request: Request,
+    payload: RawListingTextIn,
+) -> AIValuationResponse:
+    settings = get_settings()
+    enforce_limit(
+        "ai-valuation",
+        request_identity(request),
+        settings.rate_limit_public_per_minute,
+        60,
+    )
+    record_usage("ai-valuation", settings.cost_alert_requests_per_day)
+    valuation = estimate_valuation(payload.text)
+    return AIValuationResponse.model_validate(valuation)
 
 
 @app.post("/ai/ingest-raw-listing-posts", response_model=StoredParsedListingBatchResponse)
