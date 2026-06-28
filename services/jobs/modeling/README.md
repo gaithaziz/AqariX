@@ -22,6 +22,16 @@ python services/jobs/modeling/train_baseline_model.py
 
 This writes `baseline_valuation_model.json`, which is ignored by Git.
 
+## Export Modeling Dataset
+
+```bash
+python services/jobs/modeling/export_modeling_dataset.py --model-ready-only
+```
+
+This writes `valuation_modeling_dataset.csv`, which is ignored by Git.
+
+Use this CSV as the first Colab/sklearn/XGBoost input table. The target column is `target_price_jod`; the main baseline feature is `unit_price_jod`, and the other columns carry parsed property, location, quality, and text signals.
+
 ## Predict With Baseline Model
 
 ```bash

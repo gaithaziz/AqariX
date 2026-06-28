@@ -14,6 +14,11 @@ from scraper.summarize_sample_posts import summarize_parsed_posts  # noqa: E402
 from modeling.baseline_valuation import build_baseline_report  # noqa: E402
 from modeling.predict_baseline_model import predict_price  # noqa: E402
 from modeling.evaluate_model_promotion import build_model_card  # noqa: E402
+from modeling.export_modeling_dataset import (  # noqa: E402
+    build_modeling_rows,
+    load_parsed_posts,
+    write_modeling_dataset,
+)
 from modeling.train_baseline_model import MODEL_VERSION, train_baseline_model  # noqa: E402
 from data.csv_to_ingest_posts import DEFAULT_INPUT as REAL_DATA_TEMPLATE  # noqa: E402
 from data.csv_to_ingest_posts import csv_to_ingest_payload  # noqa: E402
@@ -99,6 +104,33 @@ def test_model_promotion_is_blocked_for_seed_dataset() -> None:
     assert model_card["promotion"]["status"] == "blocked"
     assert "not_enough_model_ready_records" in model_card["promotion"]["blocking_reasons"]
     assert model_card["usage_guidance"]["requires_human_review"] is True
+
+
+def test_export_modeling_dataset_rows() -> None:
+    rows = build_modeling_rows(parse_posts_file(DEFAULT_INPUT), model_ready_only=True)
+
+    assert len(rows) >= 10
+    assert rows[0]["target_price_jod"] is not None
+    assert rows[0]["unit_price_jod"] is not None
+    assert rows[0]["is_model_ready"] is True
+    assert "raw_text" in rows[0]
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        output = Path(tmpdir) / "valuation_modeling_dataset.csv"
+        write_modeling_dataset(rows, output)
+
+        content = output.read_text(encoding="utf-8")
+        assert "target_price_jod" in content
+        assert "quality_score" in content
+
+
+def test_export_modeling_dataset_loads_real_csv_template() -> None:
+    rows = build_modeling_rows(load_parsed_posts(REAL_DATA_TEMPLATE), model_ready_only=True)
+
+    assert len(rows) == 2
+    assert rows[0]["external_id"] == "real-irbid-001"
+    assert rows[0]["target_price_jod"] is not None
+    assert rows[0]["raw_text"]
 
 
 def test_convert_real_irbid_csv_template_to_ingest_payload() -> None:

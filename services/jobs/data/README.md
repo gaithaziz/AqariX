@@ -45,3 +45,11 @@ python services/jobs/data/audit_collected_posts.py --input services/jobs/data/co
 ```
 
 This writes `collected_irbid_posts.audit.json`.
+
+6. Export a modeling table after parsing enough rows:
+
+```bash
+python services/jobs/modeling/export_modeling_dataset.py --input services/jobs/data/collected_irbid_posts.csv --model-ready-only
+```
+
+The exporter accepts the collected CSV directly and writes `services/jobs/modeling/valuation_modeling_dataset.csv`.

@@ -101,6 +101,7 @@ services/jobs/scraper/sample_irbid_posts_summary.json
 services/jobs/modeling/baseline_valuation_report.json
 services/jobs/modeling/baseline_valuation_model.json
 services/jobs/modeling/baseline_valuation_model_card.json
+services/jobs/modeling/valuation_modeling_dataset.csv
 services/jobs/data/collected_*.csv
 services/jobs/data/*.ingest.json
 services/jobs/data/*.response.json
