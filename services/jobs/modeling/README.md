@@ -42,6 +42,17 @@ This writes `valuation_experiment.json`, which is ignored by Git.
 
 The experiment trains a deterministic median-comparable model from `valuation_modeling_dataset.csv` and reports holdout MAE/MAPE. It is a workflow gate before heavier ML, not the final AVM.
 
+## Colab ML Starter
+
+Upload `valuation_modeling_dataset.csv` to Colab, then run:
+
+```bash
+pip install -r colab_requirements.txt
+python colab_valuation_starter.py --input valuation_modeling_dataset.csv
+```
+
+This trains a scikit-learn gradient boosting starter model and writes `valuation_ml_experiment.json`. Start using this after the dataset has at least 100 model-ready rows.
+
 ## Predict With Baseline Model
 
 ```bash
