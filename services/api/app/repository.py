@@ -11,12 +11,24 @@ from app.schemas import (
     LeadRoom,
     LeadRoomIn,
     Listing,
+    ListingIngestionRequest,
+    ListingIngestionResult,
     ListingFeedback,
     ListingFeedbackIn,
     ListingFeedbackSummary,
     OfferingAnalysis,
     PropertyType,
     Recommendation,
+    SavedOffering,
+    SavedOfferingIn,
+    SavedSearch,
+    SavedSearchIn,
+    Zone,
+)
+from app.snapshot_store import (
+    load_analysis_snapshot,
+    save_analysis_snapshot,
+    save_recommendation_snapshots,
 )
 
 
@@ -68,11 +80,19 @@ LISTINGS = [
     ),
 ]
 
+ZONES = [
+    Zone(id="irbid-al-hay-al-sharqi", city="Irbid", name="Al Hay Al Sharqi", launch_priority=1, status="demo"),
+    Zone(id="irbid-university-district", city="Irbid", name="University District", launch_priority=2, status="demo"),
+    Zone(id="irbid-city-center", city="Irbid", name="City Center", launch_priority=3, status="demo"),
+]
+
 profiles: dict[str, BuyerInvestorProfile] = {}
 behavior_events: list[BehaviorEvent] = []
 listing_feedback: list[ListingFeedback] = []
 lead_rooms: list[LeadRoom] = []
 analysis_snapshots: dict[UUID, OfferingAnalysis] = {}
+saved_offerings: list[SavedOffering] = []
+saved_searches: list[SavedSearch] = []
 
 
 def search_listings(
@@ -92,6 +112,40 @@ def search_listings(
 
 def get_listing(listing_id: UUID) -> Listing | None:
     return next((listing for listing in LISTINGS if listing.id == listing_id), None)
+
+
+def list_zones(city: str | None = None) -> list[Zone]:
+    if city:
+        return [zone for zone in ZONES if zone.city.lower() == city.lower()]
+    return ZONES
+
+
+def ingest_listings(payload: ListingIngestionRequest) -> ListingIngestionResult:
+    imported_ids: list[UUID] = []
+    for item in payload.listings:
+        duplicate = next(
+            (
+                listing
+                for listing in LISTINGS
+                if listing.title.lower() == item.title.lower()
+                and listing.city.lower() == item.city.lower()
+                and listing.neighborhood.lower() == item.neighborhood.lower()
+            ),
+            None,
+        )
+        if duplicate:
+            imported_ids.append(duplicate.id)
+            continue
+
+        listing = Listing(id=uuid4(), **item.model_dump())
+        LISTINGS.append(listing)
+        imported_ids.append(listing.id)
+
+    return ListingIngestionResult(
+        source=payload.source,
+        imported_count=len(imported_ids),
+        listing_ids=imported_ids,
+    )
 
 
 def get_comparable_listings(listing_id: UUID, limit: int = 3) -> list[ComparableListing]:
@@ -152,6 +206,12 @@ def get_or_create_offering_analysis(listing_id: UUID) -> OfferingAnalysis | None
     if not listing:
         return None
 
+    stored = load_analysis_snapshot(listing_id, "deterministic-phase1-shell-v1")
+    if stored:
+        snapshot = stored.model_copy(update={"reused_snapshot": True})
+        analysis_snapshots[listing_id] = snapshot
+        return snapshot
+
     comparables = get_comparable_listings(listing_id)
     prices_per_sqm = [item.price_per_sqm_jod for item in comparables]
     target_price_per_sqm = round(listing.asking_price_jod / listing.area_sqm)
@@ -190,6 +250,7 @@ def get_or_create_offering_analysis(listing_id: UUID) -> OfferingAnalysis | None
         model_version="deterministic-phase1-shell-v1",
     )
     analysis_snapshots[listing_id] = analysis
+    save_analysis_snapshot(listing, analysis)
     return analysis
 
 
@@ -201,6 +262,57 @@ def save_profile(user_id: str, payload: BuyerInvestorProfileIn) -> BuyerInvestor
 
 def get_profile(user_id: str) -> BuyerInvestorProfile | None:
     return profiles.get(user_id)
+
+
+def list_saved_offerings(user_id: str) -> list[SavedOffering]:
+    return [saved for saved in saved_offerings if saved.user_id == user_id]
+
+
+def save_offering(user_id: str, payload: SavedOfferingIn) -> SavedOffering:
+    existing = next(
+        (
+            saved
+            for saved in saved_offerings
+            if saved.user_id == user_id and saved.listing_id == payload.listing_id
+        ),
+        None,
+    )
+    if existing:
+        return existing
+    saved = SavedOffering(user_id=user_id, listing_id=payload.listing_id)
+    saved_offerings.append(saved)
+    record_behavior(user_id, BehaviorEventIn(event_type="listing_saved", listing_id=payload.listing_id))
+    return saved
+
+
+def remove_saved_offering(user_id: str, saved_id: UUID) -> bool:
+    for index, saved in enumerate(saved_offerings):
+        if saved.id == saved_id and saved.user_id == user_id:
+            saved_offerings.pop(index)
+            record_behavior(
+                user_id,
+                BehaviorEventIn(event_type="listing_unsaved", listing_id=saved.listing_id),
+            )
+            return True
+    return False
+
+
+def list_saved_searches(user_id: str) -> list[SavedSearch]:
+    return [saved for saved in saved_searches if saved.user_id == user_id]
+
+
+def save_search(user_id: str, payload: SavedSearchIn) -> SavedSearch:
+    saved = SavedSearch(user_id=user_id, **payload.model_dump())
+    saved_searches.append(saved)
+    record_behavior(
+        user_id,
+        BehaviorEventIn(
+            event_type="saved_search_created",
+            search_filters=payload.filters,
+            metadata={"saved_search_id": str(saved.id), "alerts_enabled": payload.alerts_enabled},
+        ),
+    )
+    return saved
 
 
 def record_behavior(user_id: str, payload: BehaviorEventIn) -> BehaviorEvent:
@@ -246,7 +358,9 @@ def get_recommendations(user_id: str) -> list[Recommendation]:
             )
         )
 
-    return sorted(recommendations, key=lambda item: item.recommendation_score, reverse=True)
+    ranked = sorted(recommendations, key=lambda item: item.recommendation_score, reverse=True)
+    save_recommendation_snapshots(user_id, ranked)
+    return ranked
 
 
 def submit_feedback(user_id: str, listing_id: UUID, payload: ListingFeedbackIn) -> ListingFeedback:

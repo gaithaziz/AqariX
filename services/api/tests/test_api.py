@@ -4,6 +4,7 @@ import pytest
 from fastapi import HTTPException
 from fastapi.testclient import TestClient
 
+from app import cache
 from app import limits
 from app.main import app
 
@@ -12,6 +13,8 @@ client = TestClient(app)
 
 @pytest.fixture(autouse=True)
 def disable_redis(monkeypatch: pytest.MonkeyPatch) -> None:
+    cache.get_redis_client.cache_clear()
+    monkeypatch.setattr(cache, "get_redis_client", lambda: None)
     monkeypatch.setattr(limits, "get_redis_client", lambda: None)
 
 
@@ -44,6 +47,44 @@ def test_listing_search() -> None:
     body = response.json()
     assert body["total"] >= 1
     assert body["items"][0]["city"] == "Irbid"
+
+
+def test_zone_catalog_and_listing_ingestion() -> None:
+    headers = {"x-demo-user": "ingestion-user"}
+
+    zones_response = client.get("/zones", params={"city": "Irbid"})
+    assert zones_response.status_code == 200
+    assert zones_response.json()[0]["city"] == "Irbid"
+
+    ingestion_response = client.post(
+        "/listings/ingest",
+        headers=headers,
+        json={
+            "source": "test-fixture",
+            "listings": [
+                {
+                    "title": "Irbid Test Garden Flat",
+                    "city": "Irbid",
+                    "neighborhood": "Al Huson",
+                    "property_type": "apartment",
+                    "asking_price_jod": 88000,
+                    "area_sqm": 120,
+                    "bedrooms": 2,
+                    "bathrooms": 2,
+                    "aqari_score": 7.2,
+                    "confidence": "medium",
+                    "price_signal": "unreviewed",
+                    "image_url": "https://example.com/irbid-test.jpg",
+                }
+            ],
+        },
+    )
+    assert ingestion_response.status_code == 200
+    assert ingestion_response.json()["imported_count"] == 1
+
+    search_response = client.get("/listings", params={"neighborhood": "Al Huson"})
+    assert search_response.status_code == 200
+    assert search_response.json()["items"][0]["title"] == "Irbid Test Garden Flat"
 
 
 def test_cors_allows_vercel_web_origin() -> None:
@@ -108,6 +149,52 @@ def test_profile_behavior_recommendation_feedback_and_lead_room_flow() -> None:
     assert reused_analysis_response.status_code == 200
     assert reused_analysis_response.json()["reused_snapshot"] is True
 
+    idempotent_analysis_headers = {**headers, "Idempotency-Key": "analysis-key-1"}
+    idempotent_analysis_response = client.post(
+        f"/listings/{listing_id}/analysis",
+        headers=idempotent_analysis_headers,
+    )
+    replayed_analysis_response = client.post(
+        f"/listings/{listing_id}/analysis",
+        headers=idempotent_analysis_headers,
+    )
+    assert idempotent_analysis_response.status_code == 200
+    assert replayed_analysis_response.status_code == 200
+    assert replayed_analysis_response.json()["id"] == idempotent_analysis_response.json()["id"]
+
+    saved_offering_response = client.post(
+        "/saved-offerings",
+        headers=headers,
+        json={"listing_id": listing_id},
+    )
+    assert saved_offering_response.status_code == 200
+    saved_offering = saved_offering_response.json()
+
+    saved_offerings_response = client.get("/saved-offerings", headers=headers)
+    assert saved_offerings_response.status_code == 200
+    assert saved_offerings_response.json()[0]["listing_id"] == listing_id
+
+    saved_search_response = client.post(
+        "/saved-searches",
+        headers=headers,
+        json={
+            "name": "Irbid villas under 900k",
+            "filters": {"city": "Irbid", "property_type": "villa", "budget_max_jod": 900000},
+            "alerts_enabled": True,
+        },
+    )
+    assert saved_search_response.status_code == 200
+
+    saved_searches_response = client.get("/saved-searches", headers=headers)
+    assert saved_searches_response.status_code == 200
+    assert saved_searches_response.json()[0]["name"] == "Irbid villas under 900k"
+
+    delete_saved_response = client.delete(
+        f"/saved-offerings/{saved_offering['id']}",
+        headers=headers,
+    )
+    assert delete_saved_response.status_code == 204
+
     feedback_response = client.post(
         f"/listings/{listing_id}/feedback",
         headers=headers,
@@ -128,7 +215,7 @@ def test_profile_behavior_recommendation_feedback_and_lead_room_flow() -> None:
 
     lead_room_response = client.post(
         "/lead-rooms",
-        headers=headers,
+        headers={**headers, "Idempotency-Key": "lead-room-key-1"},
         json={
             "listing_id": listing_id,
             "intent": "viewing",
@@ -138,6 +225,19 @@ def test_profile_behavior_recommendation_feedback_and_lead_room_flow() -> None:
     )
     assert lead_room_response.status_code == 200
     assert lead_room_response.json()["stage"] == "new_inquiry"
+
+    replayed_lead_room_response = client.post(
+        "/lead-rooms",
+        headers={**headers, "Idempotency-Key": "lead-room-key-1"},
+        json={
+            "listing_id": listing_id,
+            "intent": "viewing",
+            "budget_fit": "inside_budget",
+            "preferred_contact_method": "lead_room",
+        },
+    )
+    assert replayed_lead_room_response.status_code == 200
+    assert replayed_lead_room_response.json()["id"] == lead_room_response.json()["id"]
 
 
 def test_limit_counter_blocks_after_threshold(monkeypatch: pytest.MonkeyPatch) -> None:

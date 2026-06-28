@@ -11,8 +11,8 @@ Outcomes:
 - PostGIS setup: migration enables PostGIS on the Neon development database.
 - Behavior event model: API schema and route exist.
 - Listing feedback and ad-improvement loop: API schema, feedback route, and aggregated summary route exist.
-- Listing ingestion plan: seed/demo listing data exists; real ingestion is still pending.
-- Initial zones: Irbid-centered demo data exists; real zone dataset is still pending.
+- Listing ingestion plan: seed/demo listing data and protected manual ingestion endpoint exist; production source integrations are still pending.
+- Initial zones: Irbid-centered demo zone catalog exists; real GIS-backed zone dataset is still pending.
 - Auth roles: Clerk JWT boundary, local demo-user fallback, and local Clerk development env values exist.
 - Baseline rate limits, quotas, debounce patterns, and cost/spend alerts: Redis-backed API counters and debounced web listing search exist; provider spend alerts expand when paid integrations are connected.
 - Design system: web shell has Arabic/RTL, light/dark, and role-oriented MVP surfaces.
@@ -24,12 +24,12 @@ Outcomes:
 
 Left:
 
-- Phase 0 is complete. Real listing ingestion and real zone datasets move into the next non-AI implementation slice.
+- Phase 0 is complete. Production listing source integrations and real GIS-backed zone datasets move into later data work.
 
 ## Phase 1 - AI/Data Core
 
 Timeline: Weeks 5-12
-Status: In progress - non-AI API shell started
+Status: In progress - non-AI API shell expanded
 
 Outcomes:
 
@@ -37,15 +37,19 @@ Outcomes:
 - Comparable logic: deterministic demo comparable endpoint exists; model-ranked comparables remain pending.
 - Recommendation baseline using intake and behavior events: deterministic placeholder endpoint exists; model-backed ranking remains pending.
 - Forecast prototype.
-- Offering-analysis API: deterministic shell endpoint exists with snapshot reuse; AI-generated analysis remains pending.
+- Offering-analysis API: deterministic shell endpoint exists with Redis/idempotency reuse and PostgreSQL snapshot persistence when staging/prod database access is configured; AI-generated analysis remains pending.
 - Evidence and confidence object: API contract exists with evidence sources, comparable evidence, confidence label, caveats, and model/source version.
-- Redis-cached AI output snapshots and token/cost tracking: offering-analysis shell is Redis-cacheable and rate/cost counted; real token/model-cost tracking remains pending.
+- Recommendation snapshot persistence: deterministic recommendation snapshots append to PostgreSQL when staging/prod database access is configured.
+- Saved offerings/searches: API routes exist and emit behavior events for recommendation inputs.
+- Redis-cached output snapshots and token/cost tracking: offering-analysis shell is Redis-cacheable and rate/cost counted; real token/model-cost tracking remains pending.
+- Listing ingestion and zones: protected manual listing ingestion and public Irbid demo zones exist; production source integrations and GIS datasets remain pending.
+- Duplicate-write protection: idempotency keys are supported for offering analysis and lead-room creation.
 
 Left:
 
 - AI-owned features stay deferred until the AI teammate begins this phase.
-- Persist analysis and recommendation snapshots to PostgreSQL instead of the current in-memory demo store.
 - Replace deterministic comparable/analysis placeholders with approved AVM, forecast, and model-backed ranking once AI work starts.
+- Replace manual/demo ingestion and zone data with approved production sources and GIS-backed market zones.
 
 ## Phase 2 - Role-Complete MVP
 

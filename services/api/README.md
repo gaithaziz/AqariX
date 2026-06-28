@@ -6,13 +6,17 @@ This service currently implements non-AI product contracts only:
 
 - Health check
 - Listing search
+- Public Irbid demo zone catalog
+- Protected manual listing ingestion for demo/pre-AI batches
 - Buyer/investor intake
 - Behavior events
 - Deterministic recommendation placeholder
 - Deterministic comparable listing candidates
-- Offering-analysis shell with reusable snapshots, evidence sources, confidence labels, and caveats
+- Offering-analysis shell with reusable Redis/PostgreSQL snapshots, evidence sources, confidence labels, and caveats
+- Saved offerings and saved searches as recommendation inputs
 - Listing feedback
 - Lead-room creation
+- Idempotency-key replay for offering analysis and lead-room creation
 - Redis-backed caching for read-heavy endpoints when `REDIS_URL` is configured
 - Redis-backed rate limits, write quotas, and request-volume cost alerts when `REDIS_URL` is configured
 

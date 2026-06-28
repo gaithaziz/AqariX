@@ -20,6 +20,7 @@ class Settings(BaseSettings):
         "http://localhost:5173,http://127.0.0.1:5173,"
         "https://aqari-x.vercel.app,https://aqarix-production.up.railway.app"
     )
+    snapshot_persistence_enabled: bool = True
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 

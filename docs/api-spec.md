@@ -63,6 +63,39 @@ Filters:
 - Verified status
 - Map bounding box
 
+### POST `/listings/ingest`
+
+Protected manual ingestion endpoint for pre-AI and demo listing batches.
+
+Returns:
+
+- Source name
+- Imported count
+- Listing IDs
+
+Rules:
+
+- Must be authenticated.
+- Must be rate-limited and daily quota-limited.
+- Must reject invalid listing shape and protect against duplicate imports.
+- Production source integrations should replace manual/demo imports later.
+
+### GET `/zones`
+
+Return public launch-zone catalog entries.
+
+Filters:
+
+- City
+
+Returns:
+
+- Zone ID
+- City
+- Name
+- Launch priority
+- Dataset status
+
 ### GET `/recommendations`
 
 Return personalized listing recommendations for the current buyer/investor.
@@ -184,7 +217,9 @@ Returns:
 Rules:
 
 - Analysis generation must be rate-limited and quota-aware by user, organization, listing, and endpoint where practical.
+- Duplicate client retries should send `Idempotency-Key`.
 - Reuse existing analysis snapshots when inputs and model version have not materially changed.
+- Persist reusable analysis snapshots to PostgreSQL in staging/production when database access is configured.
 - Cap prompt, context, and output size.
 
 For the pre-AI implementation, this endpoint may return a deterministic shell with comparable evidence, caveats, a fixed `model_version`, and no AVM/forecast model output.
@@ -220,9 +255,18 @@ Return saved listings.
 
 Save a listing.
 
+Rules:
+
+- Must emit a `listing_saved` behavior event.
+- Repeated saves for the same user/listing should return the existing saved item.
+
 ### DELETE `/saved-offerings/{saved_id}`
 
 Remove a saved listing.
+
+Rules:
+
+- Must emit a `listing_unsaved` behavior event.
 
 ### GET `/saved-searches`
 
@@ -231,6 +275,10 @@ Return saved searches.
 ### POST `/saved-searches`
 
 Create a saved search and optional alerts.
+
+Rules:
+
+- Must emit a `saved_search_created` behavior event.
 
 ## Seller and Dealer
 
@@ -270,6 +318,10 @@ Required:
 - buyer/investor intent
 - budget fit
 - preferred contact method
+
+Rules:
+
+- Duplicate client retries should send `Idempotency-Key`.
 
 ### GET `/lead-rooms`
 

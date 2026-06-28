@@ -28,9 +28,43 @@ class Listing(BaseModel):
     image_url: str
 
 
+class ListingIn(BaseModel):
+    title: str
+    city: str
+    neighborhood: str
+    property_type: PropertyType
+    asking_price_jod: int = Field(gt=0)
+    area_sqm: int = Field(gt=0)
+    bedrooms: int | None = None
+    bathrooms: int | None = None
+    aqari_score: float = Field(default=7.0, ge=0, le=10)
+    confidence: str = "medium"
+    price_signal: str = "unreviewed"
+    image_url: str = ""
+
+
+class ListingIngestionRequest(BaseModel):
+    source: str = "manual"
+    listings: list[ListingIn]
+
+
+class ListingIngestionResult(BaseModel):
+    source: str
+    imported_count: int
+    listing_ids: list[UUID]
+
+
 class ListingSearchResponse(BaseModel):
     items: list[Listing]
     total: int
+
+
+class Zone(BaseModel):
+    id: str
+    city: str
+    name: str
+    launch_priority: int
+    status: str
 
 
 class BuyerInvestorProfileIn(BaseModel):
@@ -105,6 +139,29 @@ class OfferingAnalysis(BaseModel):
     caveats: list[str]
     model_version: str
     reused_snapshot: bool = False
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+
+
+class SavedOfferingIn(BaseModel):
+    listing_id: UUID
+
+
+class SavedOffering(BaseModel):
+    id: UUID = Field(default_factory=uuid4)
+    user_id: str
+    listing_id: UUID
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+
+
+class SavedSearchIn(BaseModel):
+    name: str
+    filters: dict[str, object] = Field(default_factory=dict)
+    alerts_enabled: bool = False
+
+
+class SavedSearch(SavedSearchIn):
+    id: UUID = Field(default_factory=uuid4)
+    user_id: str
     created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
 
