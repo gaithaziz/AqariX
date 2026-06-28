@@ -28,6 +28,7 @@ from modeling.train_valuation_experiment import load_modeling_dataset, train_val
 from data.csv_to_ingest_posts import DEFAULT_INPUT as REAL_DATA_TEMPLATE  # noqa: E402
 from data.csv_to_ingest_posts import csv_to_ingest_payload  # noqa: E402
 from data.audit_collected_posts import audit_collected_posts  # noqa: E402
+from data.audit_collection_sources import audit_collection_sources  # noqa: E402
 from data.append_collected_post import append_collected_post, next_external_id  # noqa: E402
 from data.append_collected_posts import append_batch_rows, load_input_rows  # noqa: E402
 from data.collection_progress import build_collection_progress  # noqa: E402
@@ -309,12 +310,46 @@ def test_audit_real_irbid_csv_template() -> None:
     assert audit["baseline"]["readiness"]["next_step"] == "collect_real_irbid_posts"
 
 
+def test_audit_collection_sources_reports_known_sources() -> None:
+    report = audit_collection_sources(REAL_DATA_TEMPLATE)
+
+    assert report["total_rows"] == 2
+    assert report["known_source_rows"] == 2
+    assert report["unknown_source_rows"] == 0
+    assert report["known_source_rate"] == 1.0
+    assert report["source_type_counts"] == {"manual_entry": 2}
+    assert report["allowed_use_counts"] == {"approved_listing_text": 2}
+    assert report["approved_source_names"] == ["Local manual collection"]
+    assert report["next_action"] == "continue_collecting_rows"
+
+
+def test_audit_collection_sources_flags_unknown_source() -> None:
+    with tempfile.TemporaryDirectory() as tmpdir:
+        collection_path = Path(tmpdir) / "collected_irbid_posts.csv"
+        collection_path.write_text(
+            "source,external_id,text,source_url,captured_at,collection_status\n"
+            "mystery_source,x1,شقة للبيع في اربد 100 متر 50000,,2026-06-28,needs_review\n",
+            encoding="utf-8",
+        )
+
+        report = audit_collection_sources(collection_path)
+
+    assert report["total_rows"] == 1
+    assert report["known_source_rows"] == 0
+    assert report["unknown_source_rows"] == 1
+    assert report["unknown_source_keys"] == ["mystery_source"]
+    assert report["next_action"] == "resolve_unknown_sources"
+
+
 def test_collection_progress_reports_targets() -> None:
     progress = build_collection_progress(REAL_DATA_TEMPLATE)
 
     assert progress["model_ready_rows"] == 2
     assert progress["source_counts"] == {"manual_collection": 2}
     assert progress["collection_status_counts"] == {"approved": 2}
+    assert progress["known_source_rows"] == 2
+    assert progress["unknown_source_rows"] == 0
+    assert progress["unknown_source_keys"] == []
     assert progress["targets"]["first_real_experiment"]["remaining_model_ready_rows"] == 28
     assert progress["targets"]["colab_ml_starter"]["remaining_model_ready_rows"] == 98
     assert progress["targets"]["promotion_candidate"]["remaining_model_ready_rows"] == 298
