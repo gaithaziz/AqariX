@@ -28,6 +28,14 @@ copy services\jobs\data\real_irbid_posts_template.csv services\jobs\data\collect
 
 2. Add real listing rows.
 
+You can append one listing safely with:
+
+```bash
+uv run python services/jobs/data/append_collected_post.py --text "شقة للبيع في اربد مساحة 150 متر السعر 90 الف دينار"
+```
+
+The helper writes to `collected_irbid_posts.csv`, generates an `external_id`, and blocks duplicate IDs.
+
 3. Convert to ingest JSON:
 
 ```bash

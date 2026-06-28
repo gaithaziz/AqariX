@@ -27,6 +27,7 @@ from modeling.train_valuation_experiment import load_modeling_dataset, train_val
 from data.csv_to_ingest_posts import DEFAULT_INPUT as REAL_DATA_TEMPLATE  # noqa: E402
 from data.csv_to_ingest_posts import csv_to_ingest_payload  # noqa: E402
 from data.audit_collected_posts import audit_collected_posts  # noqa: E402
+from data.append_collected_post import append_collected_post, next_external_id  # noqa: E402
 from data.ingest_collected_posts import DEFAULT_OUTPUT as COLLECTED_INGEST_RESPONSE  # noqa: E402
 
 
@@ -174,6 +175,43 @@ def test_convert_real_irbid_csv_rejects_missing_text() -> None:
             assert "missing text" in str(exc)
         else:
             raise AssertionError("Expected missing text validation error")
+
+
+def test_append_collected_post_generates_and_protects_external_ids() -> None:
+    with tempfile.TemporaryDirectory() as tmpdir:
+        path = Path(tmpdir) / "collected_irbid_posts.csv"
+
+        first_id = next_external_id(path, "2026-06-28")
+        append_collected_post(
+            path,
+            {
+                "source": "manual_collection",
+                "external_id": first_id,
+                "text": "ارض للبيع في الحصن مساحة 2 دونم السعر 70 الف دينار",
+                "source_url": "",
+                "captured_at": "2026-06-28",
+            },
+        )
+
+        assert first_id == "irbid-2026-0001"
+        assert next_external_id(path, "2026-06-28") == "irbid-2026-0002"
+        assert "external_id" in path.read_text(encoding="utf-8")
+
+        try:
+            append_collected_post(
+                path,
+                {
+                    "source": "manual_collection",
+                    "external_id": first_id,
+                    "text": "شقة للايجار في اربد مساحة 90 متر السعر 220 دينار",
+                    "source_url": "",
+                    "captured_at": "2026-06-28",
+                },
+            )
+        except ValueError as exc:
+            assert "Duplicate external_id" in str(exc)
+        else:
+            raise AssertionError("Expected duplicate external_id validation error")
 
 
 def test_collected_ingest_response_default_is_ignored_output() -> None:
