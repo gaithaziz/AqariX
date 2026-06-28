@@ -35,6 +35,8 @@ def main() -> None:
 def summarize_parsed_posts(parsed_posts: list[dict[str, Any]]) -> dict[str, Any]:
     property_types = Counter()
     intents = Counter()
+    sources = Counter()
+    collection_statuses = Counter()
     quality_grades = Counter()
     neighborhoods = Counter()
     missing_fields = Counter()
@@ -46,6 +48,8 @@ def summarize_parsed_posts(parsed_posts: list[dict[str, Any]]) -> dict[str, Any]
         parsed = post["parsed"]
         property_types.update([parsed.get("property_type") or "unknown"])
         intents.update([parsed.get("intent") or "unknown"])
+        sources.update([post.get("source") or "unknown"])
+        collection_statuses.update([post.get("collection_status") or "unknown"])
         quality = parsed["quality"]
         quality_grades.update([quality["grade"]])
         missing_fields.update(quality["missing_fields"])
@@ -64,6 +68,8 @@ def summarize_parsed_posts(parsed_posts: list[dict[str, Any]]) -> dict[str, Any]
         "contact_exposed_posts": contact_exposed,
         "property_type_counts": dict(sorted(property_types.items())),
         "intent_counts": dict(sorted(intents.items())),
+        "source_counts": dict(sorted(sources.items())),
+        "collection_status_counts": dict(sorted(collection_statuses.items())),
         "quality_grade_counts": dict(sorted(quality_grades.items())),
         "neighborhood_counts": dict(sorted(neighborhoods.items())),
         "missing_field_counts": dict(sorted(missing_fields.items())),

@@ -227,6 +227,8 @@ def test_audit_real_irbid_csv_template() -> None:
 
     assert audit["summary"]["total_posts"] == 2
     assert audit["summary"]["model_ready_posts"] == 2
+    assert audit["summary"]["source_counts"] == {"manual_collection": 2}
+    assert audit["summary"]["collection_status_counts"] == {"approved": 2}
     assert audit["baseline"]["readiness"]["training_ready"] is False
     assert audit["baseline"]["readiness"]["next_step"] == "collect_real_irbid_posts"
 
@@ -235,6 +237,8 @@ def test_collection_progress_reports_targets() -> None:
     progress = build_collection_progress(REAL_DATA_TEMPLATE)
 
     assert progress["model_ready_rows"] == 2
+    assert progress["source_counts"] == {"manual_collection": 2}
+    assert progress["collection_status_counts"] == {"approved": 2}
     assert progress["targets"]["first_real_experiment"]["remaining_model_ready_rows"] == 28
     assert progress["targets"]["colab_ml_starter"]["remaining_model_ready_rows"] == 98
     assert progress["targets"]["promotion_candidate"]["remaining_model_ready_rows"] == 298

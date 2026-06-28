@@ -43,6 +43,8 @@ def parse_post(post: dict[str, Any]) -> dict[str, Any]:
     return {
         "source": post.get("source"),
         "external_id": post.get("external_id"),
+        "source_url": post.get("source_url"),
+        "collection_status": post.get("collection_status") or "unknown",
         "raw_text": post["text"],
         "parsed": parsed_to_dict(parsed),
     }

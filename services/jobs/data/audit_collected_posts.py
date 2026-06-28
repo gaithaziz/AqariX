@@ -42,6 +42,7 @@ def audit_collected_posts(path: Path) -> dict[str, Any]:
                 "external_id": item["external_id"],
                 "text": item["text"],
                 "source_url": item.get("source_url"),
+                "collection_status": item.get("collection_status"),
             }
         )
         for item in payload["items"]

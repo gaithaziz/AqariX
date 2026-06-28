@@ -76,7 +76,7 @@ This writes `collected_irbid_posts.audit.json`.
 uv run python services/jobs/data/collection_progress.py --input services/jobs/data/collected_irbid_posts.csv
 ```
 
-This writes `collection_progress.json` and shows how many model-ready rows remain before the 30, 100, and 300 row targets.
+This writes `collection_progress.json` and shows how many model-ready rows remain before the 30, 100, and 300 row targets, plus source and status mix.
 
 7. Export a modeling table after parsing enough rows:
 

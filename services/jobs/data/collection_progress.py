@@ -52,6 +52,8 @@ def build_collection_progress(path: Path) -> dict[str, Any]:
         "top_warnings": top_items(summary["warning_counts"]),
         "property_type_counts": summary["property_type_counts"],
         "intent_counts": summary["intent_counts"],
+        "source_counts": summary["source_counts"],
+        "collection_status_counts": summary["collection_status_counts"],
         "neighborhood_counts": summary["neighborhood_counts"],
         "next_action": next_action(model_ready),
     }
@@ -64,6 +66,8 @@ def print_progress(report: dict[str, Any]) -> None:
         f"model-ready rows for first experiment "
         f"({first_target['remaining_model_ready_rows']} remaining)."
     )
+    print(f"Source mix: {format_counts(report['source_counts'])}")
+    print(f"Status mix: {format_counts(report['collection_status_counts'])}")
     print(f"Next action: {report['next_action']}")
 
 
@@ -82,6 +86,12 @@ def top_items(counts: dict[str, int], limit: int = 5) -> list[dict[str, int | st
         {"name": name, "count": count}
         for name, count in sorted(counts.items(), key=lambda item: item[1], reverse=True)[:limit]
     ]
+
+
+def format_counts(counts: dict[str, int]) -> str:
+    if not counts:
+        return "none"
+    return ", ".join(f"{name}={count}" for name, count in counts.items())
 
 
 if __name__ == "__main__":
