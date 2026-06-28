@@ -2,6 +2,8 @@
 
 Use `real_irbid_posts_template.csv` as the collection format for real public or approved Irbid listing examples.
 
+See `collection_checklist.md` while collecting rows.
+
 ## Columns
 
 - `source`: where the listing came from, such as `manual_collection`, `dealer_partner`, or an approved classifieds source.
