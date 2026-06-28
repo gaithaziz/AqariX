@@ -143,6 +143,18 @@ export type BaselineValuationResponse = {
   parsed: ParsedListingTextResponse
 }
 
+export type ValuationResponse = Omit<
+  BaselineValuationResponse,
+  'unit_metric' | 'unit_area' | 'matched_unit_price_jod' | 'matched_count'
+> & {
+  unit_metric?: string | null
+  unit_area?: number | null
+  matched_unit_price_jod?: number | null
+  matched_count?: number | null
+  feature_completeness?: number | null
+  training_rows?: number | null
+}
+
 export type BehaviorEventIn = {
   event_type: string
   listing_id?: string | null
@@ -286,6 +298,13 @@ export function parseListingText(text: string): Promise<ParsedListingTextRespons
 
 export function estimateBaselineValue(text: string): Promise<BaselineValuationResponse> {
   return requestJson<BaselineValuationResponse>('/ai/baseline-valuation', {
+    method: 'POST',
+    body: JSON.stringify({ text }),
+  })
+}
+
+export function estimateValuation(text: string): Promise<ValuationResponse> {
+  return requestJson<ValuationResponse>('/ai/valuation', {
     method: 'POST',
     body: JSON.stringify({ text }),
   })

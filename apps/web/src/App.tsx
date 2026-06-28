@@ -34,7 +34,6 @@ import {
 } from 'lucide-react'
 import './App.css'
 import {
-  type BaselineValuationResponse,
   type BuyerInvestorProfile,
   type BuyerInvestorProfileIn,
   type LeadRoom,
@@ -44,7 +43,8 @@ import {
   type PropertyType,
   type Recommendation,
   DEFAULT_DEMO_USER_ID,
-  estimateBaselineValue,
+  type ValuationResponse,
+  estimateValuation,
   getApiBase,
   getStoredDemoUserId,
   loadFeedbackSummary,
@@ -209,7 +209,7 @@ function App() {
   const [parseText, setParseText] = useState(DEFAULT_PARSE_SAMPLE)
   const [valuationText, setValuationText] = useState(DEFAULT_VALUATION_SAMPLE)
   const [parsedResult, setParsedResult] = useState<ParsedListingTextResponse | null>(null)
-  const [valuationResult, setValuationResult] = useState<BaselineValuationResponse | null>(null)
+  const [valuationResult, setValuationResult] = useState<ValuationResponse | null>(null)
   const [loadingBootstrap, setLoadingBootstrap] = useState(false)
   const [loadingSearch, setLoadingSearch] = useState(false)
   const [savingProfile, setSavingProfile] = useState(false)
@@ -555,11 +555,11 @@ function App() {
     setApiError(null)
 
     try {
-      const result = await estimateBaselineValue(valuationText)
+      const result = await estimateValuation(valuationText)
       setValuationResult(result)
       addActivity(
         setActivity,
-        'Baseline value estimated',
+        'Valuation estimated',
         result.estimated_price_jod
           ? `Estimated at ${formatMoney(result.estimated_price_jod)}.`
           : 'Estimator did not have enough evidence to price the listing.',
@@ -1226,8 +1226,8 @@ function App() {
           <form className="mini-panel mini-panel--analysis" onSubmit={handleEstimateValue}>
             <SectionHeader
               eyebrow="Estimator"
-              title="Baseline valuation"
-              description="Estimate a quick price using the current median-unit-price baseline."
+              title="Learned valuation"
+              description="Estimate a price with the learned starter model; the backend still falls back to the baseline when needed."
               icon={BarChart3}
             />
 
@@ -1261,21 +1261,35 @@ function App() {
                 <div className="detail-grid detail-grid--compact">
                   <KeyValue
                     label="Estimated price"
-                    value={valuationResult.estimated_price_jod ? formatMoney(valuationResult.estimated_price_jod) : '—'}
+                    value={valuationResult.estimated_price_jod ? formatMoney(valuationResult.estimated_price_jod) : 'N/A'}
                   />
                   <KeyValue label="Confidence" value={valuationResult.confidence} />
                   <KeyValue label="Method" value={valuationResult.method} />
-                  <KeyValue label="Matched count" value={valuationResult.matched_count.toString()} />
+                  <KeyValue
+                    label={valuationResult.training_rows ? 'Training rows' : 'Matched count'}
+                    value={
+                      valuationResult.training_rows != null
+                        ? valuationResult.training_rows.toString()
+                        : valuationResult.matched_count != null
+                          ? valuationResult.matched_count.toString()
+                          : 'N/A'
+                    }
+                  />
                 </div>
                 <div className="chip-row">
                   <StatusPill tone={valuationResult.estimated_price_jod ? 'positive' : 'warning'}>
                     {valuationResult.reason ?? 'No pricing signal'}
                   </StatusPill>
                   <StatusPill tone="neutral">{valuationResult.model_version}</StatusPill>
+                  {valuationResult.feature_completeness != null ? (
+                    <StatusPill tone="neutral">
+                      {`${Math.round(valuationResult.feature_completeness * 100)}% complete`}
+                    </StatusPill>
+                  ) : null}
                 </div>
               </div>
             ) : (
-              <p className="muted-copy">Use the estimator to confirm the baseline before heavier modeling work.</p>
+              <p className="muted-copy">Use the estimator to inspect the learned starter before heavier modeling work.</p>
             )}
           </form>
         </div>
