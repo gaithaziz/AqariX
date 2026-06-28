@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     app_env: str = "local"
     database_url: str = "postgresql+psycopg://aqarix:aqarix@localhost:5432/aqarix"
     redis_url: str = "redis://localhost:6379/0"
+    valuation_model_artifact_path: str = ""
     rate_limit_public_per_minute: int = 60
     rate_limit_user_per_minute: int = 120
     quota_writes_per_day: int = 1000

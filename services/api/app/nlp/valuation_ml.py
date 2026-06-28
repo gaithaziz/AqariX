@@ -9,10 +9,21 @@ if str(JOBS_ROOT) not in sys.path:
 
 from app.nlp.baseline_valuation import estimate_baseline_valuation  # noqa: E402
 from app.repository import parsed_to_response  # noqa: E402
+from app.settings import get_settings  # noqa: E402
 from modeling.valuation_ml import DEFAULT_MODEL_OUTPUT, predict_price_from_text  # noqa: E402
 
 
-MODEL_ARTIFACT = DEFAULT_MODEL_OUTPUT
+DEFAULT_MODEL_ARTIFACT = DEFAULT_MODEL_OUTPUT
+
+
+def resolve_model_artifact() -> Path:
+    configured = get_settings().valuation_model_artifact_path.strip()
+    if configured:
+        return Path(configured).expanduser()
+    return DEFAULT_MODEL_ARTIFACT
+
+
+MODEL_ARTIFACT = resolve_model_artifact()
 
 
 def estimate_valuation(text: str) -> dict[str, Any]:
