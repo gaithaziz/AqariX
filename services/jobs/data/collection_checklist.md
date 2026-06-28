@@ -42,6 +42,7 @@ From the repository root:
 
 ```bash
 uv run python services/jobs/data/audit_collected_posts.py --input services/jobs/data/collected_irbid_posts.csv
+uv run python services/jobs/data/collection_progress.py --input services/jobs/data/collected_irbid_posts.csv
 uv run python services/jobs/modeling/export_modeling_dataset.py --input services/jobs/data/collected_irbid_posts.csv --model-ready-only
 uv run python services/jobs/modeling/train_valuation_experiment.py
 ```

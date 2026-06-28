@@ -28,6 +28,7 @@ from data.csv_to_ingest_posts import DEFAULT_INPUT as REAL_DATA_TEMPLATE  # noqa
 from data.csv_to_ingest_posts import csv_to_ingest_payload  # noqa: E402
 from data.audit_collected_posts import audit_collected_posts  # noqa: E402
 from data.append_collected_post import append_collected_post, next_external_id  # noqa: E402
+from data.collection_progress import build_collection_progress  # noqa: E402
 from data.ingest_collected_posts import DEFAULT_OUTPUT as COLLECTED_INGEST_RESPONSE  # noqa: E402
 
 
@@ -225,3 +226,13 @@ def test_audit_real_irbid_csv_template() -> None:
     assert audit["summary"]["model_ready_posts"] == 2
     assert audit["baseline"]["readiness"]["training_ready"] is False
     assert audit["baseline"]["readiness"]["next_step"] == "collect_real_irbid_posts"
+
+
+def test_collection_progress_reports_targets() -> None:
+    progress = build_collection_progress(REAL_DATA_TEMPLATE)
+
+    assert progress["model_ready_rows"] == 2
+    assert progress["targets"]["first_real_experiment"]["remaining_model_ready_rows"] == 28
+    assert progress["targets"]["colab_ml_starter"]["remaining_model_ready_rows"] == 98
+    assert progress["targets"]["promotion_candidate"]["remaining_model_ready_rows"] == 298
+    assert progress["next_action"] == "collect_more_real_irbid_listings"

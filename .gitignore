@@ -108,6 +108,7 @@ services/jobs/data/collected_*.csv
 services/jobs/data/*.ingest.json
 services/jobs/data/*.response.json
 services/jobs/data/*.audit.json
+services/jobs/data/collection_progress.json
 
 # Keep committed Codex project skills, ignore runtime caches inside them
 .codex/**/__pycache__/
