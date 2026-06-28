@@ -25,6 +25,11 @@ def test_health() -> None:
     assert response.json()["status"] == "ok"
 
 
+def test_head_smoke_routes() -> None:
+    assert client.head("/health").status_code == 200
+    assert client.head("/").status_code == 200
+
+
 def test_root_index() -> None:
     response = client.get("/")
 

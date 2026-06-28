@@ -86,11 +86,21 @@ def health() -> dict[str, str]:
     return {"status": "ok", "env": settings.app_env}
 
 
+@app.head("/health")
+def health_head() -> None:
+    return None
+
+
 @app.get("/", response_model=None)
 def root():
     if web_index.exists():
         return FileResponse(web_index)
     return api_index()
+
+
+@app.head("/", response_model=None)
+def root_head() -> None:
+    return None
 
 
 @app.get("/api")
