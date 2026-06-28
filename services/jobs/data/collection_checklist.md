@@ -18,6 +18,7 @@ Each row should include:
 - `source_url`: public URL only if allowed.
 - `captured_at`: collection date in `YYYY-MM-DD` format.
 - `collection_status`: use `public` for public posts, `approved` for partner/friend examples, and `needs_review` when unsure.
+- `source` must match a key in `source_log_template.csv` unless you are adding a new source on purpose.
 
 ## Source Types
 
@@ -62,3 +63,5 @@ If you have a prepared CSV or JSON batch, you can append it with:
 ```bash
 uv run python services/jobs/data/append_collected_posts.py --input prepared_listings.csv --source dealer_partner --collection-status approved
 ```
+
+The appenders validate `source` against `source_log_template.csv` by default, so unknown sources fail fast instead of sneaking into the dataset.

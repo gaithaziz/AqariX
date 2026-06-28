@@ -12,6 +12,7 @@ if str(JOBS_ROOT) not in sys.path:
 
 from data.append_collected_post import (  # noqa: E402
     DEFAULT_OUTPUT,
+    DEFAULT_SOURCE_LOG,
     append_collected_post,
     next_external_id,
 )
@@ -24,6 +25,7 @@ def main() -> None:
     parser.add_argument("--source", default="manual_collection")
     parser.add_argument("--collection-status", default="needs_review")
     parser.add_argument("--captured-at")
+    parser.add_argument("--source-log", type=Path, default=DEFAULT_SOURCE_LOG)
     args = parser.parse_args()
 
     if args.input.resolve() == args.output.resolve():
@@ -36,6 +38,7 @@ def main() -> None:
         default_source=args.source,
         default_collection_status=args.collection_status,
         default_captured_at=args.captured_at,
+        source_log_path=args.source_log,
     )
     print(f"Appended {appended} rows to {args.output}")
 
@@ -70,6 +73,7 @@ def append_batch_rows(
     default_source: str,
     default_collection_status: str,
     default_captured_at: str | None,
+    source_log_path: Path | None = DEFAULT_SOURCE_LOG,
 ) -> int:
     appended = 0
     for row in rows:
@@ -80,7 +84,7 @@ def append_batch_rows(
             default_collection_status=default_collection_status,
             default_captured_at=default_captured_at,
         )
-        append_collected_post(output, prepared)
+        append_collected_post(output, prepared, source_log_path=source_log_path)
         appended += 1
     return appended
 

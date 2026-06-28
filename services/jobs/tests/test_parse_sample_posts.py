@@ -221,6 +221,28 @@ def test_append_collected_post_generates_and_protects_external_ids() -> None:
             raise AssertionError("Expected duplicate external_id validation error")
 
 
+def test_append_collected_post_rejects_unknown_source_key() -> None:
+    with tempfile.TemporaryDirectory() as tmpdir:
+        path = Path(tmpdir) / "collected_irbid_posts.csv"
+
+        try:
+            append_collected_post(
+                path,
+                {
+                    "source": "mystery_source",
+                    "external_id": "mystery-001",
+                    "text": "شقة للبيع في اربد 100 متر 50000",
+                    "source_url": "",
+                    "captured_at": "2026-06-28",
+                    "collection_status": "needs_review",
+                },
+            )
+        except ValueError as exc:
+            assert "Unknown source key" in str(exc)
+        else:
+            raise AssertionError("Expected unknown source key validation error")
+
+
 def test_append_collected_post_migrates_legacy_schema() -> None:
     with tempfile.TemporaryDirectory() as tmpdir:
         path = Path(tmpdir) / "collected_irbid_posts.csv"

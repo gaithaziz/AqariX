@@ -5,6 +5,7 @@ from pathlib import Path
 
 
 DEFAULT_OUTPUT = Path(__file__).with_name("collected_irbid_posts.csv")
+DEFAULT_SOURCE_LOG = Path(__file__).with_name("source_log_template.csv")
 FIELDNAMES = ["source", "external_id", "text", "source_url", "captured_at", "collection_status"]
 ALLOWED_COLLECTION_STATUSES = {"public", "approved", "needs_review"}
 
@@ -22,6 +23,7 @@ def main() -> None:
         choices=sorted(ALLOWED_COLLECTION_STATUSES),
         default="needs_review",
     )
+    parser.add_argument("--source-log", type=Path, default=DEFAULT_SOURCE_LOG)
     args = parser.parse_args()
 
     external_id = args.external_id or next_external_id(args.output, args.captured_at)
@@ -35,14 +37,21 @@ def main() -> None:
             "captured_at": args.captured_at,
             "collection_status": args.collection_status,
         },
+        source_log_path=args.source_log,
     )
     print(f"Appended {external_id} to {args.output}")
 
 
-def append_collected_post(path: Path, row: dict[str, str]) -> None:
+def append_collected_post(
+    path: Path,
+    row: dict[str, str],
+    *,
+    source_log_path: Path | None = DEFAULT_SOURCE_LOG,
+) -> None:
     cleaned = clean_row(row)
     path.parent.mkdir(parents=True, exist_ok=True)
     ensure_collection_schema(path)
+    validate_source_key(cleaned["source"], source_log_path)
     exists = path.exists() and path.stat().st_size > 0
 
     if exists:
@@ -95,6 +104,21 @@ def normalize_existing_row(row: dict[str, str]) -> dict[str, str]:
     if cleaned["collection_status"] not in ALLOWED_COLLECTION_STATUSES:
         cleaned["collection_status"] = "needs_review"
     return cleaned
+
+
+def validate_source_key(source_key: str, source_log_path: Path | None) -> None:
+    if source_log_path is None:
+        return
+    approved_source_keys = load_approved_source_keys(source_log_path)
+    if source_key not in approved_source_keys:
+        raise ValueError(f"Unknown source key: {source_key}")
+
+
+def load_approved_source_keys(path: Path) -> set[str]:
+    with path.open("r", encoding="utf-8-sig", newline="") as file:
+        reader = csv.DictReader(file)
+        keys = {str(row.get("source_key", "")).strip() for row in reader}
+    return {key for key in keys if key}
 
 
 def validate_unique_external_id(path: Path, external_id: str) -> None:

@@ -37,6 +37,7 @@ uv run python services/jobs/data/append_collected_post.py --text "شقة للب�
 ```
 
 The helper writes to `collected_irbid_posts.csv`, generates an `external_id`, and blocks duplicate IDs.
+It also validates `source` against `source_log_template.csv` by default.
 
 For public sources:
 
@@ -57,6 +58,7 @@ uv run python services/jobs/data/append_collected_posts.py --input prepared_list
 ```
 
 The batch importer accepts `.csv` or `.json` input and fills missing `external_id` values automatically.
+It also validates source keys against the approved source log.
 
 3. Convert to ingest JSON:
 
