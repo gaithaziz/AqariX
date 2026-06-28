@@ -3,7 +3,7 @@
 ## Phase 0 - Foundation
 
 Timeline: Weeks 1-4
-Status: In progress
+Status: Complete
 
 Outcomes:
 
@@ -17,14 +17,14 @@ Outcomes:
 - Baseline rate limits, quotas, debounce patterns, and cost/spend alerts: Redis-backed API counters and debounced web listing search exist; provider spend alerts expand when paid integrations are connected.
 - Design system: web shell has Arabic/RTL, light/dark, and role-oriented MVP surfaces.
 - Docker verification: `docker compose build` passes and the API returns `/health` through Docker.
-- Staging API deployment: Railway service is live at `https://aqarix-production.up.railway.app`; `/health` responds successfully. Railway still needs `APP_ENV=staging` applied because the current health payload reports `env` as `local`.
+- Staging API deployment: Railway service is live at `https://aqarix-production.up.railway.app`; `/health` responds successfully with the staging environment.
 - Staging web deployment: Vercel production deployment is ready at `https://aqari-x.vercel.app` with Railway API and Clerk public env values configured; browser smoke test passed.
 - Web-to-API wiring: listing search, listing-view behavior events, listing feedback submission/summary, and lead-room creation call the FastAPI staging API.
 - Documentation baseline: core docs, guardrails, deployment notes, and roadmap phase status exist.
 
 Left:
 
-- Set `APP_ENV=staging` on Railway so `/health` reports the staging environment.
+- Phase 0 is complete. Real listing ingestion and real zone datasets move into the next non-AI implementation slice.
 
 ## Phase 1 - AI/Data Core
 
