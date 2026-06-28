@@ -187,6 +187,25 @@ Rules:
 - Reuse existing analysis snapshots when inputs and model version have not materially changed.
 - Cap prompt, context, and output size.
 
+For the pre-AI implementation, this endpoint may return a deterministic shell with comparable evidence, caveats, a fixed `model_version`, and no AVM/forecast model output.
+
+### GET `/listings/{listing_id}/comparables`
+
+Return deterministic comparable listing candidates for a listing.
+
+Returns:
+
+- Comparable listing
+- Similarity score
+- Price per sqm
+- Reason codes
+- Source type
+
+Rules:
+
+- Comparables must be explainable and filterable before any model ranking is introduced.
+- Demo comparables are not valuation advice.
+
 ### GET `/listings/{listing_id}/nearby-opportunities`
 
 Return nearby alternatives when the listing is weak, overpriced, or mismatched.

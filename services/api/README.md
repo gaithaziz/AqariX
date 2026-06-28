@@ -9,6 +9,8 @@ This service currently implements non-AI product contracts only:
 - Buyer/investor intake
 - Behavior events
 - Deterministic recommendation placeholder
+- Deterministic comparable listing candidates
+- Offering-analysis shell with reusable snapshots, evidence sources, confidence labels, and caveats
 - Listing feedback
 - Lead-room creation
 - Redis-backed caching for read-heavy endpoints when `REDIS_URL` is configured

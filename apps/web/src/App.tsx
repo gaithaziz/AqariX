@@ -73,6 +73,18 @@ type ApiLeadRoom = {
   stage: string
 }
 
+type ApiOfferingAnalysis = {
+  fair_value_jod: number
+  fair_value_confidence: string
+  listed_price_gap_pct: number
+  bargain_min_jod: number
+  bargain_max_jod: number
+  recommendation_label: string
+  comparable_evidence: unknown[]
+  caveats: string[]
+  reused_snapshot: boolean
+}
+
 type FeedbackValues = {
   clarity: string
   photos: string
@@ -170,6 +182,8 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const [feedbackSummary, setFeedbackSummary] = useState<ApiFeedbackSummary | null>(null)
+  const [analysis, setAnalysis] = useState<ApiOfferingAnalysis | null>(null)
+  const [analysisStatus, setAnalysisStatus] = useState<ApiStatus>('idle')
   const [feedbackStatus, setFeedbackStatus] = useState<ApiStatus>('idle')
   const [leadRoomStatus, setLeadRoomStatus] = useState<ApiStatus>('idle')
   const [leadRoomStage, setLeadRoomStage] = useState<string | null>(null)
@@ -258,6 +272,22 @@ function App() {
       setFeedbackStatus('saved')
     } catch {
       setFeedbackStatus('error')
+    }
+  }
+
+  async function handleAnalysisRequest() {
+    if (!apiBaseUrl || !isUuid(activeListing.id)) {
+      setAnalysisStatus('error')
+      return
+    }
+
+    setAnalysisStatus('saving')
+    try {
+      const response = await postJson<ApiOfferingAnalysis>(`/listings/${activeListing.id}/analysis`, {})
+      setAnalysis(response)
+      setAnalysisStatus('saved')
+    } catch {
+      setAnalysisStatus('error')
     }
   }
 
@@ -443,13 +473,28 @@ function App() {
                   <h3>Offering analysis shell</h3>
                   <p>{t.analysisShellBody}</p>
                 </div>
+                <button className="secondary-button" type="button" disabled={analysisStatus === 'saving'} onClick={handleAnalysisRequest}>
+                  {analysisStatus === 'saving' ? 'Loading...' : t.viewAnalysis}
+                </button>
               </div>
               <div className="analysis-grid">
-                <Metric label={t.fairValue} value="JOD 812k - 875k" />
-                <Metric label={t.bargainRange} value="JOD 805k - 835k" />
-                <Metric label={t.confidence} value={t.high} />
-                <Metric label={t.liquidity} value={t.strong} />
+                <Metric label={t.fairValue} value={analysis ? `JOD ${formatNumber(analysis.fair_value_jod)}` : 'JOD --'} />
+                <Metric
+                  label={t.bargainRange}
+                  value={analysis ? `JOD ${formatNumber(analysis.bargain_min_jod)} - ${formatNumber(analysis.bargain_max_jod)}` : 'JOD --'}
+                />
+                <Metric label={t.confidence} value={analysis ? titleCase(analysis.fair_value_confidence) : '--'} />
+                <Metric label="Gap" value={analysis ? `${analysis.listed_price_gap_pct}%` : '--'} />
               </div>
+              {analysisStatus !== 'idle' ? (
+                <p className="form-status">
+                  {analysisStatus === 'saved'
+                    ? `${titleCase(analysis?.recommendation_label ?? 'review')} / ${analysis?.comparable_evidence.length ?? 0} comparables`
+                    : analysisStatus === 'error'
+                      ? 'Could not load analysis shell.'
+                      : 'Loading analysis shell...'}
+                </p>
+              ) : null}
             </div>
             <div className="feedback-box">
               <h3>{t.investorNote}</h3>

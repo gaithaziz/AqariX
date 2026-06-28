@@ -92,6 +92,22 @@ def test_profile_behavior_recommendation_feedback_and_lead_room_flow() -> None:
     assert recommendations[0]["reason_codes"]
     assert "placeholder" in recommendations[0]["explanation"].lower()
 
+    comparables_response = client.get(f"/listings/{listing_id}/comparables", headers=headers)
+    assert comparables_response.status_code == 200
+    assert comparables_response.json()[0]["price_per_sqm_jod"] > 0
+
+    analysis_response = client.post(f"/listings/{listing_id}/analysis", headers=headers)
+    assert analysis_response.status_code == 200
+    analysis = analysis_response.json()
+    assert analysis["fair_value_confidence"] in {"low", "medium"}
+    assert analysis["comparable_evidence"]
+    assert analysis["caveats"]
+    assert analysis["model_version"] == "deterministic-phase1-shell-v1"
+
+    reused_analysis_response = client.post(f"/listings/{listing_id}/analysis", headers=headers)
+    assert reused_analysis_response.status_code == 200
+    assert reused_analysis_response.json()["reused_snapshot"] is True
+
     feedback_response = client.post(
         f"/listings/{listing_id}/feedback",
         headers=headers,

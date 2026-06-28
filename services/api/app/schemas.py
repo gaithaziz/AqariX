@@ -71,6 +71,43 @@ class Recommendation(BaseModel):
     personalization_confidence: str
 
 
+class ComparableListing(BaseModel):
+    listing: Listing
+    similarity_score: float
+    price_per_sqm_jod: int
+    reason_codes: list[str]
+    source_type: str = "demo_listing"
+
+
+class EvidenceSource(BaseModel):
+    source_type: str
+    label: str
+    url: str | None = None
+
+
+class OfferingAnalysis(BaseModel):
+    id: UUID
+    listing_id: UUID
+    fair_value_jod: int
+    fair_value_confidence: str
+    listed_price_gap_pct: float
+    bargain_min_jod: int
+    bargain_max_jod: int
+    forecast_horizon_years: int
+    forecast_conservative_jod: int | None = None
+    forecast_base_jod: int | None = None
+    forecast_optimistic_jod: int | None = None
+    location_momentum_score: float | None = None
+    liquidity_score: float | None = None
+    recommendation_label: str
+    comparable_evidence: list[ComparableListing]
+    evidence_sources: list[EvidenceSource]
+    caveats: list[str]
+    model_version: str
+    reused_snapshot: bool = False
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+
+
 class ListingFeedbackIn(BaseModel):
     clarity_rating: int | None = Field(default=None, ge=1, le=5)
     photo_quality_rating: int | None = Field(default=None, ge=1, le=5)

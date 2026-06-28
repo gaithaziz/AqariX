@@ -11,7 +11,9 @@ from app.cache import cache_get_json, cache_key, cache_set_json
 from app.limits import enforce_limit, record_usage, request_identity
 from app.repository import (
     create_lead_room,
+    get_comparable_listings,
     get_feedback_summary,
+    get_or_create_offering_analysis,
     get_profile,
     get_recommendations,
     record_behavior,
@@ -24,12 +26,14 @@ from app.schemas import (
     BehaviorEventIn,
     BuyerInvestorProfile,
     BuyerInvestorProfileIn,
+    ComparableListing,
     LeadRoom,
     LeadRoomIn,
     ListingFeedback,
     ListingFeedbackIn,
     ListingFeedbackSummary,
     ListingSearchResponse,
+    OfferingAnalysis,
     PropertyType,
     Recommendation,
 )
@@ -148,6 +152,42 @@ def recommendations(
     enforce_limit("recommendations", current_user.id, settings.rate_limit_user_per_minute, 60)
     record_usage("recommendations", settings.cost_alert_requests_per_day)
     return get_recommendations(current_user.id)
+
+
+@app.get("/listings/{listing_id}/comparables", response_model=list[ComparableListing])
+def listing_comparables(request: Request, listing_id: UUID) -> list[ComparableListing]:
+    settings = get_settings()
+    enforce_limit(
+        "listing-comparables",
+        request_identity(request),
+        settings.rate_limit_public_per_minute,
+        60,
+    )
+    record_usage("listing-comparables", settings.cost_alert_requests_per_day)
+    return get_comparable_listings(listing_id)
+
+
+@app.post("/listings/{listing_id}/analysis", response_model=OfferingAnalysis)
+def create_offering_analysis(
+    listing_id: UUID,
+    current_user: CurrentUser = Depends(get_current_user),
+) -> OfferingAnalysis:
+    settings = get_settings()
+    enforce_limit("offering-analysis", current_user.id, settings.rate_limit_user_per_minute, 60)
+    enforce_limit("offering-analysis-daily", current_user.id, settings.quota_writes_per_day, 86_400)
+    record_usage("offering-analysis", settings.cost_alert_requests_per_day)
+
+    key = cache_key("offering-analysis", {"listing_id": listing_id, "version": "deterministic-phase1-shell-v1"})
+    cached = cache_get_json(key)
+    if cached is not None:
+        return OfferingAnalysis.model_validate(cached).model_copy(update={"reused_snapshot": True})
+
+    analysis = get_or_create_offering_analysis(listing_id)
+    if not analysis:
+        raise HTTPException(status_code=404, detail="Listing not found")
+
+    cache_set_json(key, analysis.model_dump(mode="json"), ttl_seconds=300)
+    return analysis
 
 
 @app.post("/listings/{listing_id}/feedback", response_model=ListingFeedback)

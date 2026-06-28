@@ -556,8 +556,13 @@ select {
 
 .analysis-header {
   align-items: flex-start;
+  flex-wrap: wrap;
   gap: 12px;
   color: var(--color-primary);
+}
+
+.analysis-header .secondary-button {
+  margin-inline-start: auto;
 }
 
 .analysis-header h3,

@@ -6,12 +6,15 @@ from app.schemas import (
     BehaviorEventIn,
     BuyerInvestorProfile,
     BuyerInvestorProfileIn,
+    ComparableListing,
+    EvidenceSource,
     LeadRoom,
     LeadRoomIn,
     Listing,
     ListingFeedback,
     ListingFeedbackIn,
     ListingFeedbackSummary,
+    OfferingAnalysis,
     PropertyType,
     Recommendation,
 )
@@ -69,6 +72,7 @@ profiles: dict[str, BuyerInvestorProfile] = {}
 behavior_events: list[BehaviorEvent] = []
 listing_feedback: list[ListingFeedback] = []
 lead_rooms: list[LeadRoom] = []
+analysis_snapshots: dict[UUID, OfferingAnalysis] = {}
 
 
 def search_listings(
@@ -84,6 +88,109 @@ def search_listings(
     if property_type:
         results = [item for item in results if item.property_type == property_type]
     return results
+
+
+def get_listing(listing_id: UUID) -> Listing | None:
+    return next((listing for listing in LISTINGS if listing.id == listing_id), None)
+
+
+def get_comparable_listings(listing_id: UUID, limit: int = 3) -> list[ComparableListing]:
+    target = get_listing(listing_id)
+    if not target:
+        return []
+
+    comparables: list[ComparableListing] = []
+    target_price_per_sqm = target.asking_price_jod / target.area_sqm
+
+    for listing in LISTINGS:
+        if listing.id == target.id:
+            continue
+
+        score = 0.0
+        reason_codes: list[str] = []
+
+        if listing.city == target.city:
+            score += 0.3
+            reason_codes.append("same_city")
+        if listing.neighborhood == target.neighborhood:
+            score += 0.25
+            reason_codes.append("same_neighborhood")
+        if listing.property_type == target.property_type:
+            score += 0.25
+            reason_codes.append("same_property_type")
+
+        area_gap = abs(listing.area_sqm - target.area_sqm) / max(target.area_sqm, 1)
+        if area_gap <= 0.35:
+            score += 0.1
+            reason_codes.append("similar_area")
+
+        listing_price_per_sqm = listing.asking_price_jod / listing.area_sqm
+        price_gap = abs(listing_price_per_sqm - target_price_per_sqm) / max(target_price_per_sqm, 1)
+        if price_gap <= 0.35:
+            score += 0.1
+            reason_codes.append("similar_price_per_sqm")
+
+        comparables.append(
+            ComparableListing(
+                listing=listing,
+                similarity_score=round(score, 2),
+                price_per_sqm_jod=round(listing_price_per_sqm),
+                reason_codes=reason_codes or ["same_demo_market"],
+            )
+        )
+
+    return sorted(comparables, key=lambda comparable: comparable.similarity_score, reverse=True)[:limit]
+
+
+def get_or_create_offering_analysis(listing_id: UUID) -> OfferingAnalysis | None:
+    if listing_id in analysis_snapshots:
+        snapshot = analysis_snapshots[listing_id].model_copy(update={"reused_snapshot": True})
+        analysis_snapshots[listing_id] = snapshot
+        return snapshot
+
+    listing = get_listing(listing_id)
+    if not listing:
+        return None
+
+    comparables = get_comparable_listings(listing_id)
+    prices_per_sqm = [item.price_per_sqm_jod for item in comparables]
+    target_price_per_sqm = round(listing.asking_price_jod / listing.area_sqm)
+    if prices_per_sqm:
+        benchmark_price_per_sqm = round(sum(prices_per_sqm) / len(prices_per_sqm))
+    else:
+        benchmark_price_per_sqm = target_price_per_sqm
+
+    fair_value = benchmark_price_per_sqm * listing.area_sqm
+    listed_price_gap_pct = round(((listing.asking_price_jod - fair_value) / listing.asking_price_jod) * 100, 2)
+    confidence = "medium" if len(comparables) >= 2 else "low"
+    recommendation = "review" if abs(listed_price_gap_pct) <= 10 else ("watch" if listed_price_gap_pct > 10 else "opportunity")
+
+    analysis = OfferingAnalysis(
+        id=uuid4(),
+        listing_id=listing_id,
+        fair_value_jod=round(fair_value),
+        fair_value_confidence=confidence,
+        listed_price_gap_pct=listed_price_gap_pct,
+        bargain_min_jod=round(fair_value * 0.96),
+        bargain_max_jod=round(fair_value * 1.02),
+        forecast_horizon_years=0,
+        location_momentum_score=None,
+        liquidity_score=None,
+        recommendation_label=recommendation,
+        comparable_evidence=comparables,
+        evidence_sources=[
+            EvidenceSource(source_type="demo_listing", label="Irbid demo listing set"),
+            EvidenceSource(source_type="user_feedback", label="Aggregated listing feedback summary"),
+        ],
+        caveats=[
+            "Deterministic non-AI shell for Phase 1 API integration.",
+            "No AVM, forecast, or model-backed valuation has been run.",
+            "Demo comparables are based on the current seeded listing set only.",
+        ],
+        model_version="deterministic-phase1-shell-v1",
+    )
+    analysis_snapshots[listing_id] = analysis
+    return analysis
 
 
 def save_profile(user_id: str, payload: BuyerInvestorProfileIn) -> BuyerInvestorProfile:

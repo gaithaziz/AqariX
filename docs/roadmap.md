@@ -29,22 +29,23 @@ Left:
 ## Phase 1 - AI/Data Core
 
 Timeline: Weeks 5-12
-Status: Not started
+Status: In progress - non-AI API shell started
 
 Outcomes:
 
 - AVM baseline.
-- Comparable logic.
-- Recommendation baseline using intake and behavior events.
+- Comparable logic: deterministic demo comparable endpoint exists; model-ranked comparables remain pending.
+- Recommendation baseline using intake and behavior events: deterministic placeholder endpoint exists; model-backed ranking remains pending.
 - Forecast prototype.
-- Offering-analysis API.
-- Evidence and confidence object.
-- Redis-cached AI output snapshots and token/cost tracking.
+- Offering-analysis API: deterministic shell endpoint exists with snapshot reuse; AI-generated analysis remains pending.
+- Evidence and confidence object: API contract exists with evidence sources, comparable evidence, confidence label, caveats, and model/source version.
+- Redis-cached AI output snapshots and token/cost tracking: offering-analysis shell is Redis-cacheable and rate/cost counted; real token/model-cost tracking remains pending.
 
 Left:
 
-- All Phase 1 outcomes are pending.
 - AI-owned features stay deferred until the AI teammate begins this phase.
+- Persist analysis and recommendation snapshots to PostgreSQL instead of the current in-memory demo store.
+- Replace deterministic comparable/analysis placeholders with approved AVM, forecast, and model-backed ranking once AI work starts.
 
 ## Phase 2 - Role-Complete MVP
 
