@@ -30,6 +30,16 @@ python services/jobs/modeling/predict_baseline_model.py --text "شقة للبي�
 
 Predictions are decision-support estimates only. They must show confidence and should not be presented as guaranteed market value.
 
+## Promotion Check
+
+```bash
+python services/jobs/modeling/evaluate_model_promotion.py
+```
+
+This writes `baseline_valuation_model_card.json`, which is ignored by Git.
+
+Promotion is blocked until there are at least 300 model-ready records and MAPE is at or below 20%.
+
 ## Current Gate
 
 Real modeling should start after at least 300 model-ready Irbid listings.

@@ -13,6 +13,7 @@ from scraper.summarize_sample_posts import summarize_parsed_posts  # noqa: E402
 
 from modeling.baseline_valuation import build_baseline_report  # noqa: E402
 from modeling.predict_baseline_model import predict_price  # noqa: E402
+from modeling.evaluate_model_promotion import build_model_card  # noqa: E402
 from modeling.train_baseline_model import MODEL_VERSION, train_baseline_model  # noqa: E402
 from data.csv_to_ingest_posts import DEFAULT_INPUT as REAL_DATA_TEMPLATE  # noqa: E402
 from data.csv_to_ingest_posts import csv_to_ingest_payload  # noqa: E402
@@ -89,6 +90,15 @@ def test_train_and_predict_baseline_model() -> None:
     assert prediction["estimated_price_jod"] is not None
     assert prediction["model_version"] == MODEL_VERSION
     assert prediction["confidence"] in {"low", "medium"}
+
+
+def test_model_promotion_is_blocked_for_seed_dataset() -> None:
+    model = train_baseline_model(parse_posts_file(DEFAULT_INPUT))
+    model_card = build_model_card(model)
+
+    assert model_card["promotion"]["status"] == "blocked"
+    assert "not_enough_model_ready_records" in model_card["promotion"]["blocking_reasons"]
+    assert model_card["usage_guidance"]["requires_human_review"] is True
 
 
 def test_convert_real_irbid_csv_template_to_ingest_payload() -> None:
