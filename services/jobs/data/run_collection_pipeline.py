@@ -10,6 +10,7 @@ if str(JOBS_ROOT) not in sys.path:
     sys.path.insert(0, str(JOBS_ROOT))
 
 from data.audit_collection_sources import DEFAULT_SOURCE_LOG  # noqa: E402
+from data.collection_backlog import build_collection_backlog  # noqa: E402
 from data.collection_progress import build_collection_progress, print_progress  # noqa: E402
 from modeling.export_modeling_dataset import (  # noqa: E402
     DEFAULT_OUTPUT as DEFAULT_DATASET_OUTPUT,
@@ -45,6 +46,9 @@ def main() -> None:
     )
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print_progress(report["collection"])
+    print(f"Backlog focus: {report['backlog']['recommended_focus']}")
+    for item in report["backlog"]["priorities"][:3]:
+        print(f"- {item['title']}: {item['reason']}")
     print(f"Dataset rows: {report['dataset']['rows']} -> {report['dataset']['output']}")
     print(
         f"Experiment status: {report['experiment']['promotion']['status']} "
@@ -61,6 +65,7 @@ def run_collection_pipeline(
     experiment_output: Path = DEFAULT_EXPERIMENT_OUTPUT,
 ) -> dict[str, Any]:
     collection = build_collection_progress(collection_path, source_log_path=source_log_path)
+    backlog = build_collection_backlog(collection_path, source_log_path=source_log_path)
     parsed_posts = load_parsed_posts(collection_path)
     dataset_rows = build_modeling_rows(parsed_posts, model_ready_only=True)
     write_modeling_dataset(dataset_rows, dataset_output)
@@ -70,6 +75,7 @@ def run_collection_pipeline(
     return {
         "status": "ok",
         "collection": collection,
+        "backlog": backlog,
         "dataset": {
             "output": str(dataset_output),
             "rows": len(dataset_rows),

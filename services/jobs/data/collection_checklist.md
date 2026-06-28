@@ -57,6 +57,7 @@ uv run python services/jobs/data/audit_collection_sources.py --input services/jo
 uv run python services/jobs/modeling/export_modeling_dataset.py --input services/jobs/data/collected_irbid_posts.csv --model-ready-only
 uv run python services/jobs/modeling/train_valuation_experiment.py
 uv run python services/jobs/data/run_collection_pipeline.py --input services/jobs/data/collected_irbid_posts.csv
+uv run python services/jobs/data/collection_backlog.py --input services/jobs/data/collected_irbid_posts.csv
 ```
 
 If you have a prepared CSV or JSON batch, you can append it with:

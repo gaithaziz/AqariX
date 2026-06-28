@@ -110,4 +110,12 @@ uv run python services/jobs/data/run_collection_pipeline.py --input services/job
 
 This writes `collection_pipeline_report.json`, `valuation_modeling_dataset.csv`, and `valuation_experiment.json` for the current collection file.
 
+10. Generate a collection backlog:
+
+```bash
+uv run python services/jobs/data/collection_backlog.py --input services/jobs/data/collected_irbid_posts.csv
+```
+
+This writes `collection_backlog.json` and highlights the next source, property type, and quality gaps to fill.
+
 The exporter accepts the collected CSV directly and writes `services/jobs/modeling/valuation_modeling_dataset.csv`.

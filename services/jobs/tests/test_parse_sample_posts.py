@@ -31,6 +31,7 @@ from data.audit_collected_posts import audit_collected_posts  # noqa: E402
 from data.audit_collection_sources import audit_collection_sources  # noqa: E402
 from data.append_collected_post import append_collected_post, next_external_id  # noqa: E402
 from data.append_collected_posts import append_batch_rows, load_input_rows  # noqa: E402
+from data.collection_backlog import build_collection_backlog  # noqa: E402
 from data.collection_progress import build_collection_progress  # noqa: E402
 from data.run_collection_pipeline import run_collection_pipeline  # noqa: E402
 from data.ingest_collected_posts import DEFAULT_OUTPUT as COLLECTED_INGEST_RESPONSE  # noqa: E402
@@ -379,6 +380,16 @@ def test_collection_progress_reports_targets() -> None:
     assert progress["next_action"] == "collect_more_real_irbid_listings"
 
 
+def test_collection_backlog_prioritizes_missing_sources_and_types() -> None:
+    backlog = build_collection_backlog(REAL_DATA_TEMPLATE)
+
+    assert backlog["recommended_focus"] == "Add Facebook public real-estate posts"
+    assert backlog["priorities"][0]["category"] == "source"
+    assert backlog["priorities"][0]["title"] == "Add Facebook public real-estate posts"
+    assert any(item["category"] == "property_type" and item["title"] == "Collect villa listings" for item in backlog["priorities"])
+    assert any(item["category"] == "property_type" and item["title"] == "Collect commercial listings" for item in backlog["priorities"])
+
+
 def test_run_collection_pipeline_writes_dataset_and_experiment() -> None:
     with tempfile.TemporaryDirectory() as tmpdir:
         dataset_output = Path(tmpdir) / "valuation_modeling_dataset.csv"
@@ -394,6 +405,7 @@ def test_run_collection_pipeline_writes_dataset_and_experiment() -> None:
 
     assert report["status"] == "ok"
     assert report["collection"]["known_source_rows"] == 2
+    assert report["backlog"]["recommended_focus"] == "Add Facebook public real-estate posts"
     assert report["dataset"]["rows"] == 2
     assert report["experiment"]["promotion"]["status"] == "blocked"
     assert report["next_action"] == "collect_more_real_irbid_listings"
