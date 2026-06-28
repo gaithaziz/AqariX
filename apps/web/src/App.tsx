@@ -89,32 +89,32 @@ const hasClerkPublishableKey = Boolean(import.meta.env.VITE_CLERK_PUBLISHABLE_KE
 const fallbackListings: Listing[] = [
   {
     id: 'aqx-1024',
-    title: 'Stately Limestone Residence',
-    area: 'Abdoun',
-    district: 'West Amman',
+    title: 'Irbid Hills Limestone Residence',
+    area: 'Al Hay Al Sharqi',
+    district: 'Irbid',
     type: 'Villa',
-    price: 'JOD 850,000',
-    pricePerSqm: 'JOD 1,410 / sqm',
-    specs: ['5 beds', '4 baths', '602 sqm'],
-    score: '9.2',
+    price: 'JOD 420,000',
+    pricePerSqm: 'JOD 875 / sqm',
+    specs: ['5 beds', '4 baths', '480 sqm'],
+    score: '9.1',
     priceSignal: 'Fair price',
     confidence: 'High',
     image:
       'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
-    recommendedBecause: ['Matches Abdoun searches', 'Similar to saved villas', 'Strong location confidence'],
+    recommendedBecause: ['Matches Irbid searches', 'Similar to saved villas', 'Strong location confidence'],
     investorNote: 'Users ask for clearer garden photos and maintenance fee details.',
   },
   {
     id: 'aqx-1188',
-    title: 'Skyline View Penthouse',
-    area: '5th Circle',
-    district: 'Amman',
+    title: 'University District Apartment',
+    area: 'University District',
+    district: 'Irbid',
     type: 'Apartment',
-    price: 'JOD 245,000',
-    pricePerSqm: 'JOD 1,225 / sqm',
-    specs: ['3 beds', '3 baths', '200 sqm'],
-    score: '7.8',
-    priceSignal: 'Slight premium',
+    price: 'JOD 125,000',
+    pricePerSqm: 'JOD 758 / sqm',
+    specs: ['3 beds', '3 baths', '165 sqm'],
+    score: '8.0',
+    priceSignal: 'Fair price',
     confidence: 'Medium',
     image:
       'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80',
@@ -123,11 +123,11 @@ const fallbackListings: Listing[] = [
   },
   {
     id: 'aqx-1302',
-    title: 'Village Prime Retail Space',
-    area: 'Sweifieh',
+    title: 'City Center Retail Space',
+    area: 'City Center',
     district: 'Commercial corridor',
     type: 'Commercial',
-    price: 'JOD 1,200,000',
+    price: 'JOD 540,000',
     pricePerSqm: 'Investment grade',
     specs: ['100% occupancy', 'Street frontage', '420 sqm'],
     score: '8.6',
@@ -145,8 +145,8 @@ const leadStages = [
     name: 'New Leads',
     count: '03',
     items: [
-      { name: 'Abdullah Mansour', asset: 'Villa in West Amman', value: 'JOD 450,000', score: 88 },
-      { name: 'Mariam Khalid', asset: 'Commercial Space - Al Abdali', value: 'JOD 220,000', score: 72 },
+      { name: 'Abdullah Mansour', asset: 'Villa in Al Hay Al Sharqi', value: 'JOD 420,000', score: 88 },
+      { name: 'Mariam Khalid', asset: 'Commercial Space - Irbid Center', value: 'JOD 220,000', score: 72 },
     ],
   },
   {
@@ -353,7 +353,7 @@ function App() {
             <div className="section-heading">
               <div>
                 <span className="eyebrow">{t.explore}</span>
-                <h2 id="explore-title">{t.propertiesInAmman}</h2>
+                <h2 id="explore-title">{t.propertiesInIrbid}</h2>
               </div>
               <button className="text-button" type="button">
                 <Map size={18} aria-hidden="true" />
@@ -547,7 +547,7 @@ function App() {
               </div>
               <div>
                 <strong>{t.dealerDashboard}</strong>
-                <span>Amman, Jordan</span>
+                <span>Irbid, Jordan</span>
               </div>
             </div>
             {[

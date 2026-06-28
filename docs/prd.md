@@ -12,7 +12,7 @@ AqariX is a supervised AI real estate marketplace and CRM for Jordan. It combine
 
 Initial launch market:
 
-- Jordan, focused first on Amman and Irbid.
+- Jordan, centered first on Irbid for the MVP/demo, with Amman as the next expansion market.
 - Bounded launch zones should be selected based on available property data, active listings, dealer density, and buyer/investor demand.
 
 ## User Roles

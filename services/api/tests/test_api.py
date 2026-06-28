@@ -23,12 +23,12 @@ def test_health() -> None:
 
 
 def test_listing_search() -> None:
-    response = client.get("/listings", params={"city": "Amman"})
+    response = client.get("/listings", params={"city": "Irbid"})
 
     assert response.status_code == 200
     body = response.json()
     assert body["total"] >= 1
-    assert body["items"][0]["city"] == "Amman"
+    assert body["items"][0]["city"] == "Irbid"
 
 
 def test_cors_allows_vercel_web_origin() -> None:
@@ -52,8 +52,8 @@ def test_profile_behavior_recommendation_feedback_and_lead_room_flow() -> None:
         headers=headers,
         json={
             "budget_max_jod": 900000,
-            "preferred_cities": ["Amman"],
-            "preferred_neighborhoods": ["Abdoun"],
+            "preferred_cities": ["Irbid"],
+            "preferred_neighborhoods": ["Al Hay Al Sharqi"],
             "property_types": ["villa"],
             "purpose": "investment",
         },

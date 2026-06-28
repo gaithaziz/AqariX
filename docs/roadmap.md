@@ -12,7 +12,7 @@ Outcomes:
 - Behavior event model: API schema and route exist.
 - Listing feedback and ad-improvement loop: API schema, feedback route, and aggregated summary route exist.
 - Listing ingestion plan: seed/demo listing data exists; real ingestion is still pending.
-- Initial zones: Amman-first demo data exists; real zone dataset is still pending.
+- Initial zones: Irbid-centered demo data exists; real zone dataset is still pending.
 - Auth roles: Clerk JWT boundary, local demo-user fallback, and local Clerk development env values exist.
 - Baseline rate limits, quotas, debounce patterns, and cost/spend alerts: Redis-backed API counters and debounced web listing search exist; provider spend alerts expand when paid integrations are connected.
 - Design system: web shell has Arabic/RTL, light/dark, and role-oriented MVP surfaces.
@@ -91,7 +91,7 @@ Status: Not started
 
 Outcomes:
 
-- Amman/Irbid launch.
+- Irbid-centered launch, with Amman expansion after validation.
 - Paid campaigns.
 - Dealer CRM subscriptions.
 - Smart Boosts.
