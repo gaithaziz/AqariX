@@ -1,3 +1,4 @@
+import json
 import sys
 from pathlib import Path
 import tempfile
@@ -28,6 +29,7 @@ from data.csv_to_ingest_posts import DEFAULT_INPUT as REAL_DATA_TEMPLATE  # noqa
 from data.csv_to_ingest_posts import csv_to_ingest_payload  # noqa: E402
 from data.audit_collected_posts import audit_collected_posts  # noqa: E402
 from data.append_collected_post import append_collected_post, next_external_id  # noqa: E402
+from data.append_collected_posts import append_batch_rows, load_input_rows  # noqa: E402
 from data.collection_progress import build_collection_progress  # noqa: E402
 from data.ingest_collected_posts import DEFAULT_OUTPUT as COLLECTED_INGEST_RESPONSE  # noqa: E402
 
@@ -216,6 +218,80 @@ def test_append_collected_post_generates_and_protects_external_ids() -> None:
             assert "Duplicate external_id" in str(exc)
         else:
             raise AssertionError("Expected duplicate external_id validation error")
+
+
+def test_append_collected_post_migrates_legacy_schema() -> None:
+    with tempfile.TemporaryDirectory() as tmpdir:
+        path = Path(tmpdir) / "collected_irbid_posts.csv"
+        path.write_text(
+            "source,external_id,text,source_url,captured_at\n"
+            "manual_collection,legacy-001,شقة للبيع في اربد 100 متر 50000,,2026-06-28\n",
+            encoding="utf-8",
+        )
+
+        append_collected_post(
+            path,
+            {
+                "source": "dealer_partner",
+                "external_id": "legacy-002",
+                "text": "ارض للبيع في الحصن مساحة 2 دونم السعر 70 الف دينار",
+                "source_url": "",
+                "captured_at": "2026-06-28",
+                "collection_status": "approved",
+            },
+        )
+
+        content = path.read_text(encoding="utf-8")
+        assert content.startswith("source,external_id,text,source_url,captured_at,collection_status")
+        assert "legacy-001" in content
+        assert "needs_review" in content
+        assert "legacy-002" in content
+        assert "approved" in content
+
+
+def test_append_collected_posts_batch_from_json() -> None:
+    with tempfile.TemporaryDirectory() as tmpdir:
+        input_path = Path(tmpdir) / "batch.json"
+        output_path = Path(tmpdir) / "collected_irbid_posts.csv"
+        input_path.write_text(
+            json.dumps(
+                {
+                    "items": [
+                        {
+                            "source": "facebook_public",
+                            "text": "شقة للبيع في اربد قرب الهاشمي مساحة 120 متر السعر 80 الف دينار",
+                            "source_url": "https://example.com/post-1",
+                            "captured_at": "2026-06-28",
+                            "collection_status": "public",
+                        },
+                        {
+                            "source": "dealer_partner",
+                            "text": "محل تجاري للايجار في وسط البلد مساحة 45 متر السعر 350 دينار",
+                            "captured_at": "2026-06-28",
+                        },
+                    ]
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
+
+        rows = load_input_rows(input_path)
+        appended = append_batch_rows(
+            rows,
+            output_path,
+            default_source="manual_collection",
+            default_collection_status="needs_review",
+            default_captured_at="2026-06-28",
+        )
+
+        content = output_path.read_text(encoding="utf-8")
+        assert appended == 2
+        assert "irbid-2026-0001" in content
+        assert "irbid-2026-0002" in content
+        assert "public" in content
+        assert "needs_review" in content
 
 
 def test_collected_ingest_response_default_is_ignored_output() -> None:

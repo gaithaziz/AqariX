@@ -55,3 +55,9 @@ uv run python services/jobs/data/collection_progress.py --input services/jobs/da
 uv run python services/jobs/modeling/export_modeling_dataset.py --input services/jobs/data/collected_irbid_posts.csv --model-ready-only
 uv run python services/jobs/modeling/train_valuation_experiment.py
 ```
+
+If you have a prepared CSV or JSON batch, you can append it with:
+
+```bash
+uv run python services/jobs/data/append_collected_posts.py --input prepared_listings.csv --source dealer_partner --collection-status approved
+```

@@ -50,6 +50,14 @@ For dealer/friend approved examples:
 uv run python services/jobs/data/append_collected_post.py --source dealer_partner --collection-status approved --text "LISTING_TEXT"
 ```
 
+To append a whole prepared file:
+
+```bash
+uv run python services/jobs/data/append_collected_posts.py --input prepared_listings.csv --source facebook_public --collection-status public
+```
+
+The batch importer accepts `.csv` or `.json` input and fills missing `external_id` values automatically.
+
 3. Convert to ingest JSON:
 
 ```bash

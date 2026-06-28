@@ -42,6 +42,7 @@ def main() -> None:
 def append_collected_post(path: Path, row: dict[str, str]) -> None:
     cleaned = clean_row(row)
     path.parent.mkdir(parents=True, exist_ok=True)
+    ensure_collection_schema(path)
     exists = path.exists() and path.stat().st_size > 0
 
     if exists:
@@ -64,6 +65,35 @@ def clean_row(row: dict[str, str]) -> dict[str, str]:
             "collection_status must be one of: "
             + ", ".join(sorted(ALLOWED_COLLECTION_STATUSES))
         )
+    return cleaned
+
+
+def ensure_collection_schema(path: Path) -> None:
+    if not path.exists() or path.stat().st_size == 0:
+        return
+
+    with path.open("r", encoding="utf-8-sig", newline="") as file:
+        reader = csv.DictReader(file)
+        fieldnames = reader.fieldnames or []
+        rows = list(reader)
+
+    if fieldnames == FIELDNAMES and all((row.get("collection_status") or "").strip() for row in rows):
+        return
+
+    migrated_rows = [normalize_existing_row(row) for row in rows]
+    with path.open("w", encoding="utf-8", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=FIELDNAMES)
+        writer.writeheader()
+        writer.writerows(migrated_rows)
+
+
+def normalize_existing_row(row: dict[str, str]) -> dict[str, str]:
+    cleaned = {field: str(row.get(field, "")).strip() for field in FIELDNAMES}
+    missing = [field for field in ("source", "external_id", "text", "captured_at") if not cleaned[field]]
+    if missing:
+        raise ValueError(f"Existing CSV row is missing required fields: {', '.join(missing)}")
+    if cleaned["collection_status"] not in ALLOWED_COLLECTION_STATUSES:
+        cleaned["collection_status"] = "needs_review"
     return cleaned
 
 
