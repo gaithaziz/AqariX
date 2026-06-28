@@ -44,6 +44,7 @@ def row_to_item(row: dict[str, str], line_number: int) -> dict[str, Any]:
     external_id = clean(row.get("external_id"))
     text = clean(row.get("text"))
     source_url = clean(row.get("source_url"))
+    collection_status = clean(row.get("collection_status"))
 
     if not source:
         raise ValueError(f"Row {line_number} is missing source")
@@ -57,6 +58,7 @@ def row_to_item(row: dict[str, str], line_number: int) -> dict[str, Any]:
         "external_id": external_id,
         "text": text,
         "source_url": source_url,
+        "collection_status": collection_status,
     }
 
 

@@ -5,7 +5,8 @@ from pathlib import Path
 
 
 DEFAULT_OUTPUT = Path(__file__).with_name("collected_irbid_posts.csv")
-FIELDNAMES = ["source", "external_id", "text", "source_url", "captured_at"]
+FIELDNAMES = ["source", "external_id", "text", "source_url", "captured_at", "collection_status"]
+ALLOWED_COLLECTION_STATUSES = {"public", "approved", "needs_review"}
 
 
 def main() -> None:
@@ -16,6 +17,11 @@ def main() -> None:
     parser.add_argument("--external-id")
     parser.add_argument("--source-url", default="")
     parser.add_argument("--captured-at", default=date.today().isoformat())
+    parser.add_argument(
+        "--collection-status",
+        choices=sorted(ALLOWED_COLLECTION_STATUSES),
+        default="needs_review",
+    )
     args = parser.parse_args()
 
     external_id = args.external_id or next_external_id(args.output, args.captured_at)
@@ -27,6 +33,7 @@ def main() -> None:
             "text": args.text,
             "source_url": args.source_url,
             "captured_at": args.captured_at,
+            "collection_status": args.collection_status,
         },
     )
     print(f"Appended {external_id} to {args.output}")
@@ -52,6 +59,11 @@ def clean_row(row: dict[str, str]) -> dict[str, str]:
     missing = [field for field in ("source", "external_id", "text", "captured_at") if not cleaned[field]]
     if missing:
         raise ValueError(f"Missing required fields: {', '.join(missing)}")
+    if cleaned["collection_status"] not in ALLOWED_COLLECTION_STATUSES:
+        raise ValueError(
+            "collection_status must be one of: "
+            + ", ".join(sorted(ALLOWED_COLLECTION_STATUSES))
+        )
     return cleaned
 
 

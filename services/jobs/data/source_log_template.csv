@@ -1,0 +1,5 @@
+source_key,source_type,source_name,source_url,allowed_use,approval_owner,notes
+facebook_public,public_social,Facebook public real-estate posts,,public_listing_text_only,,Use only public posts. Do not collect private group posts without approval.
+opensooq_public,public_classifieds,OpenSooq Irbid listings,,public_listing_text_only,,Record public URL when allowed.
+dealer_partner,approved_partner,Local broker or dealer,,approved_listing_text,team_member,Use only listings the partner approved for project use.
+friends_family,approved_manual,Friends or family examples,,approved_listing_text,team_member,Use only examples explicitly approved for training/testing.

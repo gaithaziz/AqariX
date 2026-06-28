@@ -17,6 +17,14 @@ Each row should include:
 - `text`: raw listing text exactly as posted.
 - `source_url`: public URL only if allowed.
 - `captured_at`: collection date in `YYYY-MM-DD` format.
+- `collection_status`: use `public` for public posts, `approved` for partner/friend examples, and `needs_review` when unsure.
+
+## Source Types
+
+- `facebook_public`: public Facebook real-estate posts only.
+- `opensooq_public`: public OpenSooq listing text.
+- `dealer_partner`: broker/dealer-approved listing examples.
+- `friends_family`: explicitly approved examples from friends or family.
 
 ## Model-Ready Listing Text
 
@@ -35,6 +43,7 @@ Try to collect posts that include:
 - Do not commit `collected_irbid_posts.csv`.
 - Avoid names and phone numbers when possible.
 - If phone numbers exist in public text, keep the raw data local until reviewed.
+- Mark uncertain rows as `needs_review`, not `public` or `approved`.
 
 ## Run After Adding Rows
 

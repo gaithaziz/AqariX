@@ -163,6 +163,7 @@ def test_convert_real_irbid_csv_template_to_ingest_payload() -> None:
     assert payload["items"][0]["source"] == "manual_collection"
     assert payload["items"][0]["external_id"] == "real-irbid-001"
     assert "جامعة اليرموك" in payload["items"][0]["text"]
+    assert payload["items"][0]["collection_status"] == "approved"
 
 
 def test_convert_real_irbid_csv_rejects_missing_text() -> None:
@@ -191,6 +192,7 @@ def test_append_collected_post_generates_and_protects_external_ids() -> None:
                 "text": "ارض للبيع في الحصن مساحة 2 دونم السعر 70 الف دينار",
                 "source_url": "",
                 "captured_at": "2026-06-28",
+                "collection_status": "approved",
             },
         )
 
@@ -207,6 +209,7 @@ def test_append_collected_post_generates_and_protects_external_ids() -> None:
                     "text": "شقة للايجار في اربد مساحة 90 متر السعر 220 دينار",
                     "source_url": "",
                     "captured_at": "2026-06-28",
+                    "collection_status": "approved",
                 },
             )
         except ValueError as exc:

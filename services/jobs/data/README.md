@@ -3,6 +3,7 @@
 Use `real_irbid_posts_template.csv` as the collection format for real public or approved Irbid listing examples.
 
 See `collection_checklist.md` while collecting rows.
+Use `source_log_template.csv` to track approved source categories.
 
 ## Columns
 
@@ -11,6 +12,7 @@ See `collection_checklist.md` while collecting rows.
 - `text`: raw listing text exactly as collected.
 - `source_url`: optional public URL if allowed to store.
 - `captured_at`: collection date in `YYYY-MM-DD` format.
+- `collection_status`: `public`, `approved`, or `needs_review`.
 
 ## Privacy And Compliance
 
@@ -35,6 +37,18 @@ uv run python services/jobs/data/append_collected_post.py --text "شقة للب�
 ```
 
 The helper writes to `collected_irbid_posts.csv`, generates an `external_id`, and blocks duplicate IDs.
+
+For public sources:
+
+```bash
+uv run python services/jobs/data/append_collected_post.py --source facebook_public --collection-status public --source-url "PUBLIC_URL" --text "LISTING_TEXT"
+```
+
+For dealer/friend approved examples:
+
+```bash
+uv run python services/jobs/data/append_collected_post.py --source dealer_partner --collection-status approved --text "LISTING_TEXT"
+```
 
 3. Convert to ingest JSON:
 
