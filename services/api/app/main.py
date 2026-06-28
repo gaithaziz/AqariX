@@ -11,6 +11,7 @@ from app.auth import CurrentUser, get_current_user
 from app.cache import cache_get_json, cache_key, cache_set_json
 from app.limits import enforce_limit, record_usage, request_identity
 from app.repository import (
+    ANALYSIS_ENGINE_VERSION,
     create_lead_room,
     get_comparable_listings,
     get_feedback_summary,
@@ -58,7 +59,7 @@ from app.settings import get_settings
 app = FastAPI(
     title="AqariX API",
     version="0.1.0",
-    description="MVP API shell. AI valuation and forecasting are intentionally not implemented.",
+    description="MVP API shell. Analysis-engine outputs are provider agnostic.",
 )
 
 idempotency_responses: dict[str, dict[str, object]] = {}
@@ -278,7 +279,7 @@ def create_offering_analysis(
     if replay is not None:
         return OfferingAnalysis.model_validate(replay)
 
-    key = cache_key("offering-analysis", {"listing_id": listing_id, "version": "deterministic-phase1-shell-v1"})
+    key = cache_key("offering-analysis", {"listing_id": listing_id, "version": ANALYSIS_ENGINE_VERSION})
     cached = cache_get_json(key)
     if cached is not None:
         analysis = OfferingAnalysis.model_validate(cached).model_copy(update={"reused_snapshot": True})

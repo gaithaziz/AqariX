@@ -10,6 +10,7 @@ from app.settings import get_settings
 
 logger = logging.getLogger(__name__)
 USER_NAMESPACE = UUID("00000000-0000-4000-8000-00000000a001")
+RECOMMENDATION_ENGINE_VERSION = "rules-phase1-shell-v1"
 
 metadata = sa.MetaData()
 
@@ -128,10 +129,10 @@ def save_recommendation_snapshots(user_id: str, recommendations: list[Recommenda
                         listing_id=recommendation.listing.id,
                         rank_position=position,
                         recommendation_score=recommendation.recommendation_score,
-                        source="deterministic_phase1_shell",
+                        source="rules_phase1_shell",
                         reason_codes=recommendation.reason_codes,
                         explanation=recommendation.explanation,
-                        model_version="deterministic-phase1-shell-v1",
+                        model_version=RECOMMENDATION_ENGINE_VERSION,
                     )
                 )
     except Exception:

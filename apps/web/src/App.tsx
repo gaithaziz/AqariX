@@ -368,8 +368,8 @@ function App() {
               <strong>{t.sliceValue}</strong>
             </div>
             <div>
-              <span className="metric-label">{t.aiIntegration}</span>
-              <strong>{t.aiValue}</strong>
+              <span className="metric-label">{t.analysisEngine}</span>
+              <strong>{t.engineValue}</strong>
             </div>
             <div>
               <span className="metric-label">{t.localMarket}</span>

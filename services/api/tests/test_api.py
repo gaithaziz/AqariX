@@ -143,7 +143,7 @@ def test_profile_behavior_recommendation_feedback_and_lead_room_flow() -> None:
     assert analysis["fair_value_confidence"] in {"low", "medium"}
     assert analysis["comparable_evidence"]
     assert analysis["caveats"]
-    assert analysis["model_version"] == "deterministic-phase1-shell-v1"
+    assert analysis["model_version"] == "rules-phase1-shell-v1"
 
     reused_analysis_response = client.post(f"/listings/{listing_id}/analysis", headers=headers)
     assert reused_analysis_response.status_code == 200

@@ -31,6 +31,8 @@ from app.snapshot_store import (
     save_recommendation_snapshots,
 )
 
+ANALYSIS_ENGINE_VERSION = "rules-phase1-shell-v1"
+RECOMMENDATION_ENGINE_VERSION = "rules-phase1-shell-v1"
 
 LISTINGS = [
     Listing(
@@ -206,7 +208,7 @@ def get_or_create_offering_analysis(listing_id: UUID) -> OfferingAnalysis | None
     if not listing:
         return None
 
-    stored = load_analysis_snapshot(listing_id, "deterministic-phase1-shell-v1")
+    stored = load_analysis_snapshot(listing_id, ANALYSIS_ENGINE_VERSION)
     if stored:
         snapshot = stored.model_copy(update={"reused_snapshot": True})
         analysis_snapshots[listing_id] = snapshot
@@ -243,11 +245,11 @@ def get_or_create_offering_analysis(listing_id: UUID) -> OfferingAnalysis | None
             EvidenceSource(source_type="user_feedback", label="Aggregated listing feedback summary"),
         ],
         caveats=[
-            "Deterministic non-AI shell for Phase 1 API integration.",
-            "No AVM, forecast, or model-backed valuation has been run.",
+            "Rules-based shell for Phase 1 API integration.",
+            "No production valuation, forecast, or ranking engine has been run.",
             "Demo comparables are based on the current seeded listing set only.",
         ],
-        model_version="deterministic-phase1-shell-v1",
+        model_version=ANALYSIS_ENGINE_VERSION,
     )
     analysis_snapshots[listing_id] = analysis
     save_analysis_snapshot(listing, analysis)
@@ -353,7 +355,7 @@ def get_recommendations(user_id: str) -> list[Recommendation]:
                 listing=listing,
                 recommendation_score=round(score, 2),
                 reason_codes=reason_codes,
-                explanation="Deterministic MVP placeholder based on intake and local behavior events.",
+                explanation="Rules-based MVP placeholder based on intake and local behavior events.",
                 personalization_confidence="medium" if profile else "low",
             )
         )

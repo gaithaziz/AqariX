@@ -26,29 +26,29 @@ Left:
 
 - Phase 0 is complete. Production listing source integrations and real GIS-backed zone datasets move into later data work.
 
-## Phase 1 - AI/Data Core
+## Phase 1 - Data and Decision Core
 
 Timeline: Weeks 5-12
-Status: In progress - non-AI API shell expanded
+Status: In progress - provider-agnostic API shell expanded
 
 Outcomes:
 
-- AVM baseline.
-- Comparable logic: deterministic demo comparable endpoint exists; model-ranked comparables remain pending.
-- Recommendation baseline using intake and behavior events: deterministic placeholder endpoint exists; model-backed ranking remains pending.
-- Forecast prototype.
-- Offering-analysis API: deterministic shell endpoint exists with Redis/idempotency reuse and PostgreSQL snapshot persistence when staging/prod database access is configured; AI-generated analysis remains pending.
-- Evidence and confidence object: API contract exists with evidence sources, comparable evidence, confidence label, caveats, and model/source version.
-- Recommendation snapshot persistence: deterministic recommendation snapshots append to PostgreSQL when staging/prod database access is configured.
+- Valuation engine baseline.
+- Comparable logic: rules-based demo comparable endpoint exists; advanced ranking remains pending.
+- Recommendation baseline using intake and behavior events: rules-based placeholder endpoint exists; advanced ranking remains pending.
+- Forecast engine prototype.
+- Offering-analysis API: rules-based shell endpoint exists with Redis/idempotency reuse and PostgreSQL snapshot persistence when staging/prod database access is configured; production analysis engine remains pending.
+- Evidence and confidence object: API contract exists with evidence sources, comparable evidence, confidence label, caveats, and engine/source version.
+- Recommendation snapshot persistence: rules-based recommendation snapshots append to PostgreSQL when staging/prod database access is configured.
 - Saved offerings/searches: API routes exist and emit behavior events for recommendation inputs.
-- Redis-cached output snapshots and token/cost tracking: offering-analysis shell is Redis-cacheable and rate/cost counted; real token/model-cost tracking remains pending.
+- Redis-cached output snapshots and cost tracking: offering-analysis shell is Redis-cacheable and rate/cost counted; provider-specific usage tracking remains pending.
 - Listing ingestion and zones: protected manual listing ingestion and public Irbid demo zones exist; production source integrations and GIS datasets remain pending.
 - Duplicate-write protection: idempotency keys are supported for offering analysis and lead-room creation.
 
 Left:
 
-- AI-owned features stay deferred until the AI teammate begins this phase.
-- Replace deterministic comparable/analysis placeholders with approved AVM, forecast, and model-backed ranking once AI work starts.
+- Keep all contracts analysis-engine agnostic until the advanced-engine owner starts implementation.
+- Replace rules-based comparable/analysis placeholders with approved valuation, forecast, and ranking engines later.
 - Replace manual/demo ingestion and zone data with approved production sources and GIS-backed market zones.
 
 ## Phase 2 - Role-Complete MVP

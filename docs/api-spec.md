@@ -8,7 +8,7 @@ Initial API style: REST over HTTPS with JSON, implemented with FastAPI. FastAPI 
 - Every object endpoint must enforce ownership, organization membership, or admin permission.
 - Every public, expensive, or repeated endpoint must have server-side rate limits and abuse controls.
 - Duplicate-prone writes must support idempotency or server-side duplicate protection.
-- AI output endpoints must return confidence and caveats.
+- Decision-support output endpoints must return confidence and caveats.
 - Recommendation endpoints must return reason codes or "why recommended" explanations.
 - Lead-room endpoints must preserve structured workflow state.
 - Public listing search must avoid exposing sensitive seller/dealer details.
@@ -65,7 +65,7 @@ Filters:
 
 ### POST `/listings/ingest`
 
-Protected manual ingestion endpoint for pre-AI and demo listing batches.
+Protected manual ingestion endpoint for demo and data-import listing batches.
 
 Returns:
 
@@ -220,13 +220,13 @@ Rules:
 - Duplicate client retries should send `Idempotency-Key`.
 - Reuse existing analysis snapshots when inputs and model version have not materially changed.
 - Persist reusable analysis snapshots to PostgreSQL in staging/production when database access is configured.
-- Cap prompt, context, and output size.
+- Cap request context and output size.
 
-For the pre-AI implementation, this endpoint may return a deterministic shell with comparable evidence, caveats, a fixed `model_version`, and no AVM/forecast model output.
+For the current implementation, this endpoint may return a rules-based shell with comparable evidence, caveats, a fixed engine version in `model_version`, and no production valuation or forecast output.
 
 ### GET `/listings/{listing_id}/comparables`
 
-Return deterministic comparable listing candidates for a listing.
+Return rules-based comparable listing candidates for a listing.
 
 Returns:
 
