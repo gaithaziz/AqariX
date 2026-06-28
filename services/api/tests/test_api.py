@@ -68,6 +68,47 @@ def test_parse_listing_text_batch_endpoint() -> None:
     assert body["items"][1]["neighborhoods"][0]["key"] == "eastern_district"
 
 
+def test_baseline_valuation_endpoint_estimates_from_listing_text() -> None:
+    response = client.post(
+        "/ai/baseline-valuation",
+        json={
+            "text": "\u0627\u0631\u0636 \u0644\u0644\u0628\u064a\u0639 \u0641\u064a \u0627\u0644\u062d\u0635\u0646 \u0645\u0633\u0627\u062d\u0629 2 \u062f\u0648\u0646\u0645 \u0627\u0644\u0633\u0639\u0631 70 \u0627\u0644\u0641 \u062f\u064a\u0646\u0627\u0631"
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["estimated_price_jod"] == 70000
+    assert body["confidence"] == "medium"
+    assert body["reason"] == "matched_neighborhood_unit_price"
+    assert body["method"] == "median_unit_price_baseline"
+    assert body["unit_metric"] == "dunum"
+    assert body["unit_area"] == 2.0
+    assert body["matched_unit_price_jod"] == 35000.0
+    assert body["matched_count"] == 1
+    assert body["model_version"] == "api-baseline-median-unit-price-v0.1"
+    assert body["parsed"]["property_type"] == "land"
+    assert body["quality"]["is_model_ready"] is True
+
+
+def test_baseline_valuation_endpoint_returns_reason_when_missing_fields() -> None:
+    response = client.post(
+        "/ai/baseline-valuation",
+        json={
+            "text": "\u0634\u0642\u0629 \u0644\u0644\u0627\u064a\u062c\u0627\u0631 \u0642\u0631\u0628 \u062c\u0627\u0645\u0639\u0629 \u0627\u0644\u064a\u0631\u0645\u0648\u0643 \u0627\u0644\u0633\u0639\u0631 200 \u062f\u064a\u0646\u0627\u0631"
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["estimated_price_jod"] is None
+    assert body["confidence"] == "low"
+    assert body["reason"] == "missing_required_prediction_fields"
+    assert body["matched_count"] == 0
+    assert body["parsed"]["property_type"] == "apartment"
+    assert "area_sqm" in body["quality"]["missing_fields"]
+
+
 def test_ingest_raw_listing_posts_endpoint() -> None:
     response = client.post(
         "/ai/ingest-raw-listing-posts",

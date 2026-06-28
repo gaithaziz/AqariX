@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.auth import CurrentUser, get_current_user
 from app.cache import cache_get_json, cache_key, cache_set_json
 from app.limits import enforce_limit, record_usage, request_identity
+from app.nlp.baseline_valuation import estimate_baseline_valuation
 from app.nlp.dialect_parser import parse_listing_text
 from app.repository import (
     create_lead_room,
@@ -20,6 +21,7 @@ from app.repository import (
     submit_feedback,
 )
 from app.schemas import (
+    BaselineValuationResponse,
     BehaviorEvent,
     BehaviorEventIn,
     BuyerInvestorProfile,
@@ -32,6 +34,7 @@ from app.schemas import (
     ListingSearchResponse,
     ParsedListingTextBatchResponse,
     ParsedListingTextResponse,
+    ParsedListingQuality,
     PropertyType,
     RawListingPostBatchIn,
     RawListingTextBatchIn,
@@ -120,6 +123,41 @@ def parse_raw_listing_text_batch(
     record_usage("ai-parse-listing-text-batch", settings.cost_alert_requests_per_day)
     items = [parsed_to_response(parse_listing_text(item.text)) for item in payload.items]
     return ParsedListingTextBatchResponse(items=items, total=len(items))
+
+
+@app.post("/ai/baseline-valuation", response_model=BaselineValuationResponse)
+def estimate_raw_listing_value(
+    request: Request,
+    payload: RawListingTextIn,
+) -> BaselineValuationResponse:
+    settings = get_settings()
+    enforce_limit(
+        "ai-baseline-valuation",
+        request_identity(request),
+        settings.rate_limit_public_per_minute,
+        60,
+    )
+    record_usage("ai-baseline-valuation", settings.cost_alert_requests_per_day)
+    valuation = estimate_baseline_valuation(payload.text)
+    return BaselineValuationResponse(
+        estimated_price_jod=valuation.estimated_price_jod,
+        confidence=valuation.confidence,
+        reason=valuation.reason,
+        method=valuation.method,
+        unit_metric=valuation.unit_metric,
+        unit_area=valuation.unit_area,
+        matched_unit_price_jod=valuation.matched_unit_price_jod,
+        matched_count=valuation.matched_count,
+        model_version=valuation.model_version,
+        quality=ParsedListingQuality(
+            score=valuation.quality.score,
+            grade=valuation.quality.grade,
+            is_model_ready=valuation.quality.is_model_ready,
+            missing_fields=valuation.quality.missing_fields,
+            warnings=valuation.quality.warnings,
+        ),
+        parsed=parsed_to_response(valuation.parsed),
+    )
 
 
 @app.post("/ai/ingest-raw-listing-posts", response_model=StoredParsedListingBatchResponse)
