@@ -86,6 +86,12 @@
   gap: 10px;
 }
 
+.auth-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .icon-button,
 .save-button {
   border: 1px solid var(--color-outline-soft);
@@ -114,6 +120,30 @@
   border-radius: 8px;
   background: var(--color-surface-strong);
   color: var(--color-primary);
+}
+
+.auth-button {
+  min-height: 40px;
+  padding: 0 14px;
+  white-space: nowrap;
+}
+
+.auth-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  min-height: 40px;
+  border: 1px dashed var(--color-outline);
+  border-radius: 6px;
+  color: var(--color-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.clerk-avatar {
+  width: 40px;
+  height: 40px;
 }
 
 main {
@@ -591,6 +621,18 @@ select {
   padding: 0 10px;
 }
 
+.form-status {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
 .full-field {
   grid-column: 1 / -1;
 }
@@ -923,6 +965,25 @@ select:focus-visible {
 @media (max-width: 560px) {
   .brand {
     font-size: 1.35rem;
+  }
+
+  .topbar {
+    align-items: flex-start;
+  }
+
+  .top-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .auth-controls {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .auth-button {
+    min-width: 76px;
+    padding: 0 10px;
   }
 
   .hero-copy h1 {

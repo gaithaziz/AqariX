@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Show, SignInButton, SignUpButton, UserButton } from '@clerk/react'
 import {
   ArrowRight,
   BarChart3,
@@ -24,7 +25,6 @@ import {
   Star,
   Moon,
   Sun,
-  UserRound,
 } from 'lucide-react'
 import './App.css'
 import { copy, localeMeta, type Locale } from './i18n'
@@ -62,7 +62,29 @@ type ApiListing = {
   image_url: string
 }
 
+type ApiFeedbackSummary = {
+  feedback_count: number
+  top_missing_information: string[]
+  investor_note: string | null
+}
+
+type ApiLeadRoom = {
+  id: string
+  stage: string
+}
+
+type FeedbackValues = {
+  clarity: string
+  photos: string
+  price: string
+  location: string
+  missing: string
+}
+
+type ApiStatus = 'idle' | 'saving' | 'saved' | 'error'
+
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL as string | undefined
+const hasClerkPublishableKey = Boolean(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY)
 
 const fallbackListings: Listing[] = [
   {
@@ -147,6 +169,11 @@ function App() {
   const [listings, setListings] = useState<Listing[]>(fallbackListings)
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState('')
+  const [feedbackSummary, setFeedbackSummary] = useState<ApiFeedbackSummary | null>(null)
+  const [feedbackStatus, setFeedbackStatus] = useState<ApiStatus>('idle')
+  const [leadRoomStatus, setLeadRoomStatus] = useState<ApiStatus>('idle')
+  const [leadRoomStage, setLeadRoomStage] = useState<string | null>(null)
+  const viewedListingId = useRef<string | null>(null)
   const activeListing = listings[0] ?? fallbackListings[0]
   const t = copy[locale]
   const meta = localeMeta[locale]
@@ -187,6 +214,74 @@ function App() {
     return () => controller.abort()
   }, [debouncedQuery])
 
+  useEffect(() => {
+    if (!apiBaseUrl || !isUuid(activeListing.id)) return
+
+    const controller = new AbortController()
+    getFeedbackSummary(activeListing.id, controller.signal)
+      .then(setFeedbackSummary)
+      .catch(() => undefined)
+
+    if (viewedListingId.current !== activeListing.id) {
+      viewedListingId.current = activeListing.id
+      postJson('/behavior-events', {
+        event_type: 'listing_viewed',
+        listing_id: activeListing.id,
+        search_filters: debouncedQuery ? { neighborhood: debouncedQuery } : undefined,
+      }).catch(() => undefined)
+    }
+
+    return () => controller.abort()
+  }, [activeListing.id, debouncedQuery])
+
+  async function handleFeedbackSubmit(values: FeedbackValues) {
+    if (!apiBaseUrl || !isUuid(activeListing.id)) {
+      setFeedbackStatus('error')
+      return
+    }
+
+    setFeedbackStatus('saving')
+    try {
+      await postJson(`/listings/${activeListing.id}/feedback`, {
+        clarity_rating: ratingFromSelect(values.clarity),
+        photo_quality_rating: ratingFromSelect(values.photos),
+        price_trust_rating: ratingFromSelect(values.price),
+        location_confidence_rating: ratingFromSelect(values.location),
+        interest_level: 'interested',
+        missing_information: values.missing
+          .split(',')
+          .map((value) => value.trim())
+          .filter(Boolean),
+      })
+      const summary = await getFeedbackSummary(activeListing.id)
+      setFeedbackSummary(summary)
+      setFeedbackStatus('saved')
+    } catch {
+      setFeedbackStatus('error')
+    }
+  }
+
+  async function handleLeadRoomStart() {
+    if (!apiBaseUrl || !isUuid(activeListing.id)) {
+      setLeadRoomStatus('error')
+      return
+    }
+
+    setLeadRoomStatus('saving')
+    try {
+      const room = await postJson<ApiLeadRoom>('/lead-rooms', {
+        listing_id: activeListing.id,
+        intent: 'viewing',
+        budget_fit: 'inside_budget',
+        preferred_contact_method: 'lead_room',
+      })
+      setLeadRoomStage(room.stage)
+      setLeadRoomStatus('saved')
+    } catch {
+      setLeadRoomStatus('error')
+    }
+  }
+
   return (
     <div className="app-shell">
       <header className="topbar">
@@ -226,9 +321,7 @@ function App() {
           <button className="icon-button" type="button" aria-label={t.notifications} title={t.notifications}>
             <Bell size={20} aria-hidden="true" />
           </button>
-          <div className="avatar" aria-label="Demo user">
-            <UserRound size={20} aria-hidden="true" />
-          </div>
+          <AuthControls />
         </div>
       </header>
 
@@ -360,9 +453,17 @@ function App() {
             </div>
             <div className="feedback-box">
               <h3>{t.investorNote}</h3>
-              <p>{activeListing.investorNote}</p>
+              <p>{feedbackSummary?.investor_note ?? activeListing.investorNote}</p>
+              {feedbackSummary ? (
+                <p className="form-status">
+                  {feedbackSummary.feedback_count} signals
+                  {feedbackSummary.top_missing_information.length
+                    ? ` / missing: ${feedbackSummary.top_missing_information.join(', ')}`
+                    : ''}
+                </p>
+              ) : null}
             </div>
-            <ListingFeedback t={t} />
+            <ListingFeedback t={t} status={feedbackStatus} onSubmit={handleFeedbackSubmit} />
           </div>
         </section>
 
@@ -372,11 +473,25 @@ function App() {
               <span className="eyebrow">{t.leadEyebrow}</span>
               <h2 id="lead-room-title">{t.leadTitle}: {activeListing.title}</h2>
             </div>
-            <button className="primary-button" type="button">
+            <button
+              className="primary-button"
+              type="button"
+              disabled={leadRoomStatus === 'saving'}
+              onClick={handleLeadRoomStart}
+            >
               <CalendarClock size={18} aria-hidden="true" />
-              {t.scheduleViewing}
+              {leadRoomStatus === 'saving' ? 'Starting...' : t.scheduleViewing}
             </button>
           </div>
+          {leadRoomStatus !== 'idle' ? (
+            <p className="form-status">
+              {leadRoomStatus === 'saved'
+                ? `Lead room started${leadRoomStage ? `: ${leadRoomStage}` : ''}`
+                : leadRoomStatus === 'error'
+                  ? 'Could not start lead room.'
+                  : 'Creating lead room...'}
+            </p>
+          ) : null}
           <div className="stage-track">
             {['New inquiry', 'Qualified', 'Viewing scheduled', 'Offer made', 'Negotiation'].map((stage, index) => (
               <div className={index < 3 ? 'stage active' : 'stage'} key={stage}>
@@ -534,15 +649,42 @@ function ListingCard({ listing, viewAnalysis }: { listing: Listing; viewAnalysis
   )
 }
 
-function ListingFeedback({ t }: { t: (typeof copy)[Locale] }) {
+function ListingFeedback({
+  t,
+  status,
+  onSubmit,
+}: {
+  t: (typeof copy)[Locale]
+  status: ApiStatus
+  onSubmit: (values: FeedbackValues) => void
+}) {
   return (
-    <form className="feedback-form" aria-label="Listing feedback">
+    <form
+      className="feedback-form"
+      aria-label="Listing feedback"
+      onSubmit={(event) => {
+        event.preventDefault()
+        const data = new FormData(event.currentTarget)
+        onSubmit({
+          clarity: String(data.get('clarity') ?? 'good'),
+          photos: String(data.get('photos') ?? 'good'),
+          price: String(data.get('price') ?? 'good'),
+          location: String(data.get('location') ?? 'good'),
+          missing: String(data.get('missing') ?? ''),
+        })
+      }}
+    >
       <h3>{t.improveListing}</h3>
       <div className="feedback-grid">
-        {[t.clearDetails, t.usefulPhotos, t.trustworthyPrice, t.enoughLocation].map((label) => (
+        {[
+          [t.clearDetails, 'clarity'],
+          [t.usefulPhotos, 'photos'],
+          [t.trustworthyPrice, 'price'],
+          [t.enoughLocation, 'location'],
+        ].map(([label, name]) => (
           <label key={label}>
             <span>{label}</span>
-            <select defaultValue="good">
+            <select name={name} defaultValue="good">
               <option value="good">{t.good}</option>
               <option value="missing">{t.needsWork}</option>
               <option value="unsure">{t.unsure}</option>
@@ -552,12 +694,17 @@ function ListingFeedback({ t }: { t: (typeof copy)[Locale] }) {
       </div>
       <label className="full-field">
         <span>{t.missing}</span>
-        <input placeholder={t.missingPlaceholder} />
+        <input name="missing" placeholder={t.missingPlaceholder} />
       </label>
-      <button className="secondary-button" type="button">
+      <button className="secondary-button" type="submit" disabled={status === 'saving'}>
         <Bookmark size={17} aria-hidden="true" />
-        {t.saveFeedback}
+        {status === 'saving' ? 'Saving...' : t.saveFeedback}
       </button>
+      {status !== 'idle' ? (
+        <p className="form-status">
+          {status === 'saved' ? 'Feedback saved.' : status === 'error' ? 'Could not save feedback.' : 'Saving feedback...'}
+        </p>
+      ) : null}
     </form>
   )
 }
@@ -603,7 +750,76 @@ function Bar({ label, value }: { label: string; value: number }) {
   )
 }
 
+function AuthControls() {
+  if (!hasClerkPublishableKey) {
+    return (
+      <span className="auth-status" title="Set VITE_CLERK_PUBLISHABLE_KEY to enable Clerk">
+        Auth
+      </span>
+    )
+  }
+
+  return (
+    <div className="auth-controls" aria-label="Account controls">
+      <Show when="signed-out">
+        <SignInButton mode="modal">
+          <button className="secondary-button auth-button" type="button">
+            Sign in
+          </button>
+        </SignInButton>
+        <SignUpButton mode="modal">
+          <button className="primary-button auth-button" type="button">
+            Sign up
+          </button>
+        </SignUpButton>
+      </Show>
+      <Show when="signed-in">
+        <UserButton
+          appearance={{
+            elements: {
+              avatarBox: 'clerk-avatar',
+            },
+          }}
+        />
+      </Show>
+    </div>
+  )
+}
+
 export default App
+
+async function postJson<T = unknown>(path: string, body: object): Promise<T> {
+  if (!apiBaseUrl) throw new Error('Missing API URL')
+
+  const response = await fetch(`${apiBaseUrl}${path}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Demo-User': 'web-demo-user',
+    },
+    body: JSON.stringify(body),
+  })
+  if (!response.ok) throw new Error(response.statusText)
+  return response.json()
+}
+
+async function getFeedbackSummary(listingId: string, signal?: AbortSignal): Promise<ApiFeedbackSummary> {
+  if (!apiBaseUrl) throw new Error('Missing API URL')
+
+  const response = await fetch(`${apiBaseUrl}/listings/${listingId}/feedback-summary`, { signal })
+  if (!response.ok) throw new Error(response.statusText)
+  return response.json()
+}
+
+function ratingFromSelect(value: string) {
+  if (value === 'good') return 5
+  if (value === 'missing') return 2
+  return null
+}
+
+function isUuid(value: string) {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value)
+}
 
 function mapApiListing(listing: ApiListing): Listing {
   const pricePerSqm = Math.round(listing.asking_price_jod / listing.area_sqm)

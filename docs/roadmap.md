@@ -19,11 +19,12 @@ Outcomes:
 - Docker verification: `docker compose build` passes and the API returns `/health` through Docker.
 - Staging API deployment: Railway service is live at `https://aqarix-production.up.railway.app`; `/health` responds successfully. Railway still needs `APP_ENV=staging` applied because the current health payload reports `env` as `local`.
 - Staging web deployment: Vercel production deployment is ready at `https://aqari-x.vercel.app` with Railway API and Clerk public env values configured; browser smoke test passed.
+- Web-to-API wiring: listing search, listing-view behavior events, listing feedback submission/summary, and lead-room creation call the FastAPI staging API.
 - Documentation baseline: core docs, guardrails, deployment notes, and roadmap phase status exist.
 
 Left:
 
-- Expand web-to-API wiring beyond listing search when the next non-AI workflow is ready.
+- Set `APP_ENV=staging` on Railway so `/health` reports the staging environment.
 
 ## Phase 1 - AI/Data Core
 

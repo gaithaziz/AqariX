@@ -31,6 +31,19 @@ def test_listing_search() -> None:
     assert body["items"][0]["city"] == "Amman"
 
 
+def test_cors_allows_vercel_web_origin() -> None:
+    response = client.options(
+        "/listings",
+        headers={
+            "origin": "https://aqari-x.vercel.app",
+            "access-control-request-method": "GET",
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == "https://aqari-x.vercel.app"
+
+
 def test_profile_behavior_recommendation_feedback_and_lead_room_flow() -> None:
     headers = {"x-demo-user": "test-user"}
 
