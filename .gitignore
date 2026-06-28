@@ -97,3 +97,4 @@ test-results/
 # Keep committed Codex project skills, ignore runtime caches inside them
 .codex/**/__pycache__/
 .codex/**/*.pyc
+.vercel
