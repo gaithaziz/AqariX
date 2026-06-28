@@ -1,8 +1,15 @@
-from datetime import UTC, datetime
-from enum import StrEnum
+from datetime import datetime, timezone
+from enum import Enum
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel, Field
+
+
+UTC = timezone.utc
+
+
+class StrEnum(str, Enum):
+    pass
 
 
 class PropertyType(StrEnum):

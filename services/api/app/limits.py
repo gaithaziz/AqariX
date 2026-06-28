@@ -1,5 +1,5 @@
 import logging
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 
 from fastapi import HTTPException, Request, status
 from redis.exceptions import RedisError
@@ -7,6 +7,9 @@ from redis.exceptions import RedisError
 from app.cache import get_redis_client
 
 logger = logging.getLogger(__name__)
+
+
+UTC = timezone.utc
 
 
 def request_identity(request: Request, user_id: str | None = None) -> str:
