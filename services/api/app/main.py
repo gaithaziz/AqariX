@@ -55,6 +55,17 @@ def health() -> dict[str, str]:
     return {"status": "ok", "env": settings.app_env}
 
 
+@app.get("/")
+def root() -> dict[str, object]:
+    settings = get_settings()
+    return {
+        "name": "AqariX API",
+        "status": "ok",
+        "env": settings.app_env,
+        "endpoints": ["/health", "/listings", "/docs"],
+    }
+
+
 @app.get("/listings", response_model=ListingSearchResponse)
 def listings(
     request: Request,
